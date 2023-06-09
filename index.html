@@ -93,7 +93,7 @@
           </select>
         </div>
         <div class="sightseeing">
-          <div class="sight">Sight Seeing options</div> 
+          <div class="sight">Sight Seeing options</div>
           <div class="radio-sightseeing">
             <input
               type="radio"
@@ -120,66 +120,58 @@
           </div>
 
           <div class="hidden">
-            <div class="hidden-radio">
-                <input
-              type="radio"
-              id="options-for-4-seater"
-              name="options"
-              value="options-for-4-seater"
-            />
-              <label for="options-for-4-seater">4 Seater</label><br />
 
-            <input
-              type="radio"
-              id="options-for-6-seater"
-              name="options" 
-              value="options-for-6-seater"
-            />
-              <label for="options-for-6-seater">6 Seater</label><br />
+            <div class="hidden-radio" id="hr">
+              
             </div>
-            <div class="hiddenQuestion" id="hq"><label for="no-of-persons">How Many days You want sight Seeing?</label>
+            <div class="hidden-two-wheeler" id="htw"></div>
+            <div class="hiddenQuestion" id="hq">
+              <label for="no-of-persons"
+                >How Many days You want sight Seeing?</label
+              >
               <select name="hideQuestions" id="HQ">
                 <option value="0">1</option>
                 <option value="1">2</option>
                 <option value="2">3</option>
                 <option value="3">4</option>
-
               </select>
-              <input type="button" id="btnReset" value="Reset" onClick="resets()" />
+              <input
+                type="button"
+                id="btnReset"
+                value="Reset"
+                onClick="resets()"
+              />
+              <input
+              type="button"
+              id="calculate"
+              value="Add to package"
+              onClick="calc()"
+            />
             </div>
             <div class="hidden-select">
-                <span class="goa-span1">
-                  <label for="goa-location">Day-1</label>
-                    <select name="goa-location" id="goa-location1">
-                      <option value="0">North-Goa I</option>
-                      <option value="1">North-Goa II</option>
-                      <option value="2">South Goa</option>
-                      <option value="3">Extreme south Goa</option>
-                      <!-- <option value="4" selected>        </option> -->
-                    </select>
-                  </span>
-      
-                  <span class="goa-span2">
-                    <label for="goa-location">Day-2</label>
-                    <select name="goa-location" id="goa-location2">
-                      
-                    </select>
-                  </span>
-      
-                  <span class="goa-span3">
-                    <label for="goa-location">Day-3</label>
-                    <select name="goa-location" id="goa-location3">
-  
-                    </select>
-                  </span>
-      
-                  <span class="goa-span4" id="goa-location4">
-                    
-                  </span>
-                  </span>
+              <span class="goa-span1">
+                <label for="goa-location">Day-1</label>
+                <select name="goa-location" id="goa-location1">
+                  <option value="0">North-Goa I</option>
+                  <option value="1">North-Goa II</option>
+                  <option value="2">South Goa</option>
+                  <option value="3">Extreme south Goa</option>
+                  <!-- <option value="4" selected>        </option> -->
+                </select>
+              </span>
+
+              <span class="goa-span2">
+                <label for="goa-location">Day-2</label>
+                <select name="goa-location" id="goa-location2"></select>
+              </span>
+
+              <span class="goa-span3">
+                <label for="goa-location">Day-3</label>
+                <select name="goa-location" id="goa-location3"></select>
+              </span>
+
+              <span class="goa-span4" id="goa-location4"> </span>
             </div>
-            
-            
           </div>
         </div>
         <div class="Submit">
