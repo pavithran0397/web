@@ -159,4 +159,10 @@ span {
     display: flex;
     flex-direction: column;
   }
+  .two-wheeler-question,.four-wheeler-question,.hiddenQuestion{
+    padding-top: 20px;
+    display: flex;
+    flex-direction: column;
+    
+  }
 }
