@@ -49,6 +49,11 @@ form input{
   }
   label{
     margin:10px;
+    
+  }
+  .labels{
+    color: rgb(211, 209, 208);
+
   }
 #result{
     margin: 10px;
