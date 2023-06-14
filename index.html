@@ -16,7 +16,7 @@
           type="number"
           id="no-of-persons"
           placeholder="Number of persons"
-          required
+          
         />
 
         <div class="check-in-out">
@@ -24,12 +24,12 @@
             <label for="check-in">Hotel Check In</label>
           </div>
 
-          <input type="date" id="check-in" name="check-in " required />
+          <input type="date" id="check-in" name="check-in "  />
           <div class="label-check">
             <label for="check-out">Hotel Check out</label>
           </div>
 
-          <input type="date" id="check-out" name="check-out " required />
+          <input type="date" id="check-out" name="check-out "  />
         </div>
 
         <label class="labels" for="labels no-of-persons">Choose Your Rooms</label>
@@ -93,67 +93,39 @@
             <option value="3">breakfast lunch and dinner</option>
           </select>
         </div>
-<<<<<<< HEAD
-        <div class="labels sightseeing">
-          <div class="sight">Sight Seeing options</div>
-          <div class="radio-sightseeing">
-            <input
-              type="radio"
-              id="Two-Wheeler"
-              name="sight-seeing"
-              value="Two-Wheeler"
-            />
-              <label for="Two-Wheeler">Two Wheeler</label><br />
-            <input
-              type="radio"
-              id="self-drive-cars"
-              name="sight-seeing"
-              value="self-drive-cars"
-            />
-              <label for="self-drive-cars">Self Driving Cars</label><br />
-
-            <input
-              type="radio"
-              id="Vechicle--driver"
-              name="sight-seeing"
-              value="Vechicle--driver"
-            />
-              <label for="Vechicle--driver">Vehicle with Drivers</label><br />
-=======
         <div class="sightseeing" id="content">
           <div class="sight" id="sight">Sight Seeing options
             <button class="add-sight">Add service</button>
->>>>>>> beb6e0f6fec2da6a291b6602f5d9af6c11b453d2
           </div>
           <div class="content">
             <div class="radio-sightseeing" id="reveal-content">
-              <div>
+              <div class="radio">
                 <input
                 type="radio"
                 id="Two-Wheeler"
                 name="sight-seeing"
                 value="Two-Wheeler"
-                required
+                
               />
                 <label for="Two-Wheeler">Two Wheeler</label><br />
               </div>
-              <div>
+              <div class="radio">
                 <input
                 type="radio"
                 id="self-drive-cars"
                 name="sight-seeing"
                 value="self-drive-cars"
-                required
+                
               />
                 <label for="self-drive-cars">Self Driving Cars</label><br />
               </div>
-              <div>
+              <div class="radio">
                 <input
                 type="radio"
                 id="Vechicle--driver"
                 name="sight-seeing"
                 value="Vechicle--driver"
-                required
+                
               />
                 <label for="Vechicle--driver">Vehicle with Drivers</label><br />
               </div>
@@ -171,7 +143,7 @@
                 type="number"
                 id="two-wheeler-question"
                 placeholder="Enter number of days"
-                required
+                
               />
             </div>
             <div class="four-wheeler-question">
@@ -182,7 +154,7 @@
                 type="number"
                 id="four-wheeler-question"
                 placeholder="Enter number of days"
-                required
+                
               />
             </div>
   
@@ -241,7 +213,7 @@
           </div>
           
         <div class="Submit">
-          <button type="submit">Submit</button>
+          <button type="button">Submit</button>
         </div>
         <div id="result"></div>
       </form>

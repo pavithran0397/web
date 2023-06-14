@@ -77,7 +77,8 @@ span {
   padding-top: 20px;
   font-size: 12px;
 }
-.radio-sightseeing {
+.radio,.radio-sightseeing{
+
   display: flex;
   flex-direction: row;
 }
@@ -143,17 +144,14 @@ span {
     justify-content: space-between;
   }
   label{
-<<<<<<< HEAD
     margin:10px;
     
   }
   .labels{
     color: rgb(211, 209, 208);
 
-=======
     color: rgb(255, 255, 255);
     font-size: medium;
->>>>>>> beb6e0f6fec2da6a291b6602f5d9af6c11b453d2
   }
   .check-in-out{
     display: flex;

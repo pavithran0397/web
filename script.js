@@ -503,7 +503,7 @@ function clickedEvent(event) {
     const costRoomFood=calculateTheCost(textArray, foodMenu, totalNights);
   
      //-------------adding sightseeing cost---------------//
-     console.log("before calling sight seeing fn "+ foodMenu);
+     
 totalCostForSightSeeing(costRoomFood);
 
 
@@ -756,7 +756,7 @@ function resets() {
 
 
 //calcualte cost for two wheelers
-const calculateTwoWheelers =function (totalNights) {
+const calculateTwoWheelers =function () {
   document.querySelector(".hidden-two-wheeler").style.display = "block";
   totalPersons = document.getElementById("no-of-persons").value;
   const daysTwoWheeler = document.getElementById("two-wheeler-question").value
@@ -766,7 +766,10 @@ const calculateTwoWheelers =function (totalNights) {
   const costForTwoWheeler=600*(Math.round(
     totalPersons / 2
   ))*daysTwoWheeler
-  console.log("costForTwoWheeler: "+costForTwoWheeler)
+  console.log("costForTwoWheeler 1 day: "+600*(Math.round(
+    totalPersons / 2
+  )))
+  console.log(`costForTwoWheeler ${daysTwoWheeler} days: ${costForTwoWheeler}`)
   
   // console.log(costForTwoWheeler/daysTwoWheeler)
   return costForTwoWheeler;
@@ -820,7 +823,8 @@ const calculateSelfDriveCars= function() {
     "hr"
   ).innerHTML = `You will get ${eightSeater} Eight seater and ${fiveSeater} Five seater`;
   const costForSelfDrive=((eightSeater*2000)+(fiveSeater*1500))*daysFourWheeler
-  console.log("costForSelfDrive: "+costForSelfDrive)
+  console.log(`costForSelfDrive for 1 day: ${(eightSeater*2000)+(fiveSeater*1500)}`)
+  console.log(`costForSelfDrive for ${daysFourWheeler} days: ${costForSelfDrive}`)
 
   return costForSelfDrive;
 }
@@ -948,7 +952,7 @@ console.log(previousSum)
 
 document.getElementById(
     "result"
-  ).textContent = ` The Cost of your Customised Package is Rs ${sumForSightSeeing+previousSum}`;
+  ).textContent = ` The Cost of your Customised Package is Rs ${sumForSightSeeing+previousSum} `;
 
 
 }
@@ -976,9 +980,10 @@ for(let i=0;i<sight.length; i++){
     
   });
 
-}
+}//add service button
 const addSighttbtn=document.querySelector(".add-sight")
-addSighttbtn.addEventListener("click",function(){
+addSighttbtn.addEventListener("click",function(e){
+  e.preventDefault();
   console.log(addSighttbtn.textContent)
   if(addSighttbtn.textContent==="Remove service"){
     addSighttbtn.textContent="Add service"
