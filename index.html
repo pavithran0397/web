@@ -24,12 +24,12 @@
             <label for="check-in">Hotel Check In</label>
           </div>
 
-          <input type="date" id="check-in" name="check-in " />
+          <input type="date" id="check-in" name="check-in " required />
           <div class="label-check">
             <label for="check-out">Hotel Check out</label>
           </div>
 
-          <input type="date" id="check-out" name="check-out " />
+          <input type="date" id="check-out" name="check-out " required />
         </div>
 
         <label class="labels" for="labels no-of-persons">Choose Your Rooms</label>
@@ -93,6 +93,7 @@
             <option value="3">breakfast lunch and dinner</option>
           </select>
         </div>
+<<<<<<< HEAD
         <div class="labels sightseeing">
           <div class="sight">Sight Seeing options</div>
           <div class="radio-sightseeing">
@@ -118,63 +119,127 @@
               value="Vechicle--driver"
             />
               <label for="Vechicle--driver">Vehicle with Drivers</label><br />
+=======
+        <div class="sightseeing" id="content">
+          <div class="sight" id="sight">Sight Seeing options
+            <button class="add-sight">Add service</button>
+>>>>>>> beb6e0f6fec2da6a291b6602f5d9af6c11b453d2
           </div>
-
-          <div class="hidden">
-
-            <div class="hidden-radio" id="hr">
+          <div class="content">
+            <div class="radio-sightseeing" id="reveal-content">
+              <div>
+                <input
+                type="radio"
+                id="Two-Wheeler"
+                name="sight-seeing"
+                value="Two-Wheeler"
+                required
+              />
+                <label for="Two-Wheeler">Two Wheeler</label><br />
+              </div>
+              <div>
+                <input
+                type="radio"
+                id="self-drive-cars"
+                name="sight-seeing"
+                value="self-drive-cars"
+                required
+              />
+                <label for="self-drive-cars">Self Driving Cars</label><br />
+              </div>
+              <div>
+                <input
+                type="radio"
+                id="Vechicle--driver"
+                name="sight-seeing"
+                value="Vechicle--driver"
+                required
+              />
+                <label for="Vechicle--driver">Vehicle with Drivers</label><br />
+              </div>
+              
+  
+              
+  
               
             </div>
-            <div class="hidden-two-wheeler" id="htw"></div>
-            <div class="hiddenQuestion" id="hq">
-              <label for="no-of-persons"
-                >How Many days You want sight Seeing?</label
+            <div class="two-wheeler-question">
+              <label for="two-wheeler-question"
+                >How many days you need two-wheeler?</label
               >
-              <select name="hideQuestions" id="HQ">
-                <option value="0">1</option>
-                <option value="1">2</option>
-                <option value="2">3</option>
-                <option value="3">4</option>
-              </select>
               <input
-                type="button"
-                id="btnReset"
-                value="Reset"
-                onClick="resets()"
+                type="number"
+                id="two-wheeler-question"
+                placeholder="Enter number of days"
+                required
               />
-              <input
-              type="button"
-              id="calculate"
-              value="Add to package"
-              onClick="calc()"
-            />
             </div>
-            <div class="hidden-select">
-              <span class="goa-span1">
-                <label for="goa-location">Day-1</label>
-                <select name="goa-location" id="goa-location1">
-                  <option value="0">North-Goa I</option>
-                  <option value="1">North-Goa II</option>
-                  <option value="2">South Goa</option>
-                  <option value="3">Extreme south Goa</option>
-                  <!-- <option value="4" selected>        </option> -->
+            <div class="four-wheeler-question">
+              <label for="four-wheeler-question"
+                >How many days you need Cars?</label
+              >
+              <input
+                type="number"
+                id="four-wheeler-question"
+                placeholder="Enter number of days"
+                required
+              />
+            </div>
+  
+            <div class="hidden">
+              <div class="hidden-radio" id="hr"></div>
+              <div class="hidden-two-wheeler" id="htw"></div>
+              <div class="hiddenQuestion" id="hq">
+                <label for="hideQuestions"
+                  >How Many days You want sight Seeing?</label
+                >
+                <select name="hideQuestions" id="HQ">
+                  <option value="0">1</option>
+                  <option value="1">2</option>
+                  <option value="2">3</option>
+                  <option value="3">4</option>
                 </select>
-              </span>
-
-              <span class="goa-span2">
-                <label for="goa-location">Day-2</label>
-                <select name="goa-location" id="goa-location2"></select>
-              </span>
-
-              <span class="goa-span3">
-                <label for="goa-location">Day-3</label>
-                <select name="goa-location" id="goa-location3"></select>
-              </span>
-
-              <span class="goa-span4" id="goa-location4"> </span>
+                <input
+                  type="button"
+                  id="btnReset"
+                  value="Reset"
+                  onClick="resets()"
+                />
+                <input
+                  type="button"
+                  id="calculate"
+                  value="Add to package"
+                  onClick="calc()"
+                />
+              </div>
+              <div class="hidden-select">
+                <span class="goa-span1">
+                  <label for="goa-location">Day-1</label>
+                  <select name="goa-location" id="goa-location1">
+                    <option value="0">North-Goa I</option>
+                    <option value="1">North-Goa II</option>
+                    <option value="2">South Goa</option>
+                    <option value="3">Extreme south Goa</option>
+                    <!-- <option value="4" selected>        </option> -->
+                  </select>
+                </span>
+  
+                <span class="goa-span2">
+                  <label for="goa-location">Day-2</label>
+                  <select name="goa-location" id="goa-location2"></select>
+                </span>
+  
+                <span class="goa-span3">
+                  <label for="goa-location">Day-3</label>
+                  <select name="goa-location" id="goa-location3"></select>
+                </span>
+  
+                <span class="goa-span4" id="goa-location4"> </span>
+              </div>
             </div>
           </div>
-        </div>
+          </div>
+          
         <div class="Submit">
           <button type="submit">Submit</button>
         </div>
