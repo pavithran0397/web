@@ -1,0 +1,14 @@
+{
+  "name": "web-main",
+  "version": "1.0.0",
+  "description": "career",
+  "main": "script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "aravindhan",
+  "license": "ISC",
+  "dependencies": {
+    "xlsx": "^0.18.5"
+  }
+}

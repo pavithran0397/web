@@ -11,7 +11,7 @@
     <div class="container">
       <form>
         <h3>Customize Your Trip</h3>
-        <label class="labels" for="no-of-persons">Total Number of persons</label>
+        <label class="main-label labels" for="no-of-persons">Total Number of persons</label>
         <input
           type="number"
           id="no-of-persons"
@@ -21,18 +21,18 @@
 
         <div class="check-in-out">
           <div class="label-check">
-            <label for="check-in">Hotel Check In</label>
+            <label class="main-label" for="check-in">Hotel Check In</label>
           </div>
 
           <input type="date" id="check-in" name="check-in "  />
           <div class="label-check">
-            <label for="check-out">Hotel Check out</label>
+            <label class="main-label" for=" check-out">Hotel Check out</label>
           </div>
 
           <input type="date" id="check-out" name="check-out "  />
         </div>
 
-        <label class="labels" for="labels no-of-persons">Choose Your Rooms</label>
+        <label class="main-label labels" for="labels no-of-persons">Choose Your Rooms</label>
         <div class="room-options">
           <span>
             <label for="twoshare">Two sharing Rooms</label>
@@ -84,7 +84,7 @@
         </div>
 
         <div class="food">
-          <label class="labels" for="food-select">Choose the Food type</label>
+          <label class="main-label labels" for="food-select">Choose the Food type</label>
 
           <select name="food-select" id="food-id">
             <option value="0">No Food</option>
@@ -94,7 +94,7 @@
           </select>
         </div>
         <div class="sightseeing" id="content">
-          <div class="sight" id="sight">Sight Seeing options
+          <div class="main-label sight" id="sight">Sight Seeing options
             <button class="add-sight">Add service</button>
           </div>
           <div class="content">
@@ -197,7 +197,7 @@
                 </span>
   
                 <span class="goa-span2">
-                  <label for="goa-location">Day-2</label>
+                  <label for="goa-location"s2</label>
                   <select name="goa-location" id="goa-location2"></select>
                 </span>
   
@@ -210,15 +210,57 @@
               </div>
             </div>
           </div>
+        </div>
+        <div class="pickup-drop-container">
+          <div class="main-label pick-up-drop-text">Pickup Drop Service
+            <button class="add-pickup-drop">Add Service</button>
           </div>
+          <div class="pick-drop-content">
+            <div class="main-label pick-up-text">Pickup Point
+              <select class="add-pickup" >Add Service
+                <option value="Not Needed">Not Needed</option>
+                <option value="Madgon">Madgon</option>
+                <option value="Vasco">Vasco</option>
+                <option value="Thivim">Thivim</option>
+                <option value="Dabolim Airport">Dabolim Airport</option>
+                <option value="Mopa Airport">Mopa Airport</option>
+                <option value="Panjim">Panjim</option>
+                <option value="Mapusa">Mapusa</option>
+              </select>
+              <div class="message-pick-up">A 6 seater will Pick you at</div>
+              
+              
+                
+              
+              
+            </div>
+            <div class="main-label pick-up-text">Drop Point
+              <select class="add-drop" >Add Service
+                <option value="Not Needed">Not Needed</option>
+                <option value="Madgon">Madgon</option>
+                <option value="Vasco">Vasco</option>
+                <option value="Thivim">Thivim</option>
+                <option value="Dabolim Airport">Dabolim Airport</option>
+                <option value="Mopa Airport">Mopa Airport</option>
+                <option value="Panjim">Panjim</option>
+                <option value="Mapusa">Mapusa</option>
+              </select>
+              <div class="message-drop">A 6 seater will Drop you at</div>
+            </div>
+
+          </div>
+        </div>
+        
+        
           
         <div class="Submit">
-          <button type="button">Submit</button>
+          <button type="submit">Submit</button>
         </div>
         <div id="result"></div>
       </form>
     </div>
 
-    <script src="script.js"></script>
+    <script type="module"  src="script.js" ></script>
+    <script type="module" src="node.js"></script>
   </body>
 </html>

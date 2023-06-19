@@ -32,6 +32,14 @@ input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
+.total-persons{
+  display: flex;
+  flex-direction: row;
+}
+#twoshare,#threeshare,#fourshare{
+  overflow: hidden;
+  width: 40px;
+}
 form input {
   border: 0;
   margin: 10px;
@@ -45,6 +53,10 @@ form input {
 }
 label {
   margin: 10px;
+}
+.main-label{
+  color: white;
+
 }
 #result {
   margin: 10px;
@@ -60,6 +72,7 @@ label {
 
   font-size: 10px;
 }
+
 span {
   display: flex;
   flex-direction: row;
@@ -86,7 +99,7 @@ span {
 .hidden-radio {
   display: none;
 }
-.sight {
+.sight,.pick-up-text,.pick-up-drop-text {
   margin: 10px;
   padding-top: 10px;
 }
@@ -122,13 +135,13 @@ span {
 /* .active:after { */
   /* content: "\2796"; Unicode character for "minus" sign (-) */
 /* } */
-.content{
+.content,.pick-drop-content{
   max-height: 0;
   overflow: hidden;
   transition: max-height 0.5s ease-out;
   background-color: #535151;
 }
-.add-sight{
+.add-sight,.add-pickup-drop,.add-pickup,.add-drop{
   float: right;
 }
 
@@ -149,8 +162,6 @@ span {
   }
   .labels{
     color: rgb(211, 209, 208);
-
-    color: rgb(255, 255, 255);
     font-size: medium;
   }
   .check-in-out{

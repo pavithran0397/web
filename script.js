@@ -1,5 +1,7 @@
 "use strict";
+
 /* "use strict";
+
 
 let textArray = [];
 let totalPersons = 0;
@@ -445,20 +447,18 @@ function calc(){
 let textArray = [];
 let totalPersons = 0;
 document.getElementById("no-of-persons").selectedIndex = null;
-document.getElementById("goa-location1").selectedIndex=null
-document.getElementById("goa-location2").selectedIndex=null
-document.getElementById("goa-location3").selectedIndex=null
-document.getElementById("goa-location4").selectedIndex=-null
-let arrayToCollectLoc=[];
+document.getElementById("goa-location1").selectedIndex = null;
+document.getElementById("goa-location2").selectedIndex = null;
+document.getElementById("goa-location3").selectedIndex = null;
+document.getElementById("goa-location4").selectedIndex = -null;
+let arrayToCollectLoc = [];
 
 // clickEvent function--when click submit button
 function clickedEvent(event) {
   //taking the input how many persons
-  // event.preventDefault();
+  event.preventDefault();
   totalPersons = document.getElementById("no-of-persons").value;
-  console.log("totalPersons "+totalPersons);
-
-  
+  console.log("totalPersons " + totalPersons);
 
   //1.getting the input from the drop down 1,2,and 3
 
@@ -475,12 +475,12 @@ function clickedEvent(event) {
   let checkIn = new Date(document.getElementById("check-in").value);
   let checkOut = new Date(document.getElementById("check-out").value);
   let totalNights = checkOut.getDate() - checkIn.getDate();
-  console.log("Nights: "+totalNights)
+  console.log("Nights: " + totalNights);
   if (checkIn > checkOut) {
     alert("Check in date cannot be greater than check out date");
   } else {
     //pushing the room share value to the array
-    textArray=[];
+    textArray = [];
 
     textArray.push(
       Number(
@@ -500,19 +500,39 @@ function clickedEvent(event) {
       )
     );
 
-    const costRoomFood=calculateTheCost(textArray, foodMenu, totalNights);
-  
-     //-------------adding sightseeing cost---------------//
-     
-totalCostForSightSeeing(costRoomFood);
+    const costRoomFood = calculateTheCost(textArray, foodMenu, totalNights);
 
+    //-------------adding sightseeing cost---------------//
 
+    const sightSeeingCost = totalCostForSightSeeing();
+
+    //-----adding pickupdrop----------------//
+    // const total=totalCostForPickupAndDrop();
+    const seater = calcSeaters();
+    const costForPickandDrop = calcPickupDropcost(
+      seater,
+      pickupPoint.value,
+      dropPoint.value
+    );
+    console.log("costForPickandDrop " + costForPickandDrop);
+    console.log(addPickupDropBtn.textContent=="Add Service")
+    if(addPickupDropBtn.textContent == "Remove service"){
+      pickupPoint.required='true'
+      dropPoint.required='true';
+
+    }
+    console.log(pickupPoint.required)
+
+    document.getElementById(
+      "result"
+    ).textContent = ` The Cost of your Customised Package is Rs ${
+      sightSeeingCost + costRoomFood + costForPickandDrop
+    } `;
+
+    
   }
- 
 
-// document.getElementById("no-of-persons").value = null;
-
-
+  // document.getElementById("no-of-persons").value = null;
 }
 
 document.querySelector(".Submit").addEventListener("click", clickedEvent);
@@ -533,12 +553,11 @@ function calculateTheCost(textArray, foodMenu, totalNights) {
 
     sum += foodCostArray[foodMenu][index] * val;
   }
-  console.log("food+room for 1 day: " + sum)
+  console.log("food+room for 1 day: " + sum);
   //displaying the result
   sum = sum * totalNights;
 
-console.log("food+room: " +"for "+totalNights+" nights " + sum)
-
+  console.log("food+room: " + "for " + totalNights + " nights " + sum);
 
   // document.getElementById(
   //   "result"
@@ -548,7 +567,6 @@ console.log("food+room: " +"for "+totalNights+" nights " + sum)
 
 //-------------------sight seeing-----------------------------//
 
-
 //It displays according to the radio button selected
 function handleRadioClick() {
   const hideSelect = document.querySelector(".hidden-select");
@@ -556,8 +574,12 @@ function handleRadioClick() {
   const hideRadio = document.querySelector(".hidden-radio");
   const hiddenQuestion = document.querySelector(".hiddenQuestion");
   const hideTwoWheelers = document.querySelector(".hidden-two-wheeler");
-  const hideTwoWheelerquestion= document.querySelector('.two-wheeler-question')
-  const hideFourWheelerquestion= document.querySelector('.four-wheeler-question')
+  const hideTwoWheelerquestion = document.querySelector(
+    ".two-wheeler-question"
+  );
+  const hideFourWheelerquestion = document.querySelector(
+    ".four-wheeler-question"
+  );
 
   if (document.getElementById("self-drive-cars").checked) {
     calculateSelfDriveCars();
@@ -565,8 +587,8 @@ function handleRadioClick() {
     hideSelect.style.display = "none";
     hiddenQuestion.style.display = "none";
     hideTwoWheelers.style.display = "none";
-    hideTwoWheelerquestion.style.display='none';
-    hideFourWheelerquestion.style.display='block'
+    hideTwoWheelerquestion.style.display = "none";
+    hideFourWheelerquestion.style.display = "block";
   }
   if (document.getElementById("Vechicle--driver").checked) {
     hiddenQuestion.style.display = "block";
@@ -575,19 +597,18 @@ function handleRadioClick() {
     hideRadio.style.display = "none";
     hideSelect.style.display = "block";
     hideTwoWheelers.style.display = "none";
-    hideTwoWheelerquestion.style.display='none';
-    hideFourWheelerquestion.style.display='none'
+    hideTwoWheelerquestion.style.display = "none";
+    hideFourWheelerquestion.style.display = "none";
   }
   if (document.getElementById("Two-Wheeler").checked) {
     calculateTwoWheelers();
     hideRadio.style.display = "none";
     hideSelect.style.display = "none";
     hiddenQuestion.style.display = "none";
-    hideTwoWheelerquestion.style.display='block';
-    hideFourWheelerquestion.style.display='none'
+    hideTwoWheelerquestion.style.display = "block";
+    hideFourWheelerquestion.style.display = "none";
   }
 }
-
 
 //event listneer method when radio button is clicked
 const radioButtons = document.querySelectorAll('input[name="sight-seeing"]');
@@ -608,7 +629,6 @@ document.getElementById("HQ").addEventListener("change", function () {
   //   goaSpan1.style.display='block';
   // }
   const switches = document.getElementById("HQ").value;
-  
 
   switch (switches) {
     case "0":
@@ -646,7 +666,7 @@ let selectedLevel4 = document.getElementById("goa-location4");
 const select1ToNone = (document.getElementById("goa-location1").selectedIndex =
   -1);
 
- // change evet for day 1 
+// change evet for day 1
 document
   .getElementById("goa-location1")
   .addEventListener("change", function () {
@@ -658,7 +678,6 @@ document
   <option value="3">Extreme south Goa</option>`;
 
     selectedLevel1 = document.getElementById("goa-location1").value;
-   
 
     console.log("selectedLevel1 " + selectedLevel1);
 
@@ -685,7 +704,6 @@ document
     selectedLevel1 = Number(document.getElementById("goa-location1").value);
     selectedLevel2 = Number(document.getElementById("goa-location2").value);
 
-
     document
       .getElementById("goa-location3")
       .removeChild(
@@ -702,7 +720,7 @@ document
     ).selectedIndex = -1);
   });
 
- // change evet for day 3 and day 4 
+// change evet for day 3 and day 4
 
 document
   .getElementById("goa-location3")
@@ -711,13 +729,11 @@ document
 
     selectedLevel2 = Number(document.getElementById("goa-location2").value);
     selectedLevel3 = Number(document.getElementById("goa-location3").value);
-  
 
     // const goaSpan4 = document.querySelector(".goa-span4");
     // goaSpan4.style.display = "block";
 
     const result = 6 - (selectedLevel1 + selectedLevel2 + selectedLevel3);
-  
 
     const goaLocation = {
       0: "North-Goa I",
@@ -729,10 +745,9 @@ document
     document.getElementById(
       "goa-location4"
     ).innerHTML = `your Day 4 is set to ${goaLocation[result]}`;
-   
   });
 
-  //resetiing only 3rd options in the radio
+//resetiing only 3rd options in the radio
 function resets() {
   resets.selectedIndex = -1;
   goaSpan1.style.display = "none";
@@ -754,31 +769,28 @@ function resets() {
 }
 // console.log(document.querySelector("goa-location4"));
 
-
 //calcualte cost for two wheelers
-const calculateTwoWheelers =function () {
+const calculateTwoWheelers = function () {
   document.querySelector(".hidden-two-wheeler").style.display = "block";
   totalPersons = document.getElementById("no-of-persons").value;
-  const daysTwoWheeler = document.getElementById("two-wheeler-question").value
+  const daysTwoWheeler = document.getElementById("two-wheeler-question").value;
   document.getElementById("htw").innerHTML = `You Will Get ${Math.round(
     totalPersons / 2
   )} bikes`;
-  const costForTwoWheeler=600*(Math.round(
-    totalPersons / 2
-  ))*daysTwoWheeler
-  console.log("costForTwoWheeler 1 day: "+600*(Math.round(
-    totalPersons / 2
-  )))
-  console.log(`costForTwoWheeler ${daysTwoWheeler} days: ${costForTwoWheeler}`)
-  
+  const costForTwoWheeler = 400 * Math.round(totalPersons / 2) * daysTwoWheeler;
+  console.log("costForTwoWheeler 1 day: " + 400 * Math.round(totalPersons / 2));
+  console.log(`costForTwoWheeler ${daysTwoWheeler} days: ${costForTwoWheeler}`);
+
   // console.log(costForTwoWheeler/daysTwoWheeler)
   return costForTwoWheeler;
-}
+};
 
 //calclualte cosr selfdrive cars
-const calculateSelfDriveCars= function() {
+const calculateSelfDriveCars = function () {
   totalPersons = document.getElementById("no-of-persons").value;
-  const daysFourWheeler = document.getElementById("four-wheeler-question").value
+  const daysFourWheeler = document.getElementById(
+    "four-wheeler-question"
+  ).value;
   console.log(totalPersons);
   // hideRadio.style.display = "block";
   const totalPasssengers = totalPersons;
@@ -822,176 +834,317 @@ const calculateSelfDriveCars= function() {
   document.getElementById(
     "hr"
   ).innerHTML = `You will get ${eightSeater} Eight seater and ${fiveSeater} Five seater`;
-  const costForSelfDrive=((eightSeater*2000)+(fiveSeater*1500))*daysFourWheeler
-  console.log(`costForSelfDrive for 1 day: ${(eightSeater*2000)+(fiveSeater*1500)}`)
-  console.log(`costForSelfDrive for ${daysFourWheeler} days: ${costForSelfDrive}`)
+  const costForSelfDrive =
+    (eightSeater * 2500 + fiveSeater * 1500) * daysFourWheeler;
+  console.log(
+    `costForSelfDrive for 1 day: ${eightSeater * 2500 + fiveSeater * 1500}`
+  );
+  console.log(
+    `costForSelfDrive for ${daysFourWheeler} days: ${costForSelfDrive}`
+  );
 
   return costForSelfDrive;
-}
+};
 
-
-//calculate for divered vechicles
-function calculateVechicleWithDrivers(arrRate,switches) {
-
-  
-  
-  const newArrRate=arrRate.fill(-1, switches, 4 );
-  
-  
-  totalPersons = document.getElementById("no-of-persons").value;
+//function to determine how many seaters will bea available
+function calcSeaters() {
   let seater = 0;
-  
+  totalPersons = document.getElementById("no-of-persons").value;
+
   if (totalPersons <= 4) {
-    seater = 4
+    seater = 4;
   }
   if (totalPersons > 4 && totalPersons <= 7) {
-    seater = 7
-   
+    seater = 7;
   }
   if (totalPersons > 7 && totalPersons <= 13) {
-    seater = 13
- 
+    seater = 13;
   }
   if (totalPersons > 13 && totalPersons <= 17) {
-    seater = 17
-   
+    seater = 17;
   }
   if (totalPersons > 17 && totalPersons <= 20) {
-    seater = 20
- 
+    seater = 20;
   }
   if (totalPersons > 20 && totalPersons <= 26) {
-    seater = 26
-
+    seater = 26;
   }
   if (totalPersons > 26 && totalPersons <= 30) {
-    seater = 30
-  
+    seater = 30;
   }
   if (totalPersons > 30 && totalPersons <= 40) {
-    seater = 40
- 
+    seater = 40;
   }
-  console.log(`You will get ${seater} seater`)
-  const rate={
-    4:[2500,	2500,	3000,	5000],
-    7:[3200,	3200,	3700,	7300],
-    13:[3700,	3700,	4500,	7300],
-    17:[3800,	3800,	4700,	8300],
-    20:[3800,  3800,	4500,	8300],
-    26:[4700,	4700,	5000,	9700],
-    30:[6000,	6000,	7000,	11000],
-    40:[7000,	7000,	8000,	12000]
-  }
-  console.log(rate[seater])
+  return seater;
+}
+
+//calculate for divered vechicles
+function calculateVechicleWithDrivers(arrRate, switches) {
+  const newArrRate = arrRate.fill(-1, switches, 4);
+
+  const seater = calcSeaters();
+
+  console.log(`You will get ${seater} seater`);
+  const rate = {
+    4: [2500, 2500, 3000, 5000],
+    7: [3200, 3200, 3700, 7300],
+    13: [3700, 3700, 4500, 7300],
+    17: [3800, 3800, 4700, 8300],
+    20: [3800, 3800, 4500, 8300],
+    26: [4700, 4700, 5000, 9700],
+    30: [6000, 6000, 7000, 11000],
+    40: [7000, 7000, 8000, 12000],
+  };
+  console.log(rate[seater]);
   const rateSeater = rate[seater];
-  console.log(newArrRate)
-  const newArrRatefiltered=newArrRate.filter(seat=>seat>-1)
-  console.log(newArrRatefiltered)
-  let sum=0
-  console.log(newArrRatefiltered.length)
-  for(let i=0;i<=newArrRatefiltered.length-1;i++){
-    sum+=rateSeater[newArrRatefiltered[i]];
-
+  console.log(newArrRate);
+  const newArrRatefiltered = newArrRate.filter((seat) => seat > -1);
+  console.log(newArrRatefiltered);
+  let sum = 0;
+  console.log(newArrRatefiltered.length);
+  for (let i = 0; i <= newArrRatefiltered.length - 1; i++) {
+    sum += rateSeater[newArrRatefiltered[i]];
   }
-  console.log("sum "+sum)
+  console.log("sum " + sum);
 
-return sum;
-  
+  return sum;
 }
 //calling when add to pcakage is clicked
 
-function calc(){
+function calc() {
   const switches = Number(document.getElementById("HQ").value);
-  console.log("switches "+switches)
-  
+  console.log("switches " + switches);
+
   selectedLevel1 = Number(document.getElementById("goa-location1").value);
 
-    selectedLevel2 = Number(document.getElementById("goa-location2").value);
-    selectedLevel3 = Number(document.getElementById("goa-location3").value);
+  selectedLevel2 = Number(document.getElementById("goa-location2").value);
+  selectedLevel3 = Number(document.getElementById("goa-location3").value);
 
-    const result = 6 - (selectedLevel1 + selectedLevel2 + selectedLevel3);
-    const arrRate=[selectedLevel1,selectedLevel2,selectedLevel3,result]
+  const result = 6 - (selectedLevel1 + selectedLevel2 + selectedLevel3);
+  const arrRate = [selectedLevel1, selectedLevel2, selectedLevel3, result];
 
-    console.log(arrRate);
-    calculateVechicleWithDrivers(arrRate,switches+1)
-
+  console.log(arrRate);
+  calculateVechicleWithDrivers(arrRate, switches + 1);
 }
-function totalCostForSightSeeing(previousSum){
-  let sumForSightSeeing=0;
+function totalCostForSightSeeing() {
+  let sumForSightSeeing = 0;
 
-  if (document.getElementById("self-drive-cars").checked)
-  {
-    sumForSightSeeing=  calculateSelfDriveCars()
-};
+  if (document.getElementById("self-drive-cars").checked) {
+    sumForSightSeeing = calculateSelfDriveCars();
+  }
 
-  if (document.getElementById("Vechicle--driver").checked){
+  if (document.getElementById("Vechicle--driver").checked) {
     const switches = Number(document.getElementById("HQ").value);
-  console.log("switches "+switches)
-  
-  selectedLevel1 = Number(document.getElementById("goa-location1").value);
+    console.log("switches " + switches);
+
+    selectedLevel1 = Number(document.getElementById("goa-location1").value);
 
     selectedLevel2 = Number(document.getElementById("goa-location2").value);
     selectedLevel3 = Number(document.getElementById("goa-location3").value);
 
     const result = 6 - (selectedLevel1 + selectedLevel2 + selectedLevel3);
-    const arrRate=[selectedLevel1,selectedLevel2,selectedLevel3,result]
+    const arrRate = [selectedLevel1, selectedLevel2, selectedLevel3, result];
 
     console.log(arrRate);
-    sumForSightSeeing= calculateVechicleWithDrivers(arrRate,switches+1)
-  
-    
-}
-if (document.getElementById("Two-Wheeler").checked) {
-  // console.log(totalNights + "from main totalNights")
-  sumForSightSeeing= calculateTwoWheelers();
-}
+    sumForSightSeeing = calculateVechicleWithDrivers(arrRate, switches + 1);
+  }
+  if (document.getElementById("Two-Wheeler").checked) {
+    // console.log(totalNights + "from main totalNights")
+    sumForSightSeeing = calculateTwoWheelers();
+  }
 
-console.log(sumForSightSeeing)
-console.log(previousSum)
-
-document.getElementById(
-    "result"
-  ).textContent = ` The Cost of your Customised Package is Rs ${sumForSightSeeing+previousSum} `;
-
-
+  console.log(sumForSightSeeing);
+  return sumForSightSeeing;
 }
 //accordian menu for sight seeing
-const sight=document.getElementsByClassName("sight")
-for(let i=0;i<sight.length; i++){
-  sight[i].addEventListener("click", function(e) {
-    this.classList.toggle("active");
-    let content = this.nextElementSibling;
-    if(e.target.className==="add-sight"){
-      const scrolls=document.querySelector(".content")
-    if (content.style.maxHeight){
-      content.style.maxHeight = null;
-      
-    } else {
-      content.style.maxHeight = 353 + "px";
-      
-      
-    } 
+const sight = document.getElementsByClassName("sight");
 
+for (let i = 0; i < sight.length; i++) {
+  sight[i].addEventListener("click", function (e) {
+    // this.classList.toggle("active");
+    let content = this.nextElementSibling;
+
+    if (e.target.className === "add-sight") {
+      const scrolls = document.querySelector(".content");
+
+      if (content.style.maxHeight) {
+        console.log("hello");
+        content.style.maxHeight = null;
+      } else {
+        content.style.maxHeight = 353 + "px";
+      }
+    }
+  });
+} //add service button
+const addSighttbtn = document.querySelector(".add-sight");
+addSighttbtn.addEventListener("click", function (e) {
+  e.preventDefault();
+
+  if (addSighttbtn.textContent === "Remove service") {
+    addSighttbtn.textContent = "Add service";
+  } else {
+    addSighttbtn.textContent = "Remove service";
+  }
+});
+//single Event listener for whole pick-updrop using event delegation
+const pickupDrop = document.querySelector(".pickup-drop-container");
+const addPickupDropBtn = document.querySelector(".add-pickup-drop");
+const pickupPoint = document.querySelector(".add-pickup");
+const dropPoint = document.querySelector(".add-drop");
+const pickupMessage = document.querySelector(".message-pick-up");
+const dropMessage = document.querySelector(".message-drop");
+const pickupText = document.querySelector(".pick-up-text");
+pickupPoint.selectedIndex = dropPoint.selectedIndex = -1;
+pickupDrop.addEventListener("click", function (e) {
+  e.preventDefault();
+
+  if (e.target.className === "add-pickup-drop") {
+    const scrolls = document.querySelector(".pick-drop-content");
+    let content = this.lastElementChild;
+    if (addPickupDropBtn.textContent === "Remove service") {
+      addPickupDropBtn.textContent = "Add service";
+      console.log("from if");
+      //setting drop down menu value to zero as remove service is selected
+      pickupPoint.value = dropPoint.value = "";
+    } else {
+      addPickupDropBtn.textContent = "Remove service";
     }
 
-
-   
-    
-  });
-
-}//add service button
-const addSighttbtn=document.querySelector(".add-sight")
-addSighttbtn.addEventListener("click",function(e){
-  e.preventDefault();
-  console.log(addSighttbtn.textContent)
-  if(addSighttbtn.textContent==="Remove service"){
-    addSighttbtn.textContent="Add service"
-  }else{
-    addSighttbtn.textContent="Remove service"
+    if (content.style.maxHeight) {
+      content.style.maxHeight = null;
+    } else {
+      console.log(content.scrollHeight);
+      content.style.maxHeight = content.scrollHeight + "px";
+    }
   }
-  
-})
+  pickupMessage.style.visibility = dropMessage.style.visibility = "hidden";
+ 
 
+  console.log(pickupPoint.value);
 
+  if (pickupPoint.selectedIndex != -1) {
+    const seater = calcSeaters();
+    pickupMessage.style.visibility = "visible";
+    console.log(pickupPoint.required);
+    pickupPoint.required='true'
+    pickupMessage.textContent =
+      pickupPoint.value !== "Not Needed"
+        ? `A ${seater} seater will Pick you at ${pickupPoint.value}`
+        : "Pick up service Removed";
+  }
+  if (dropPoint.selectedIndex != -1) {
+    const seater = calcSeaters();
+    dropMessage.style.visibility = "visible";
+    dropPoint.required='true'
+    dropMessage.textContent =
+      dropPoint.value !== "Not Needed"
+        ? `A ${seater} seater will Drop you at ${dropPoint.value}`
+        : "Drop service Removed";
+    const sumForPickAndDrop = calcPickupDropcost(
+      seater,
+      pickupPoint.value,
+      dropPoint.value
+    );
+  }
+});
+const calcPickupDropcost = function (seater, pickup, drop) {
+  const dataArray = [
+    {
+      vehicle: "4 Seater",
+      "Not Needed": 0,
+      Madgon: 1700,
+      Vasco: 1700,
+      Thivim: 1000,
+      "Dabolim Airport": 1700,
+      "Mopa Airport": 1500,
+      Panjim: 1000,
+      Mapusa: 900,
+    },
+    {
+      vehicle: "7 Seater",
+      "Not Needed": 0,
+      Madgon: 2200,
+      Vasco: 2200,
+      Thivim: 1700,
+      "Dabolim Airport": 2200,
+      "Mopa Airport": 2500,
+      Panjim: 1500,
+      Mapusa: 1400,
+    },
+    {
+      vehicle: "13 Seater",
+      "Not Needed": 0,
+      Madgon: 3200,
+      Vasco: 3200,
+      Thivim: 2200,
+      "Dabolim Airport": 3200,
+      "Mopa Airport": 3500,
+      Panjim: 2000,
+      Mapusa: 1800,
+    },
+    {
+      vehicle: "17 Seater",
+      "Not Needed": 0,
+      Madgon: 4200,
+      Vasco: 4200,
+      Thivim: 2600,
+      "Dabolim Airport": 3800,
+      "Mopa Airport": 4500,
+      Panjim: 2600,
+      Mapusa: 2400,
+    },
+    {
+      vehicle: "20 Seater",
+      "Not Needed": 0,
+      Madgon: 4500,
+      Vasco: 4500,
+      Thivim: 3700,
+      "Dabolim Airport": 4500,
+      "Mopa Airport": 5200,
+      Panjim: 3700,
+      Mapusa: 3500,
+    },
+    {
+      vehicle: "26 Seater",
+      "Not Needed": 0,
+      Madgon: 5500,
+      Vasco: 5500,
+      Thivim: 4000,
+      "Dabolim Airport": 5500,
+      "Mopa Airport": 5500,
+      Panjim: 4000,
+      Mapusa: 3700,
+    },
+    {
+      vehicle: "30 Seater",
+      "Not Needed": 0,
+      Madgon: 7000,
+      Vasco: 7000,
+      Thivim: 4500,
+      "Dabolim Airport": 7500,
+      "Mopa Airport": 7500,
+      Panjim: 4500,
+      Mapusa: 4000,
+    },
+    {
+      vehicle: "40 Seater",
+      "Not Needed": 0,
+      Madgon: 8000,
+      Vasco: 8000,
+      Thivim: 5000,
+      "Dabolim Airport": 8500,
+      "Mopa Airport": 8500,
+      Panjim: 5000,
+      Mapusa: 4500,
+    },
+  ];
+  console.log(seater);
+  const findArray = dataArray.find(
+    (rate) => rate.vehicle === `${seater} Seater`
+  );
+  const sum = findArray[pickup] + findArray[drop];
+  console.log(sum);
+  return sum;
+};
 
+// const sumss()
