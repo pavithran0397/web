@@ -514,14 +514,12 @@ function clickedEvent(event) {
       pickupPoint.value,
       dropPoint.value
     );
-    console.log("costForPickandDrop " + costForPickandDrop);
-    console.log(addPickupDropBtn.textContent=="Add Service")
-    if(addPickupDropBtn.textContent == "Remove service"){
-      pickupPoint.required='true'
-      dropPoint.required='true';
-
-    }
     console.log(pickupPoint.required)
+    pickupPoint.required='true';
+    console.log("costForPickandDrop " + costForPickandDrop);
+    
+   
+
 
     document.getElementById(
       "result"
@@ -766,6 +764,10 @@ function resets() {
   document.getElementById("goa-location2").innerHTML = "";
   document.getElementById("goa-location3").innerHTML = "";
   document.getElementById("goa-location4").innerHTML = "";
+
+  document.getElementById('four-wheeler-question').value=document.getElementById('four-wheeler-question').innerHTML=""
+
+  document.getElementById('two-wheeler-question').value=document.getElementById('two-wheeler-question').innerHTML=""
 }
 // console.log(document.querySelector("goa-location4"));
 
@@ -1142,9 +1144,19 @@ const calcPickupDropcost = function (seater, pickup, drop) {
   const findArray = dataArray.find(
     (rate) => rate.vehicle === `${seater} Seater`
   );
-  const sum = findArray[pickup] + findArray[drop];
-  console.log(sum);
-  return sum;
+  console.log(pickupPoint.required)
+  if(addPickupDropBtn.textContent == "Remove service"){
+    
+    const sum = findArray[pickup] + findArray[drop];
+    pickupPoint.required='true'
+    dropPoint.required='true';
+    
+    console.log(pickupPoint.required)
+    return sum;
+  }
+  else{
+    return 0;
+  }
 };
 
 // const sumss()

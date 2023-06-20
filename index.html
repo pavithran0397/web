@@ -11,12 +11,14 @@
     <div class="container">
       <form>
         <h3>Customize Your Trip</h3>
-        <label class="main-label labels" for="no-of-persons">Total Number of persons</label>
+        <label class="main-label labels" for="no-of-persons"
+          >Total Number of persons</label
+        >
         <input
           type="number"
           id="no-of-persons"
           placeholder="Number of persons"
-          
+          required
         />
 
         <div class="check-in-out">
@@ -24,15 +26,17 @@
             <label class="main-label" for="check-in">Hotel Check In</label>
           </div>
 
-          <input type="date" id="check-in" name="check-in "  />
+          <input type="date" id="check-in" name="check-in " />
           <div class="label-check">
             <label class="main-label" for=" check-out">Hotel Check out</label>
           </div>
 
-          <input type="date" id="check-out" name="check-out "  />
+          <input type="date" id="check-out" name="check-out " />
         </div>
 
-        <label class="main-label labels" for="labels no-of-persons">Choose Your Rooms</label>
+        <label class="main-label labels" for="labels no-of-persons"
+          >Choose Your Rooms</label
+        >
         <div class="room-options">
           <span>
             <label for="twoshare">Two sharing Rooms</label>
@@ -84,7 +88,9 @@
         </div>
 
         <div class="food">
-          <label class="main-label labels" for="food-select">Choose the Food type</label>
+          <label class="main-label labels" for="food-select"
+            >Choose the Food type</label
+          >
 
           <select name="food-select" id="food-id">
             <option value="0">No Food</option>
@@ -94,48 +100,49 @@
           </select>
         </div>
         <div class="sightseeing" id="content">
-          <div class="main-label sight" id="sight">Sight Seeing options
-            <button class="add-sight">Add service</button>
+          <div class="main-label sight" id="sight">
+            Sight Seeing options
+            <button onclick="resets()" class="add-sight">Add service</button>
           </div>
           <div class="content">
             <div class="radio-sightseeing" id="reveal-content">
               <div class="radio">
                 <input
-                type="radio"
-                id="Two-Wheeler"
-                name="sight-seeing"
-                value="Two-Wheeler"
-                
-              />
-                <label for="Two-Wheeler">Two Wheeler</label><br />
+                  type="radio"
+                  id="Two-Wheeler"
+                  name="sight-seeing"
+                  value="Two-Wheeler"
+                />
+                 
+                <label class="sight-labels" for="Two-Wheeler">Two Wheeler</label
+                ><br />
               </div>
               <div class="radio">
                 <input
-                type="radio"
-                id="self-drive-cars"
-                name="sight-seeing"
-                value="self-drive-cars"
-                
-              />
-                <label for="self-drive-cars">Self Driving Cars</label><br />
+                  type="radio"
+                  id="self-drive-cars"
+                  name="sight-seeing"
+                  value="self-drive-cars"
+                />
+                 
+                <label class="sight-labels" for="self-drive-cars"
+                  >Self Driving Cars</label
+                ><br />
               </div>
               <div class="radio">
                 <input
-                type="radio"
-                id="Vechicle--driver"
-                name="sight-seeing"
-                value="Vechicle--driver"
-                
-              />
-                <label for="Vechicle--driver">Vehicle with Drivers</label><br />
+                  type="radio"
+                  id="Vechicle--driver"
+                  name="sight-seeing"
+                  value="Vechicle--driver"
+                />
+                 
+                <label class="sight-labels" for="Vechicle--driver"
+                  >Vehicle with Drivers</label
+                ><br />
               </div>
-              
-  
-              
-  
-              
             </div>
-            <div class="two-wheeler-question">
+            <div class="sight-labels two-wheeler-question">
               <label for="two-wheeler-question"
                 >How many days you need two-wheeler?</label
               >
@@ -143,10 +150,9 @@
                 type="number"
                 id="two-wheeler-question"
                 placeholder="Enter number of days"
-                
               />
             </div>
-            <div class="four-wheeler-question">
+            <div class="sight-labels four-wheeler-question">
               <label for="four-wheeler-question"
                 >How many days you need Cars?</label
               >
@@ -154,15 +160,14 @@
                 type="number"
                 id="four-wheeler-question"
                 placeholder="Enter number of days"
-                
               />
             </div>
-  
+
             <div class="hidden">
               <div class="hidden-radio" id="hr"></div>
               <div class="hidden-two-wheeler" id="htw"></div>
               <div class="hiddenQuestion" id="hq">
-                <label for="hideQuestions"
+                <label class="sight-labels" for="hideQuestions"
                   >How Many days You want sight Seeing?</label
                 >
                 <select name="hideQuestions" id="HQ">
@@ -177,12 +182,7 @@
                   value="Reset"
                   onClick="resets()"
                 />
-                <input
-                  type="button"
-                  id="calculate"
-                  value="Add to package"
-                  onClick="calc()"
-                />
+              
               </div>
               <div class="hidden-select">
                 <span class="goa-span1">
@@ -195,29 +195,32 @@
                     <!-- <option value="4" selected>        </option> -->
                   </select>
                 </span>
-  
+
                 <span class="goa-span2">
-                  <label for="goa-location"s2</label>
+                  <label for="goa-location">Day-2</label>
                   <select name="goa-location" id="goa-location2"></select>
                 </span>
-  
+
                 <span class="goa-span3">
                   <label for="goa-location">Day-3</label>
                   <select name="goa-location" id="goa-location3"></select>
                 </span>
-  
+
                 <span class="goa-span4" id="goa-location4"> </span>
               </div>
             </div>
           </div>
         </div>
         <div class="pickup-drop-container">
-          <div class="main-label pick-up-drop-text">Pickup Drop Service
+          <div class="main-label pick-up-drop-text">
+            Pickup Drop Service
             <button class="add-pickup-drop">Add Service</button>
           </div>
           <div class="pick-drop-content">
-            <div class="main-label pick-up-text">Pickup Point
-              <select class="add-pickup" >Add Service
+            <div class="main-label pick-up-text">
+              Pickup Point
+              <select class="add-pickup" required>
+                Add Service
                 <option value="Not Needed">Not Needed</option>
                 <option value="Madgon">Madgon</option>
                 <option value="Vasco">Vasco</option>
@@ -228,14 +231,11 @@
                 <option value="Mapusa">Mapusa</option>
               </select>
               <div class="message-pick-up">A 6 seater will Pick you at</div>
-              
-              
-                
-              
-              
             </div>
-            <div class="main-label pick-up-text">Drop Point
-              <select class="add-drop" >Add Service
+            <div class="main-label pick-up-text">
+              Drop Point
+              <select class="add-drop">
+                Add Service
                 <option value="Not Needed">Not Needed</option>
                 <option value="Madgon">Madgon</option>
                 <option value="Vasco">Vasco</option>
@@ -247,20 +247,18 @@
               </select>
               <div class="message-drop">A 6 seater will Drop you at</div>
             </div>
-
           </div>
         </div>
-        
-        
-          
+
         <div class="Submit">
           <button type="submit">Submit</button>
         </div>
         <div id="result"></div>
       </form>
-    </div>
+      
+    </div>`
 
-    <script type="module"  src="script.js" ></script>
-    <script type="module" src="node.js"></script>
+    <script src="script.js"></script>
+    
   </body>
 </html>

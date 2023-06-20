@@ -90,11 +90,16 @@ span {
   padding-top: 20px;
   font-size: 12px;
 }
+.sight-labels,#htw,#hr{
+  color: rgb(255, 255, 255);
+
+}
 .radio,.radio-sightseeing{
 
   display: flex;
   flex-direction: row;
 }
+
 .hidden-select,
 .hidden-radio {
   display: none;
@@ -181,6 +186,7 @@ span {
     padding-top: 20px;
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
     
   }
 }
