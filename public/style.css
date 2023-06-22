@@ -1,0 +1,192 @@
+* {
+  margin: 0;
+  /* border:solid 1px rgb(7, 7, 7); */
+  box-sizing: border-box;
+  font-family: "poppins", sans-serif;
+  overflow: auto;
+}
+.container {
+  width: 100%;
+  height: 100vh;
+  background: rgb(47, 47, 48);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+form {
+  background: #535151;
+  display: flex;
+  flex-direction: column;
+  padding: 2vw 4vw;
+  width: 90%;
+  max-width: 600px;
+  border-radius: 10px;
+}
+form h3 {
+  color: rgb(211, 209, 208);
+  margin-bottom: 20px;
+  font-weight: 800;
+}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.total-persons{
+  display: flex;
+  flex-direction: row;
+}
+#twoshare,#threeshare,#fourshare{
+  overflow: hidden;
+  width: 40px;
+}
+form input {
+  border: 0;
+  margin: 10px;
+  padding: 9px;
+  background: #b1b0b1;
+  font-size: 10px;
+}
+.Submit {
+  text-align: center;
+  padding: 20px;
+}
+label {
+  margin: 10px;
+}
+.main-label{
+  color: white;
+
+}
+#result {
+  margin: 10px;
+  background-color: #535151;
+  text-align: center;
+}
+.room-options,
+.check-in-out {
+  display: flex;
+  flex-direction: row;
+
+  border: 0;
+
+  font-size: 10px;
+}
+
+span {
+  display: flex;
+  flex-direction: row;
+  border: solid 1px rgb(22, 22, 22);
+  margin: 10px;
+  padding: 9px;
+  background: #b1b0b1;
+  font-size: 10px;
+}
+.outflex {
+  display: flex;
+  flex-direction: row;
+}
+.label-check {
+  padding-top: 20px;
+  font-size: 12px;
+}
+.sight-labels,#htw,#hr{
+  color: rgb(255, 255, 255);
+
+}
+.radio,.radio-sightseeing{
+
+  display: flex;
+  flex-direction: row;
+}
+
+.hidden-select,
+.hidden-radio {
+  display: none;
+}
+.sight,.pick-up-text,.pick-up-drop-text {
+  margin: 10px;
+  padding-top: 10px;
+}
+.hiddenQuestion,
+.two-wheeler-question,
+.four-wheeler-question {
+  display: none;
+}
+.goa-span1,
+.goa-span2,
+.goa-span3,
+.goa-span4 {
+  display: none;
+}
+#htw,
+#hr {
+  margin: 10px;
+}
+.sight {
+  background-color: #535151;
+  
+}
+/* .sight:after { */
+  /* content: '\02795'; Unicode character for "plus" sign (+) */
+  /* font-size: 13px; */
+  /* color: white; */
+  /* float: right; */
+  /* margin-left: 5px; */
+/* } */
+/* .active, .sight:hover { */
+  /* background-color: #8b8a8a; */
+/* } */
+/* .active:after { */
+  /* content: "\2796"; Unicode character for "minus" sign (-) */
+/* } */
+.content,.pick-drop-content{
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.5s ease-out;
+  background-color: #535151;
+}
+.add-sight,.add-pickup-drop,.add-pickup,.add-drop{
+  float: right;
+}
+
+@media screen and (max-width:600px) {
+ 
+  .room-options{
+    display: flex;
+    flex-direction: column;
+    justify-content:space-evenly;
+  }
+  span{
+    display: flex;
+    justify-content: space-between;
+  }
+  label{
+    margin:10px;
+    
+  }
+  .labels{
+    color: rgb(211, 209, 208);
+    font-size: medium;
+  }
+  .check-in-out{
+    display: flex;
+    flex-direction: column;
+
+  }
+  .food{
+    display: flex;
+  }
+  .radio-sightseeing{
+    border: #b1b0b1 solid 1px;
+    display: flex;
+    flex-direction: column;
+  }
+  .two-wheeler-question,.four-wheeler-question,.hiddenQuestion{
+    padding-top: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    
+  }
+}

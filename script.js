@@ -1159,4 +1159,42 @@ const calcPickupDropcost = function (seater, pickup, drop) {
   }
 };
 
-// const sumss()
+// fetching from sheets
+const arr=[];
+const url ='https://docs.google.com/spreadsheets/d/1Qxo8UTUD7cLi8H2TyElCdZFc53R4S-58uJD7QwbEVaI/gviz/tq'
+const sheetID='1Qxo8UTUD7cLi8H2TyElCdZFc53R4S-58uJD7QwbEVaI';
+const sheetName=encodeURI('Sheet1');
+const sheetURL=`https://docs.google.com/spreadsheets/d/${sheetID}/gviz/tq?tqx=out:csv&sheet=${sheetName}`
+        fetch(sheetURL).then(res=>res.text())
+        .then(rep=>{
+            handleResponse(rep);
+            function handleResponse(rep){
+              console.log(rep);
+              let csv =csvToObjects(rep);
+              console.log(csv)
+            }
+
+            
+            // const data = JSON.parse(rep.substr(47).slice(0,-2)) ;
+            
+            // const found=data.table.rows
+            // console.log(found)
+             })
+             function csvToObjects(csv){
+              
+             }
+
+            //  console.log(typeof arr);
+
+
+          
+            //  const obj = arr.reduce((result, [key, value]) => {
+            //   result[key] = value;
+            //   return result;
+            // }, {});
+
+            // console.log(obj);
+            
+          
+
+
