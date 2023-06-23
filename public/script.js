@@ -450,7 +450,7 @@ document.getElementById("no-of-persons").selectedIndex = null;
 document.getElementById("goa-location1").selectedIndex = null;
 document.getElementById("goa-location2").selectedIndex = null;
 document.getElementById("goa-location3").selectedIndex = null;
-document.getElementById("goa-location4").selectedIndex = -null;
+document.getElementById("goa-location4").selectedIndex = null;
 let arrayToCollectLoc = [];
 
 // clickEvent function--when click submit button
@@ -1179,39 +1179,35 @@ const calcPickupDropcost = function (seater, pickup, drop) {
   }
 };
 
-// fetching from sheets
-// const arr=[];
-// const url ='https://docs.google.com/spreadsheets/d/1Qxo8UTUD7cLi8H2TyElCdZFc53R4S-58uJD7QwbEVaI/gviz/tq'
-// const sheetID='1Qxo8UTUD7cLi8H2TyElCdZFc53R4S-58uJD7QwbEVaI';
-// const sheetName=encodeURI('Sheet1');
-// const sheetURL=`https://docs.google.com/spreadsheets/d/${sheetID}/gviz/tq?tqx=out:csv&sheet=${sheetName}`
-//         fetch(sheetURL).then(res=>res.text())
-//         .then(rep=>{
-//             handleResponse(rep);
-//             function handleResponse(rep){
-//               console.log(rep);
-//               let csv =csvToObjects(rep);
-//               console.log(csv)
-//             }
+   //for addevent listner  to add serveice button
+   const addonService=document.querySelector('.addon-container')
+   addonService.addEventListener('click',function(e){
+     e.preventDefault();
+     if(e.target.className==='add-add-on'){
+  
+       console.log(e.target.textContent)
+       let content = this.lastElementChild;
+      //  if(e.target.textContent==='Remove service'){
+      //    e.target.textContent='Add service';
+      //    console.log('ues')
+      //  }
+      //  else{
+      //    e.target.textContent='Remove service'
+      //  }
+       e.target.textContent=e.target.textContent==='Remove service'?'Add service':'Remove service'
+      //  if(this.lastElementChild.style.maxHeight){
+      //   this.lastElementChild.style.maxHeight=null;
+      //  }else{
+      //   this.lastElementChild.style.maxHeight=this.lastElementChild.scrollHeight+'px';
+      //  }
+       content.style.maxHeight=content.style.maxHeight?null:content.scrollHeight+'px';
 
-// const data = JSON.parse(rep.substr(47).slice(0,-2)) ;
+     }
 
-// const found=data.table.rows
-// console.log(found)
-//  })
-//  function csvToObjects(csv){
+   })
 
-//  }
 
-//  console.log(typeof arr);
-
-//  const obj = arr.reduce((result, [key, value]) => {
-//   result[key] = value;
-//   return result;
-// }, {});
-
-// console.log(obj);
-
+let costForAddon   ;
 const SPREADSHEET_ID='1KP1-2HrfPObwMr4_IIEuuS0Vpk_KObKfog7qArUbhxk'
 const SHEET_NAME='Sheet1';
 const YOUR_API_KEY='AIzaSyAiexK0EyyHNWViGEp29zbkCwTnklGYvVc';
@@ -1223,17 +1219,49 @@ fetch(`https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${
     const values=data.values;
 
     const transformedData = {};
-    for (let i = 0; i < values.length; i++) {
+    for (let i = 1; i < values.length; i++) {
       const key = values[i][0];
       const value = values[i][1];
       transformedData[key] = value;
+      
 
       
     }
+    costForAddon=transformedData;
+    funcCostForAddon(costForAddon);
+ 
     console.log(transformedData);
+    const keys = Object.keys(transformedData)
+    
+    console.log(keys)//it has the options to be populated
+    const option=document.getElementById('add-on-options');
+    
+    keys.forEach(/*[Grand Island Scuba,
+      Malwan Scuba,
+      Dudhsagar Water falls,
+      Baga Water Sports,
+      Bungee Jumping (Normal),
+      Bungee Jumping (Jumping Heights),
+      Dinner Cruise,
+      Evening Cruise,
+      Dolphin Boat Ride,
+      Fly Boarding,
+      Casino]*/options=>{
+      const optionElement = document.createElement("option");
+      optionElement.value = options;
+      optionElement.text = options;
+      option.appendChild(optionElement);
+    })
+    option.selectedIndex=-1;
+    
+
   })
   .catch(error => {
     // Handle error
     console.error(error);
   });
+
+  function funcCostForAddon(dataForAddon){
+    
+  }
 

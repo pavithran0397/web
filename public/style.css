@@ -1,6 +1,6 @@
 * {
   margin: 0;
-  /* border:solid 1px rgb(7, 7, 7); */
+  border:solid 1px rgb(7, 7, 7);
   box-sizing: border-box;
   font-family: "poppins", sans-serif;
   /* overflow: auto; */
@@ -112,7 +112,7 @@ span {
 .hidden-radio {
   display: none;
 }
-.sight,.pick-up-text,.pick-up-drop-text {
+.sight,.pick-up-text,.pick-up-drop-text,.add-on-text,.addon-content-text {
   margin: 10px;
   padding-top: 10px;
 }
@@ -148,13 +148,19 @@ span {
 /* .active:after { */
   /* content: "\2796"; Unicode character for "minus" sign (-) */
 /* } */
-.content,.pick-drop-content{
+.content,.pick-drop-content,.addon-content{
   max-height: 0;
   overflow: hidden;
   transition: max-height 0.5s ease-out;
   background-color: #535151;
 }
-.add-sight,.add-pickup-drop,.add-pickup,.add-drop{
+.addon-content{
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease-out;
+  background-color: #535151;
+}
+.add-sight,.add-pickup-drop,.add-pickup,.add-drop,.add-add-on{
   float: right;
 }
 
