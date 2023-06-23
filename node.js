@@ -1,7 +1,7 @@
 const express = require('express');
-const config = require('./config');
 const app =express();
-app.listen(config.port,()=>console.log('listentin to port'));
+const port=process.env.PORT||3000;
+app.listen(port,()=>console.log('listentin to port'));
 app.use(express.static('public'))
 
 app.get('/api/data', (req, res) => {

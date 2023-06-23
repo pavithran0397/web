@@ -514,9 +514,10 @@ function clickedEvent(event) {
       pickupPoint.value,
       dropPoint.value
     );
-    console.log(pickupPoint.required);
-    pickupPoint.required = "true";
-    console.log("costForPickandDrop " + costForPickandDrop);
+
+    
+    
+
 
     document.getElementById(
       "result"
@@ -1023,8 +1024,8 @@ pickupDrop.addEventListener("click", function (e) {
   if (pickupPoint.selectedIndex != -1) {
     const seater = calcSeaters();
     pickupMessage.style.visibility = "visible";
-    console.log(pickupPoint.required);
-    pickupPoint.required = "true";
+    
+    
     pickupMessage.textContent =
       pickupPoint.value !== "Not Needed"
         ? `A ${seater} seater will Pick you at ${pickupPoint.value}`
@@ -1033,7 +1034,7 @@ pickupDrop.addEventListener("click", function (e) {
   if (dropPoint.selectedIndex != -1) {
     const seater = calcSeaters();
     dropMessage.style.visibility = "visible";
-    dropPoint.required = "true";
+   
     dropMessage.textContent =
       dropPoint.value !== "Not Needed"
         ? `A ${seater} seater will Drop you at ${dropPoint.value}`
@@ -1166,13 +1167,12 @@ const calcPickupDropcost = function (seater, pickup, drop) {
   const findArray = dataArray.find(
     (rate) => rate.vehicle === `${seater} Seater`
   );
-  console.log(pickupPoint.required);
+ 
   if (addPickupDropBtn.textContent == "Remove service") {
     const sum = findArray[pickup] + findArray[drop];
-    pickupPoint.required = "true";
-    dropPoint.required = "true";
+    
 
-    console.log(pickupPoint.required);
+    
     return sum;
   } else {
     return 0;
@@ -1212,4 +1212,28 @@ const calcPickupDropcost = function (seater, pickup, drop) {
 
 // console.log(obj);
 
+const SPREADSHEET_ID='1KP1-2HrfPObwMr4_IIEuuS0Vpk_KObKfog7qArUbhxk'
+const SHEET_NAME='Sheet1';
+const YOUR_API_KEY='AIzaSyAiexK0EyyHNWViGEp29zbkCwTnklGYvVc';
+fetch(`https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${SHEET_NAME}!A1:B12?key=${YOUR_API_KEY}`)
+  .then(response => response.json())
+  .then(data => {
+    // Process the data
+    console.log(data.values);
+    const values=data.values;
+
+    const transformedData = {};
+    for (let i = 0; i < values.length; i++) {
+      const key = values[i][0];
+      const value = values[i][1];
+      transformedData[key] = value;
+
+      
+    }
+    console.log(transformedData);
+  })
+  .catch(error => {
+    // Handle error
+    console.error(error);
+  });
 
