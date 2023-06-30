@@ -515,10 +515,6 @@ function clickedEvent(event) {
       dropPoint.value
     );
 
-    
-    
-
-
     document.getElementById(
       "result"
     ).textContent = ` The Cost of your Customised Package is Rs ${
@@ -1024,8 +1020,7 @@ pickupDrop.addEventListener("click", function (e) {
   if (pickupPoint.selectedIndex != -1) {
     const seater = calcSeaters();
     pickupMessage.style.visibility = "visible";
-    
-    
+
     pickupMessage.textContent =
       pickupPoint.value !== "Not Needed"
         ? `A ${seater} seater will Pick you at ${pickupPoint.value}`
@@ -1034,7 +1029,7 @@ pickupDrop.addEventListener("click", function (e) {
   if (dropPoint.selectedIndex != -1) {
     const seater = calcSeaters();
     dropMessage.style.visibility = "visible";
-   
+
     dropMessage.textContent =
       dropPoint.value !== "Not Needed"
         ? `A ${seater} seater will Drop you at ${dropPoint.value}`
@@ -1046,7 +1041,7 @@ pickupDrop.addEventListener("click", function (e) {
     );
   }
 });
-let fetchedData; 
+let fetchedData;
 fetch("/api/data")
   .then((response) => response.json())
   .then((data) => {
@@ -1059,18 +1054,16 @@ fetch("/api/data")
     console.error(error);
   });
 
-  function processFetchedData(data) {
-    // Access and use the fetched data here
-    console.log(data);
-    
-    const seater=13;
-  const findArray = data.find(
-    (rate) => rate.vehicle === `${seater} Seater`
-  );
-  console.log(findArray)
-    // Perform any other operations with the data
-  }
- 
+function processFetchedData(data) {
+  // Access and use the fetched data here
+  console.log(data);
+
+  const seater = 13;
+  const findArray = data.find((rate) => rate.vehicle === `${seater} Seater`);
+  console.log(findArray);
+  // Perform any other operations with the data
+}
+
 const calcPickupDropcost = function (seater, pickup, drop) {
   const dataArray = [
     {
@@ -1167,76 +1160,75 @@ const calcPickupDropcost = function (seater, pickup, drop) {
   const findArray = dataArray.find(
     (rate) => rate.vehicle === `${seater} Seater`
   );
- 
+
   if (addPickupDropBtn.textContent == "Remove service") {
     const sum = findArray[pickup] + findArray[drop];
-    
 
-    
     return sum;
   } else {
     return 0;
   }
 };
 
-   //for addevent listner  to add serveice button
-   const addonService=document.querySelector('.addon-container')
-   addonService.addEventListener('click',function(e){
-     e.preventDefault();
-     if(e.target.className==='add-add-on'){
-  
-       console.log(e.target.textContent)
-       let content = this.lastElementChild;
-      //  if(e.target.textContent==='Remove service'){
-      //    e.target.textContent='Add service';
-      //    console.log('ues')
-      //  }
-      //  else{
-      //    e.target.textContent='Remove service'
-      //  }
-       e.target.textContent=e.target.textContent==='Remove service'?'Add service':'Remove service'
-      //  if(this.lastElementChild.style.maxHeight){
-      //   this.lastElementChild.style.maxHeight=null;
-      //  }else{
-      //   this.lastElementChild.style.maxHeight=this.lastElementChild.scrollHeight+'px';
-      //  }
-       content.style.maxHeight=content.style.maxHeight?null:content.scrollHeight+'px';
+//for addevent listner  to add serveice button
+const addonService = document.querySelector(".addon-container");
+addonService.addEventListener("click", function (e) {
+  e.preventDefault();
+  if (e.target.className === "add-add-on") {
+    console.log(e.target.textContent);
+    let content = this.lastElementChild;
+    //  if(e.target.textContent==='Remove service'){
+    //    e.target.textContent='Add service';
+    //    console.log('ues')
+    //  }
+    //  else{
+    //    e.target.textContent='Remove service'
+    //  }
+    e.target.textContent =
+      e.target.textContent === "Remove service"
+        ? "Add service"
+        : "Remove service";
+    //  if(this.lastElementChild.style.maxHeight){
+    //   this.lastElementChild.style.maxHeight=null;
+    //  }else{
+    //   this.lastElementChild.style.maxHeight=this.lastElementChild.scrollHeight+'px';
+    //  }
+    content.style.maxHeight = content.style.maxHeight
+      ? null
+      : content.scrollHeight + "px";
+  }
+});
 
-     }
-
-   })
-
-
-let costForAddon   ;
-const SPREADSHEET_ID='1KP1-2HrfPObwMr4_IIEuuS0Vpk_KObKfog7qArUbhxk'
-const SHEET_NAME='Sheet1';
-const YOUR_API_KEY='AIzaSyAiexK0EyyHNWViGEp29zbkCwTnklGYvVc';
-fetch(`https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${SHEET_NAME}!A1:B12?key=${YOUR_API_KEY}`)
-  .then(response => response.json())
-  .then(data => {
+let costForAddon;
+let SPREADSHEET_ID = "1KP1-2HrfPObwMr4_IIEuuS0Vpk_KObKfog7qArUbhxk";
+let SHEET_NAME = "Sheet1";
+let YOUR_API_KEY = "AIzaSyAiexK0EyyHNWViGEp29zbkCwTnklGYvVc";
+fetch(
+  `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${SHEET_NAME}!A1:B12?key=${YOUR_API_KEY}`
+)
+  .then((response) => response.json())
+  .then((data) => {
     // Process the data
     console.log(data.values);
-    const values=data.values;
+    const values = data.values;
 
     const transformedData = {};
     for (let i = 1; i < values.length; i++) {
       const key = values[i][0];
       const value = values[i][1];
       transformedData[key] = value;
-      
-
-      
     }
-    costForAddon=transformedData;
-    funcCostForAddon(costForAddon);
- 
+    costForAddon = transformedData;
+    // funcCostForAddon(costForAddon);
+
     console.log(transformedData);
-    const keys = Object.keys(transformedData)
-    
-    console.log(keys)//it has the options to be populated
-    const option=document.getElementById('add-on-options');
-    
-    keys.forEach(/*[Grand Island Scuba,
+    const keys = Object.keys(transformedData);
+
+    console.log(keys); //it has the options to be populated
+    const option = document.getElementById("add-on-options");
+
+    keys.forEach(
+      /*[Grand Island Scuba,
       Malwan Scuba,
       Dudhsagar Water falls,
       Baga Water Sports,
@@ -1246,22 +1238,127 @@ fetch(`https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${
       Evening Cruise,
       Dolphin Boat Ride,
       Fly Boarding,
-      Casino]*/options=>{
-      const optionElement = document.createElement("option");
-      optionElement.value = options;
-      optionElement.text = options;
-      option.appendChild(optionElement);
-    })
-    option.selectedIndex=-1;
-    
-
+      Casino]*/ (options) => {
+        const optionElement = document.createElement("option");
+        optionElement.value = options;
+        optionElement.text = options;
+        option.appendChild(optionElement);
+      }
+    );
+    option.selectedIndex = -1;
   })
-  .catch(error => {
+  .catch((error) => {
     // Handle error
     console.error(error);
   });
 
-  function funcCostForAddon(dataForAddon){
-    
-  }
+SPREADSHEET_ID = "1KP1-2HrfPObwMr4_IIEuuS0Vpk_KObKfog7qArUbhxk";
+SHEET_NAME = "Sheet1";
+YOUR_API_KEY = "AIzaSyAiexK0EyyHNWViGEp29zbkCwTnklGYvVc";
+const optionMenu = document.getElementById("hotel-id");
+fetch(
+  `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${SHEET_NAME}!A16:M29?key=${YOUR_API_KEY}`
+)
+  .then((response) => response.json())
+  .then((data) => {
+    // Process the data
+    console.log(data.values);
+    const hotels = data.values;
 
+    let roomStatus = []; //to get the room requirement of the user if no room selected it is 0 else 1;
+    const truePos = []; //this array is used to get the postition of true element in room status array
+    let listofHotels = []; //this will be finally displayed
+    document.getElementById("food-id").addEventListener("click", function () {
+      console.log(
+        "-------------------------------------------------------------------------------------"
+      );
+      roomStatus = []; //resetting the value for every click
+      listofHotels = [];
+  
+
+      //now changing the rooms selection in to true or false array
+      //if room is selected it is true other wise it is false
+      roomStatus.push(
+        document.getElementById("twoshare").selectedIndex > 0,
+        document.getElementById("threeshare").selectedIndex > 0,
+        document.getElementById("fourshare").selectedIndex > 0
+      );
+      console.log("roomStatus :" + roomStatus); //room status array is now ready
+
+      //this room filter stores the postition of the true in room status array
+      const roomsFilter = roomStatus.forEach((element, index) => {
+        if (element === true) {
+          truePos.push(index);
+        }
+      });
+      console.log("truePos :" + truePos);
+
+      //iterating each and every row of the data(13 elements in each array)
+      hotels.forEach((arr) => {
+        let choosedRoomAvailability = [];
+
+        const hotelName = arr[0];
+        const noFood = arr.slice(1, 4);
+        const breakFast = arr.slice(4, 7);
+        const lunch = arr.slice(7, 10);
+        const dinner = arr.slice(10, 13);
+
+        const bachelourHotels = [hotelName, noFood, breakFast, lunch, dinner];
+        const onlyFood = [noFood, breakFast, lunch, dinner];
+
+        //in filteter array we store only non null values and removing all the null values
+        const fileter = onlyFood[this.selectedIndex].filter(
+          (element, index) => element !== "NULL"
+        );
+        //using this if condition trying to display hotel names only when filtere array has atleast one element
+        if (fileter.length != 0) {
+          // console.log((index+1)+" "+hotelName)
+          console.log(fileter); //output['2 sharing - 2000', '3 sharing - 2500', '4 sharing - 3000']
+          //now iterating over the not null values in each array
+          roomStatus.forEach((element, index) => {
+            //roomStatus array contains[true false true] :example
+            choosedRoomAvailability.push(fileter[index] !== undefined);
+            //trying to populate the choosedRoomAvailablity array only for defined values
+          });
+
+          console.log("roomsNeeded :" + roomStatus);
+
+          console.log("choosedRoomAvailability :" + choosedRoomAvailability);
+          let allSatisfied = false;
+          for (let i = 0; i < truePos.length; i++) {
+            if (choosedRoomAvailability[truePos[i]] === true) {
+              allSatisfied = true;
+            } else {
+              allSatisfied = false;
+            }
+          }
+          if (allSatisfied) {
+            console.log("hotelName :" + hotelName);
+
+            listofHotels.push(hotelName);
+          }
+        }
+      });
+
+      console.log(listofHotels);
+      // Clear existing options
+while (optionMenu.firstChild) {
+  optionMenu.removeChild(optionMenu.firstChild);
+}
+      
+      listofHotels.forEach((options)=>{
+        const optionElement = document.createElement("option");
+        optionElement.value = options;
+        optionElement.text = options;
+        optionMenu.appendChild(optionElement);
+        
+      })
+
+
+
+    });
+  })
+  .catch((error) => {
+    // Handle error
+    console.error(error);
+  });
