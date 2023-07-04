@@ -517,13 +517,9 @@ function clickedEvent(event) {
       pickupPoint.value,
       dropPoint.value
     );
-    totalCosts=0
+    totalCosts=costRoomFood+sightSeeingCost+costForPickandDrop
     
-    document.getElementById(
-      "result"
-    ).textContent = ` The Cost of your Customised Package is Rs ${
-      totalCosts
-    } `;
+    
     
   }
 
@@ -1256,7 +1252,7 @@ fetch(
     );
     option.selectedIndex = -1;
     
-    document.querySelector(".Submit").addEventListener("click", clickedEvent2())
+    document.querySelector(".Submit").addEventListener("click", clickedEvent2)
     
   })
   .catch((error) => {
@@ -1266,11 +1262,16 @@ fetch(
 // iam trying to listen to submit button click event to transfer the data of previous sums to here
   function clickedEvent2(){
     console.log(transformedData)
-    // const selectedAddon=document.getElementById("add-on-options").value
-    // const costForAddon=transformedData[selectedAddon]
-    // console.log(costForAddon)
+    const selectedAddon=document.getElementById("add-on-options").value
+    const costForAddon=transformedData[selectedAddon]
+    console.log(costForAddon+" costForAddon")
     
     console.log(totalCosts)
+    document.getElementById(
+      "result"
+    ).textContent = ` The Cost of your Customised Package is Rs ${
+      totalCosts+Number(costForAddon)
+    } `;
   }
 
 function hotelType(sheetPos){
@@ -1386,11 +1387,7 @@ function hotelType(sheetPos){
       console.error(error);
     });
 }
-// 
-// 
-// 
-// 
-
+// this function helps to switch the hotel accorrding to the hotel Type
 document.getElementById('hotel-type-id').addEventListener('change',function(event){
   document.getElementById("twoshare").value=document.getElementById("threeshare").value=document.getElementById("fourshare").value=0; 
   console.log(this.selectedIndex);
