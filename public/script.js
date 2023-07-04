@@ -446,6 +446,7 @@ function calc(){
 
 let textArray = [];
 let totalPersons = 0;
+let totalCosts;
 document.getElementById("no-of-persons").selectedIndex = null;
 document.getElementById("goa-location1").selectedIndex = null;
 document.getElementById("goa-location2").selectedIndex = null;
@@ -474,7 +475,9 @@ function clickedEvent(event) {
 
   let checkIn = new Date(document.getElementById("check-in").value);
   let checkOut = new Date(document.getElementById("check-out").value);
-  let totalNights = checkOut.getDate() - checkIn.getDate();
+  let timeDiff = checkOut.getTime() - checkIn.getTime();
+  let totalNights = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
+  
   console.log("Nights: " + totalNights);
   if (checkIn > checkOut) {
     alert("Check in date cannot be greater than check out date");
@@ -514,12 +517,14 @@ function clickedEvent(event) {
       pickupPoint.value,
       dropPoint.value
     );
-
+    totalCosts=0
+    
     document.getElementById(
       "result"
     ).textContent = ` The Cost of your Customised Package is Rs ${
-      sightSeeingCost + costRoomFood + costForPickandDrop
+      totalCosts
     } `;
+    
   }
 
   // document.getElementById("no-of-persons").value = null;
@@ -1188,6 +1193,9 @@ addonService.addEventListener("click", function (e) {
       e.target.textContent === "Remove service"
         ? "Add service"
         : "Remove service";
+        if(e.target.textContent==='Add service'){
+          document.getElementById("add-on-options").selectedIndex=-1;
+        }
     //  if(this.lastElementChild.style.maxHeight){
     //   this.lastElementChild.style.maxHeight=null;
     //  }else{
@@ -1200,6 +1208,7 @@ addonService.addEventListener("click", function (e) {
 });
 
 let costForAddon;
+const transformedData = {};
 let SPREADSHEET_ID = "1KP1-2HrfPObwMr4_IIEuuS0Vpk_KObKfog7qArUbhxk";
 let SHEET_NAME = "Sheet1";
 let YOUR_API_KEY = "AIzaSyAiexK0EyyHNWViGEp29zbkCwTnklGYvVc";
@@ -1207,12 +1216,12 @@ fetch(
   `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${SHEET_NAME}!A1:B12?key=${YOUR_API_KEY}`
 )
   .then((response) => response.json())
-  .then((data) => {
+  .then((data) => { 
     // Process the data
     console.log(data.values);
     const values = data.values;
 
-    const transformedData = {};
+    
     for (let i = 1; i < values.length; i++) {
       const key = values[i][0];
       const value = values[i][1];
@@ -1246,119 +1255,168 @@ fetch(
       }
     );
     option.selectedIndex = -1;
+    
+    document.querySelector(".Submit").addEventListener("click", clickedEvent2())
+    
   })
   .catch((error) => {
     // Handle error
     console.error(error);
   });
+// iam trying to listen to submit button click event to transfer the data of previous sums to here
+  function clickedEvent2(){
+    console.log(transformedData)
+    // const selectedAddon=document.getElementById("add-on-options").value
+    // const costForAddon=transformedData[selectedAddon]
+    // console.log(costForAddon)
+    
+    console.log(totalCosts)
+  }
 
-SPREADSHEET_ID = "1KP1-2HrfPObwMr4_IIEuuS0Vpk_KObKfog7qArUbhxk";
-SHEET_NAME = "Sheet1";
-YOUR_API_KEY = "AIzaSyAiexK0EyyHNWViGEp29zbkCwTnklGYvVc";
-const optionMenu = document.getElementById("hotel-id");
-fetch(
-  `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${SHEET_NAME}!A16:M29?key=${YOUR_API_KEY}`
-)
-  .then((response) => response.json())
-  .then((data) => {
-    // Process the data
-    console.log(data.values);
-    const hotels = data.values;
+function hotelType(sheetPos){
 
-    let roomStatus = []; //to get the room requirement of the user if no room selected it is 0 else 1;
-    const truePos = []; //this array is used to get the postition of true element in room status array
-    let listofHotels = []; //this will be finally displayed
-    document.getElementById("food-id").addEventListener("click", function () {
-      console.log(
-        "-------------------------------------------------------------------------------------"
-      );
-      roomStatus = []; //resetting the value for every click
-      listofHotels = [];
+  SPREADSHEET_ID = "1KP1-2HrfPObwMr4_IIEuuS0Vpk_KObKfog7qArUbhxk";
+  SHEET_NAME = "Sheet1";
+  YOUR_API_KEY = "AIzaSyAiexK0EyyHNWViGEp29zbkCwTnklGYvVc";
+  const optionMenu = document.getElementById("hotel-id");
+  fetch(
+    `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${SHEET_NAME}!${sheetPos}?key=${YOUR_API_KEY}`
+  )
+    .then((response) => response.json())
+    .then((data) => {
+      // Process the data
+      console.log(data.values);
+      const hotels = data.values;
   
-
-      //now changing the rooms selection in to true or false array
-      //if room is selected it is true other wise it is false
-      roomStatus.push(
-        document.getElementById("twoshare").selectedIndex > 0,
-        document.getElementById("threeshare").selectedIndex > 0,
-        document.getElementById("fourshare").selectedIndex > 0
-      );
-      console.log("roomStatus :" + roomStatus); //room status array is now ready
-
-      //this room filter stores the postition of the true in room status array
-      const roomsFilter = roomStatus.forEach((element, index) => {
-        if (element === true) {
-          truePos.push(index);
-        }
-      });
-      console.log("truePos :" + truePos);
-
-      //iterating each and every row of the data(13 elements in each array)
-      hotels.forEach((arr) => {
-        let choosedRoomAvailability = [];
-
-        const hotelName = arr[0];
-        const noFood = arr.slice(1, 4);
-        const breakFast = arr.slice(4, 7);
-        const lunch = arr.slice(7, 10);
-        const dinner = arr.slice(10, 13);
-
-        const bachelourHotels = [hotelName, noFood, breakFast, lunch, dinner];
-        const onlyFood = [noFood, breakFast, lunch, dinner];
-
-        //in filteter array we store only non null values and removing all the null values
-        const fileter = onlyFood[this.selectedIndex].filter(
-          (element, index) => element !== "NULL"
+      let roomStatus = []; //to get the room requirement of the user if no room selected it is 0 else 1;
+      const truePos = []; //this array is used to get the postition of true element in room status array
+      let listofHotels = []; //this will be finally displayed
+      document.getElementById("food-id").addEventListener("change", function () {
+        console.log(
+          "-------------------------------------------------------------------------------------"
         );
-        //using this if condition trying to display hotel names only when filtere array has atleast one element
-        if (fileter.length != 0) {
-          // console.log((index+1)+" "+hotelName)
-          console.log(fileter); //output['2 sharing - 2000', '3 sharing - 2500', '4 sharing - 3000']
-          //now iterating over the not null values in each array
-          roomStatus.forEach((element, index) => {
-            //roomStatus array contains[true false true] :example
-            choosedRoomAvailability.push(fileter[index] !== undefined);
-            //trying to populate the choosedRoomAvailablity array only for defined values
-          });
-
-          console.log("roomsNeeded :" + roomStatus);
-
-          console.log("choosedRoomAvailability :" + choosedRoomAvailability);
-          let allSatisfied = false;
-          for (let i = 0; i < truePos.length; i++) {
-            if (choosedRoomAvailability[truePos[i]] === true) {
-              allSatisfied = true;
-            } else {
-              allSatisfied = false;
+        roomStatus = []; //resetting the value for every click
+        listofHotels = [];
+    
+  
+        //now changing the rooms selection in to true or false array
+        //if room is selected it is true other wise it is false
+        roomStatus.push(
+          document.getElementById("twoshare").selectedIndex > 0,
+          document.getElementById("threeshare").selectedIndex > 0,
+          document.getElementById("fourshare").selectedIndex > 0
+        );
+        console.log("roomStatus :" + roomStatus); //room status array is now ready
+  
+        //this room filter stores the postition of the true in room status array
+        const roomsFilter = roomStatus.forEach((element, index) => {
+          if (element === true) {
+            truePos.push(index);
+          }
+        });
+        console.log("truePos :" + truePos);
+  
+        //iterating each and every r  ow of the data(13 elements in each array)
+        hotels.forEach((arr) => {
+          let choosedRoomAvailability = [];
+  
+          const hotelName = arr[0];
+          const noFood = arr.slice(1, 4);
+          const breakFast = arr.slice(4, 7);
+          const lunch = arr.slice(7, 10);
+          const dinner = arr.slice(10, 13);
+  
+          const bachelourHotels = [hotelName, noFood, breakFast, lunch, dinner];
+          const onlyFood = [noFood, breakFast, lunch, dinner];
+  
+          //in filteter array we store only non null values and removing all the null values
+          const fileter = onlyFood[this.selectedIndex].filter(
+            (element, index) => element !== "NULL"
+          );
+          //using this if condition trying to display hotel names only when filtere array has atleast one element
+          if (fileter.length != 0) {
+            // console.log((index+1)+" "+hotelName)
+            console.log(fileter); //output['2 sharing - 2000', '3 sharing - 2500', '4 sharing - 3000']
+            //now iterating over the not null values in each array
+            roomStatus.forEach((element, index) => {
+              //roomStatus array contains[true false true] :example
+              choosedRoomAvailability.push(fileter[index] !== undefined);
+              //trying to populate the choosedRoomAvailablity array only for defined values
+            });
+  
+            console.log("roomsNeeded :" + roomStatus);
+  
+            console.log("choosedRoomAvailability :" + choosedRoomAvailability);
+            let allSatisfied = false;
+            for (let i = 0; i < truePos.length; i++) {
+              if (choosedRoomAvailability[truePos[i]] === true) {
+                allSatisfied = true;
+              } else {
+                allSatisfied = false;
+              }
+            }
+            if (allSatisfied) {
+              console.log("hotelName :" + hotelName);
+  
+              listofHotels.push(hotelName);
             }
           }
-          if (allSatisfied) {
-            console.log("hotelName :" + hotelName);
-
-            listofHotels.push(hotelName);
-          }
-        }
-      });
-
-      console.log(listofHotels);
-      // Clear existing options
-while (optionMenu.firstChild) {
-  optionMenu.removeChild(optionMenu.firstChild);
-}
-      
-      listofHotels.forEach((options)=>{
-        const optionElement = document.createElement("option");
-        optionElement.value = options;
-        optionElement.text = options;
-        optionMenu.appendChild(optionElement);
+        });
+  
+        console.log(listofHotels);
+         // Clear existing options
+  while (optionMenu.firstChild) {
+    optionMenu.removeChild(optionMenu.firstChild);
+  }
         
-      })
-
-
-
+        listofHotels.forEach((options)=>{
+          const optionElement = document.createElement("option");
+          optionElement.value = options;
+          optionElement.text = options;
+          optionMenu.appendChild(optionElement);
+          
+        })
+  
+  
+  
+      });
+    })
+    .catch((error) => {
+      // Handle error
+      console.error(error);
     });
-  })
-  .catch((error) => {
-    // Handle error
-    console.error(error);
-  });
+}
+// 
+// 
+// 
+// 
+
+document.getElementById('hotel-type-id').addEventListener('change',function(event){
+  document.getElementById("twoshare").value=document.getElementById("threeshare").value=document.getElementById("fourshare").value=0; 
+  console.log(this.selectedIndex);
+  switch (this.selectedIndex) {
+    case 0:
+      // Call function with argument for option 0
+      hotelType('A16:M29');;
+      break;
+    case 1:
+      // Call function with argument for option 1
+      hotelType('A33:M41');//couple
+      break;
+    case 2:
+      // Call function with argument for option 2
+      hotelType('A45:M48')//family
+      break;
+    case 3:
+      // Call function with argument for option 2
+      hotelType('A52:M59');//3star
+      break;  
+    // Add more cases for additional options
+    default:
+      console.log('no matching');
+      break;
+  }
+
+  
+})
+
