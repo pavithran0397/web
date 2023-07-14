@@ -447,11 +447,17 @@ function calc(){
 let textArray = [];
 let totalPersons = 0;
 let totalCosts;
+let hotelName;
+let roomsTwoShareSelected;
+let roomsThreeShareSelected;
+let roomsFourShareSelected;
+let totalCostForHotelRooms=0;
 document.getElementById("no-of-persons").selectedIndex = null;
 document.getElementById("goa-location1").selectedIndex = null;
 document.getElementById("goa-location2").selectedIndex = null;
 document.getElementById("goa-location3").selectedIndex = null;
 document.getElementById("goa-location4").selectedIndex = null;
+document.getElementById("food-id").selectedIndex = -1;
 let arrayToCollectLoc = [];
 
 // clickEvent function--when click submit button
@@ -463,9 +469,9 @@ function clickedEvent(event) {
 
   //1.getting the input from the drop down 1,2,and 3
 
-  let roomsTwoShareSelected = document.getElementById("twoshare");
-  let roomsThreeShareSelected = document.getElementById("threeshare");
-  let roomsFourShareSelected = document.getElementById("fourshare");
+  roomsTwoShareSelected = document.getElementById("twoshare");
+  roomsThreeShareSelected = document.getElementById("threeshare");
+  roomsFourShareSelected = document.getElementById("fourshare");
 
   //2.getting the input from the food menu
 
@@ -477,7 +483,7 @@ function clickedEvent(event) {
   let checkOut = new Date(document.getElementById("check-out").value);
   let timeDiff = checkOut.getTime() - checkIn.getTime();
   let totalNights = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
-  
+
   console.log("Nights: " + totalNights);
   if (checkIn > checkOut) {
     alert("Check in date cannot be greater than check out date");
@@ -517,10 +523,7 @@ function clickedEvent(event) {
       pickupPoint.value,
       dropPoint.value
     );
-    totalCosts=costRoomFood+sightSeeingCost+costForPickandDrop
-    
-    
-    
+    totalCosts = costRoomFood + sightSeeingCost + costForPickandDrop;
   }
 
   // document.getElementById("no-of-persons").value = null;
@@ -1189,9 +1192,9 @@ addonService.addEventListener("click", function (e) {
       e.target.textContent === "Remove service"
         ? "Add service"
         : "Remove service";
-        if(e.target.textContent==='Add service'){
-          document.getElementById("add-on-options").selectedIndex=-1;
-        }
+    if (e.target.textContent === "Add service") {
+      document.getElementById("add-on-options").selectedIndex = -1;
+    }
     //  if(this.lastElementChild.style.maxHeight){
     //   this.lastElementChild.style.maxHeight=null;
     //  }else{
@@ -1212,12 +1215,11 @@ fetch(
   `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${SHEET_NAME}!A1:B12?key=${YOUR_API_KEY}`
 )
   .then((response) => response.json())
-  .then((data) => { 
+  .then((data) => {
     // Process the data
     console.log(data.values);
     const values = data.values;
 
-    
     for (let i = 1; i < values.length; i++) {
       const key = values[i][0];
       const value = values[i][1];
@@ -1251,31 +1253,31 @@ fetch(
       }
     );
     option.selectedIndex = -1;
-    
-    document.querySelector(".Submit").addEventListener("click", clickedEvent2)
-    
+
+    document.querySelector(".Submit").addEventListener("click", clickedEvent2);
   })
   .catch((error) => {
     // Handle error
     console.error(error);
   });
 // iam trying to listen to submit button click event to transfer the data of previous sums to here
-  function clickedEvent2(){
-    console.log(transformedData)
-    const selectedAddon=document.getElementById("add-on-options").value
-    const costForAddon=transformedData[selectedAddon]
-    console.log(costForAddon+" costForAddon")
-    
-    console.log(totalCosts)
-    document.getElementById(
-      "result"
-    ).textContent = ` The Cost of your Customised Package is Rs ${
-      totalCosts+Number(costForAddon)
-    } `;
+function clickedEvent2() {
+  console.log(transformedData);
+  const selectedAddon = document.getElementById("add-on-options").value;
+  let costForAddon = transformedData[selectedAddon];
+
+  console.log(costForAddon + " costForAddon");
+  if (costForAddon === undefined) {
+    costForAddon = 0;
   }
 
-function hotelType(sheetPos){
+  console.log(totalCosts);
+  totalCosts=totalCosts + Number(costForAddon)
+  // console.log('room hotel rate '+ totalCostForHotelRooms)
+  
+}
 
+function hotelType(sheetPos) {
   SPREADSHEET_ID = "1KP1-2HrfPObwMr4_IIEuuS0Vpk_KObKfog7qArUbhxk";
   SHEET_NAME = "Sheet1";
   YOUR_API_KEY = "AIzaSyAiexK0EyyHNWViGEp29zbkCwTnklGYvVc";
@@ -1288,99 +1290,93 @@ function hotelType(sheetPos){
       // Process the data
       console.log(data.values);
       const hotels = data.values;
-  
+
       let roomStatus = []; //to get the room requirement of the user if no room selected it is 0 else 1;
       const truePos = []; //this array is used to get the postition of true element in room status array
       let listofHotels = []; //this will be finally displayed
-      document.getElementById("food-id").addEventListener("change", function () {
-        console.log(
-          "-------------------------------------------------------------------------------------"
-        );
-        roomStatus = []; //resetting the value for every click
-        listofHotels = [];
-    
-  
-        //now changing the rooms selection in to true or false array
-        //if room is selected it is true other wise it is false
-        roomStatus.push(
-          document.getElementById("twoshare").selectedIndex > 0,
-          document.getElementById("threeshare").selectedIndex > 0,
-          document.getElementById("fourshare").selectedIndex > 0
-        );
-        console.log("roomStatus :" + roomStatus); //room status array is now ready
-  
-        //this room filter stores the postition of the true in room status array
-        const roomsFilter = roomStatus.forEach((element, index) => {
-          if (element === true) {
-            truePos.push(index);
-          }
-        });
-        console.log("truePos :" + truePos);
-  
-        //iterating each and every r  ow of the data(13 elements in each array)
-        hotels.forEach((arr) => {
-          let choosedRoomAvailability = [];
-  
-          const hotelName = arr[0];
-          const noFood = arr.slice(1, 4);
-          const breakFast = arr.slice(4, 7);
-          const lunch = arr.slice(7, 10);
-          const dinner = arr.slice(10, 13);
-  
-          const bachelourHotels = [hotelName, noFood, breakFast, lunch, dinner];
-          const onlyFood = [noFood, breakFast, lunch, dinner];
-  
-          //in filteter array we store only non null values and removing all the null values
-          const fileter = onlyFood[this.selectedIndex].filter(
-            (element, index) => element !== "NULL"
+      let fileter;
+      document
+        .getElementById("food-id")
+        .addEventListener("change", function () {
+          console.log(
+            "-------------------------------------------------------------------------------------"
           );
-          //using this if condition trying to display hotel names only when filtere array has atleast one element
-          if (fileter.length != 0) {
-            // console.log((index+1)+" "+hotelName)
-            console.log(fileter); //output['2 sharing - 2000', '3 sharing - 2500', '4 sharing - 3000']
-            //now iterating over the not null values in each array
-            roomStatus.forEach((element, index) => {
-              //roomStatus array contains[true false true] :example
-              choosedRoomAvailability.push(fileter[index] !== undefined);
-              //trying to populate the choosedRoomAvailablity array only for defined values
-            });
-  
-            console.log("roomsNeeded :" + roomStatus);
-  
-            console.log("choosedRoomAvailability :" + choosedRoomAvailability);
-            let allSatisfied = false;
-            for (let i = 0; i < truePos.length; i++) {
-              if (choosedRoomAvailability[truePos[i]] === true) {
-                allSatisfied = true;
-              } else {
-                allSatisfied = false;
+          roomStatus = []; //resetting the value for every click
+          listofHotels = [];
+
+          //now changing the rooms selection in to true or false array
+          //if room is selected it is true other wise it is false
+          roomStatus.push(
+            document.getElementById("twoshare").selectedIndex > 0,
+            document.getElementById("threeshare").selectedIndex > 0,
+            document.getElementById("fourshare").selectedIndex > 0
+          );
+          console.log("roomStatus :" + roomStatus); //room status array is now ready
+
+          //this room filter stores the postition of the true in room status array
+          const roomsFilter = roomStatus.forEach((element, index) => {
+            if (element === true) {
+              truePos.push(index);
+            }
+          });
+          console.log("truePos :" + truePos);
+
+          //iterating each and every r  ow of the data(13 elements in each array)
+          hotels.forEach((arr) => {
+            let choosedRoomAvailability = [];
+
+            fileter = filteredHotels(arr, this.selectedIndex);
+            //using this if condition trying to display hotel names only when filtere array has atleast one element
+            if (fileter.length != 0) {
+              // console.log((index+1)+" "+hotelName)
+              console.log(fileter); //output['2 sharing - 2000', '3 sharing - 2500', '4 sharing - 3000']
+              //now iterating over the not null values in each array
+              roomStatus.forEach((element, index) => {
+                //roomStatus array contains[true false true] :example
+                choosedRoomAvailability.push(fileter[index] !== undefined);
+                //trying to populate the choosedRoomAvailablity array only for defined values
+              });
+
+              console.log("roomsNeeded :" + roomStatus);
+
+              console.log(
+                "choosedRoomAvailability :" + choosedRoomAvailability
+              );
+              let allSatisfied = false;
+              for (let i = 0; i < truePos.length; i++) {
+                if (choosedRoomAvailability[truePos[i]] === true) {
+                  allSatisfied = true;
+                } else {
+                  allSatisfied = false;
+                }
+              }
+              if (allSatisfied) {
+                console.log("hotelName :" + hotelName);
+
+                listofHotels.push(hotelName);
               }
             }
-            if (allSatisfied) {
-              console.log("hotelName :" + hotelName);
-  
-              listofHotels.push(hotelName);
-            }
+            // if (fileter.length === 0) {
+            //   listofHotels.push("Option Unavailable");
+            //   console.log("option unavailable");
+            // }
+          });
+          console.log(fileter);
+          calculateCostforHotels(fileter, optionMenu, hotels);
+
+          console.log(listofHotels);
+          // Clear existing options
+          while (optionMenu.firstChild) {
+            optionMenu.removeChild(optionMenu.firstChild);
           }
+
+          listofHotels.forEach((options) => {
+            const optionElement = document.createElement("option");
+            optionElement.value = options;
+            optionElement.text = options;
+            optionMenu.appendChild(optionElement);
+          });
         });
-  
-        console.log(listofHotels);
-         // Clear existing options
-  while (optionMenu.firstChild) {
-    optionMenu.removeChild(optionMenu.firstChild);
-  }
-        
-        listofHotels.forEach((options)=>{
-          const optionElement = document.createElement("option");
-          optionElement.value = options;
-          optionElement.text = options;
-          optionMenu.appendChild(optionElement);
-          
-        })
-  
-  
-  
-      });
     })
     .catch((error) => {
       // Handle error
@@ -1388,32 +1384,252 @@ function hotelType(sheetPos){
     });
 }
 // this function helps to switch the hotel accorrding to the hotel Type
-document.getElementById('hotel-type-id').addEventListener('change',function(event){
-  document.getElementById("twoshare").value=document.getElementById("threeshare").value=document.getElementById("fourshare").value=0; 
+const selectHotelType = document.getElementById("hotel-type-id");
+selectHotelType.selectedIndex = -1;
+selectHotelType.addEventListener("change", function (event) {
+  document.getElementById("twoshare").value =
+    document.getElementById("threeshare").value =
+    document.getElementById("fourshare").value =
+      0;
   console.log(this.selectedIndex);
   switch (this.selectedIndex) {
     case 0:
       // Call function with argument for option 0
-      hotelType('A16:M29');;
+      hotelType("A16:M29");
       break;
     case 1:
       // Call function with argument for option 1
-      hotelType('A33:M41');//couple
+      hotelType("A33:M41"); //couple
       break;
     case 2:
       // Call function with argument for option 2
-      hotelType('A45:M48')//family
+      hotelType("A45:M48"); //family
       break;
     case 3:
-      // Call function with argument for option 2
-      hotelType('A52:M59');//3star
-      break;  
+      // Call function with argument for option 3
+      hotelType("A52:M59"); //3star
+      break;
+
+    case 5:
+      specialRoomCategories("A62:U63");
+      break;
     // Add more cases for additional options
     default:
-      console.log('no matching');
+      console.log("no matching");
       break;
   }
+});
+function specialRoomCategories(sheetPos) {
+  SPREADSHEET_ID = "1KP1-2HrfPObwMr4_IIEuuS0Vpk_KObKfog7qArUbhxk";
+  SHEET_NAME = "Sheet1";
+  YOUR_API_KEY = "AIzaSyAiexK0EyyHNWViGEp29zbkCwTnklGYvVc";
+  const optionMenu = document.getElementById("hotel-id");
+  fetch(
+    `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${SHEET_NAME}!${sheetPos}?key=${YOUR_API_KEY}`
+  )
+    .then((response) => response.json())
+    .then((data) => {
+      // Process the data
+      console.log(data.values);
+      const hotels = data.values;
+      let roomStatus = []; //to get the room requirement of the user if no room selected it is 0 else 1;
+      const truePos = []; //this array is used to get the postition of true element in room status array
+      let listofHotels = []; //this will be finally displayed
+      let fileter;
+      document
+        .getElementById("food-id")
+        .addEventListener("change", function () {
+          console.log(
+            "-------------------------------------------------------------------------------------"
+          );
+          roomStatus = []; //resetting the value for every click
+          listofHotels = [];
 
-  
-})
+          //now changing the rooms selection in to true or false array
+          //if room is selected it is true other wise it is false
+          roomStatus.push(
+            document.getElementById("twoshare").selectedIndex > 0,
+            document.getElementById("threeshare").selectedIndex > 0,
+            document.getElementById("fourshare").selectedIndex > 0,
+            document.getElementById("fiveshare").selectedIndex > 0
+          );
+          console.log("roomStatus :" + roomStatus); //room status array is now ready
 
+          //this room filter stores the postition of the true in room status array
+          const roomsFilter = roomStatus.forEach((element, index) => {
+            if (element === true) {
+              truePos.push(index);
+            }
+          });
+          console.log("truePos :" + truePos);
+
+          //iterating each and every r  ow of the data(13 elements in each array)
+          hotels.forEach((arr) => {
+            let choosedRoomAvailability = [];
+
+            fileter = filteredHotels(arr, this.selectedIndex);
+            //using this if condition trying to display hotel names only when filtere array has atleast one element
+            if (fileter.length != 0) {
+              // console.log((index+1)+" "+hotelName)
+              console.log(fileter); //output['2 sharing - 2000', '3 sharing - 2500', '4 sharing - 3000']
+              //now iterating over the not null values in each array
+              roomStatus.forEach((element, index) => {
+                //roomStatus array contains[true false true] :example
+                choosedRoomAvailability.push(fileter[index] !== undefined);
+                //trying to populate the choosedRoomAvailablity array only for defined values
+              });
+
+              console.log("roomsNeeded :" + roomStatus);
+
+              console.log(
+                "choosedRoomAvailability :" + choosedRoomAvailability
+              );
+              let allSatisfied = false;
+              for (let i = 0; i < truePos.length; i++) {
+                if (choosedRoomAvailability[truePos[i]] === true) {
+                  allSatisfied = true;
+                } else {
+                  allSatisfied = false;
+                }
+              }
+              if (allSatisfied) {
+                console.log("hotelName :" + hotelName);
+
+                listofHotels.push(hotelName);
+              }
+            }
+            if (fileter.length === 0) {
+              listofHotels.push("Option Unavailable");
+              console.log("option unavailable");
+            }
+          });
+          calculateCostforHotels(fileter, optionMenu, hotels);
+
+          console.log(listofHotels);
+          // Clear existing options
+          while (optionMenu.firstChild) {
+            optionMenu.removeChild(optionMenu.firstChild);
+          }
+
+          listofHotels.forEach((options) => {
+            const optionElement = document.createElement("option");
+            optionElement.value = options;
+            optionElement.text = options;
+            optionMenu.appendChild(optionElement);
+          });
+        });
+    })
+    .catch((error) => {
+      // Handle error
+      console.error(error);
+    });
+}
+//hiding the room sharing optins 2,3,4 when specialised rooms has been clicked
+document.querySelector(".hotel").addEventListener("click", function (e) {
+  const targetSpan = document.querySelector(".fourshare-insert");
+  const newSpan = document.createElement("span");
+  console.log(selectHotelType.selectedIndex);
+
+  while (targetSpan.nextElementSibling) {
+    console.dir(targetSpan.nextElementSibling);
+    targetSpan.nextElementSibling.remove();
+  }
+  if (selectHotelType.selectedIndex === 5) {
+    targetSpan.insertAdjacentElement("afterend", newSpan);
+    newSpan.innerHTML = `
+    <label class="text" for="fiveshare">5 Sharing</label>
+
+    <select name="fiveshare" id="fiveshare">
+      <option value="0">0</option>
+      <option value="1">1</option>
+      <option value="2">2</option>
+      <option value="3">3</option>
+      <option value="4">4</option>
+      <option value="5">5</option>
+      <option value="6">6</option>
+      <option value="7">7</option>
+      <option value="8">8</option>
+    </select>`;
+  } else {
+    console.log(targetSpan.nextElementSibling);
+    // targetSpan.removeChild(targetSpan.nextElementSibling)
+  }
+});
+function calculateCostforHotels(filter, optionMenu, hotelName) {
+  document.querySelector(".Submit").addEventListener("click", function (e) {
+    totalCostForHotelRooms=0;
+    
+    // console.log(hotelName)
+    const findHotel = hotelName.find((element) => {
+      // console.log(element[0]===optionMenu.value,element[0]);
+      return element[0] === optionMenu.value;
+    });
+
+    console.log(findHotel);
+    const fileter = filteredHotels(
+      findHotel,
+      document.getElementById("food-id").selectedIndex
+    );
+    const seperateArray = fileter
+      .map((element) => [element])
+      .map((el) => el[0].slice(-4));
+    console.log("_______________________________");
+    console.log(seperateArray); //seprating the array for calcualtion so that you can easily multipy with no of rooms;
+
+    console.log("_______________________________");
+    const noOfRooms=[roomsTwoShareSelected.value,roomsThreeShareSelected.value,roomsFourShareSelected.value]
+    const noofRoomsSliced=noOfRooms.slice(0,seperateArray.length)
+    // const costForSelectedHotel=noofRoomsSliced.forEach((element,index)=>{Number(element)*Number(seperateArray[index])})
+    console.log(noofRoomsSliced,noofRoomsSliced.length)
+
+    noofRoomsSliced.forEach((element,index)=>{
+      if(element!==undefined){
+        
+        console.log( Number(element))
+        console.log(Number(seperateArray[index]))
+        totalCostForHotelRooms+=Number(element)*Number(seperateArray[index])
+
+      }
+    })
+    console.log(totalCostForHotelRooms)
+    totalCosts=totalCosts+totalCostForHotelRooms;
+    document.getElementById(
+      "result"
+    ).textContent = ` The Cost of your Customised Package is Rs ${
+      totalCosts
+    } `;
+  });
+}
+//this function filters the hotel alone
+function filteredHotels(arr, ind) {
+  console.log("i am inside filtered hotel");
+
+  let noFoodEnd = 6;
+  let breakFastEnd = 11;
+  let lunchEnd = 16;
+  let dinnerEnd = 21;
+
+  if (selectHotelType.selectedIndex !== 5) {
+    noFoodEnd = 4;
+    breakFastEnd = 7;
+    lunchEnd = 10;
+    dinnerEnd = 13;
+  }
+
+  hotelName = arr[0];
+  const noFood = arr.slice(1, noFoodEnd);
+  const breakFast = arr.slice(noFoodEnd, breakFastEnd);
+  const lunch = arr.slice(breakFastEnd, lunchEnd);
+  const dinner = arr.slice(lunchEnd, dinnerEnd);
+
+  const bachelourHotels = [hotelName, noFood, breakFast, lunch, dinner];
+  const onlyFood = [noFood, breakFast, lunch, dinner];
+  console.log(onlyFood);
+
+  //in filteter array we store only non null values and removing all the null values
+  const fileter = onlyFood[ind].filter((element, index) => element !== "NULL");
+  console.log("+++++++++++++++++++++++++++++++++++");
+  console.log(fileter);
+  console.log("+++++++++++++++++++++++++++++++++++");
+  return fileter;
+}
