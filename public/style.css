@@ -5,6 +5,21 @@
   font-family: "poppins", sans-serif;
   /* overflow: auto; */
 }
+@keyframes blink {
+  0% {
+    box-shadow: 0 0 0 3px red;
+  }
+  50% {
+    box-shadow: none;
+  }
+  100% {
+    box-shadow: 0 0 0 3px red;
+  }
+}
+
+.error {
+  animation: blink 0.5s linear 2;
+}
 
 body{
   background: rgb(47, 47, 48);

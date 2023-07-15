@@ -9,7 +9,7 @@
   </head>
   <body>
     <div class="container">
-      <form>
+      <form id="goa-form" onsubmit="return validateForm()">
         <h3>Customize Your Trip</h3>
         <label class="main-label labels" for="no-of-persons"
           >Total Number of persons</label
@@ -26,12 +26,12 @@
             <label class="main-label" for="check-in">Hotel Check In</label>
           </div>
 
-          <input type="date" id="check-in" name="check-in " />
+          <input type="date" id="check-in" name="check-in " required/>
           <div class="label-check">
             <label class="main-label" for=" check-out">Hotel Check out</label>
           </div>
 
-          <input type="date" id="check-out" name="check-out " />
+          <input type="date" id="check-out" name="check-out " required />
         </div>
 
         <div class="hotel">
@@ -39,7 +39,8 @@
             >Choose the hotel type</label
           >
 
-          <select name="hotel-select" id="hotel-type-id">
+          <select name="hotel-select" id="hotel-type-id" required>
+            <!-- <option value="">None</option> -->
             <option value="0">Bachelour</option>
             <option value="1">Couple</option>
             <option value="2">Family</option>
@@ -48,16 +49,7 @@
             <option value="5">Specialised Rooms</option>
           </select>
         </div>
-        <div class="rooms-special-category">
-          <label class="main-label labels" for="special-rooms">Choose your Room Sharing</label>
-          <select name="special-rooms" id="specialised-rooms" required>
-            <option value="" selected disabled>Please Select</option>
-            <option value="0">2-Sharing</option>
-            <option value="1">3-Sharing</option>
-            <option value="2">4-Sharing</option>
-            <option value="4">5-Sharing</option>
-          </select>
-        </div>
+      
 
         <label class="main-label labels normal-room" for="labels no-of-persons" id="labels-normal-room"
           >Choose Your Rooms</label
@@ -119,6 +111,7 @@
           >
 
           <select name="food-select" id="food-id">
+            <!-- <option value="">None</option> -->
             <option value="0">No Food</option>
             <option value="1">breakfast only</option>
             <option value="2">breakfast and lunch</option>
@@ -206,6 +199,7 @@
                   >How Many days You want sight Seeing?</label
                 >
                 <select name="hideQuestions" id="HQ">
+                  <option value="">None</option>
                   <option value="0">1</option>
                   <option value="1">2</option>
                   <option value="2">3</option>
@@ -253,7 +247,7 @@
           <div class="pick-drop-content">
             <div class="main-label pick-up-text">
               Pickup Point
-              <select class="add-pickup" required>
+              <select class="add-pickup" >
                 <option value="Not Needed">Not Needed</option>
                 <option value="Madgon">Madgon</option>
                 <option value="Vasco">Vasco</option>
@@ -287,9 +281,9 @@
             <button class="add-add-on" type="button">Add Service</button>
           </div>
           <div class="addon-content">
-            <div class="addon-content-text">
+            <div class="main-label addon-content-text">
               Please select an add-on
-              <select id="add-on-options"></select>
+              <select id="add-on-options" placeholder="Number of persons"></select>
             </div>
           </div>
         </div>

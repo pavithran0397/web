@@ -1,456 +1,15 @@
 "use strict";
 
-/* "use strict";
 
 
 let textArray = [];
 let totalPersons = 0;
-document.getElementById("no-of-persons").selectedIndex = null;
-document.getElementById("goa-location1").selectedIndex=null
-document.getElementById("goa-location2").selectedIndex=null
-document.getElementById("goa-location3").selectedIndex=null
-document.getElementById("goa-location4").selectedIndex=-null
-let arrayToCollectLoc=[];
-
-// clickEvent function
-function clickedEvent(event) {
-  //taking the input how many persons
-
-  totalPersons = document.getElementById("no-of-persons").value;
-
-  document.getElementById("no-of-persons").value = null;
-
-  //1.getting the input from the drop down 1,2,and 3
-
-  let roomsTwoShareSelected = document.getElementById("twoshare");
-  let roomsThreeShareSelected = document.getElementById("threeshare");
-  let roomsFourShareSelected = document.getElementById("fourshare");
-
-  //2.getting the input from the food menu
-
-  let foodMenu = Number(document.getElementById("food-id").value);
-
-  //3.getting input from hotel check-in-out
-
-  let checkIn = new Date(document.getElementById("check-in").value);
-  let checkOut = new Date(document.getElementById("check-out").value);
-  let totalNights = checkOut.getDate() - checkIn.getDate();
-  if (checkIn > checkOut) {
-    alert("Check in date cannot be greater than check out date");
-  } else {
-    //pushing the room share value to the array
-
-    textArray.push(
-      Number(
-        roomsTwoShareSelected.options[roomsTwoShareSelected.selectedIndex].text
-      )
-    );
-    textArray.push(
-      Number(
-        roomsThreeShareSelected.options[roomsThreeShareSelected.selectedIndex]
-          .text
-      )
-    );
-    textArray.push(
-      Number(
-        roomsFourShareSelected.options[roomsFourShareSelected.selectedIndex]
-          .text
-      )
-    );
-
-    calculateTheCost(textArray, foodMenu, totalNights);
-  }
-  //-------------adding sightseeing cost---------------//
-
-  
-
-}
-
-document.querySelector(".Submit").addEventListener("click", clickedEvent);
-
-//calculating the cost
-let sum = 0;
-const foodCostArray = {
-  0: [1400, 1600, 1900],
-  1: [1800, 2200, 2700],
-  2: [2200, 3000, 3800],
-  3: [2700, 3500, 4000],
-};
-
-function calculateTheCost(textArray, foodMenu, totalNights) {
-  for (const [index, val] of textArray.entries()) {
-    //note:foodCostArray[foodMenu] means you are calling the object foodcostArray
-
-    sum += foodCostArray[foodMenu][index] * val;
-  }
-  //displaying the result
-  sum = sum * totalNights;
-
-
-
-  document.getElementById(
-    "result"
-  ).textContent = ` The Cost of your Customised Package is Rs ${sum}`;
-}
-
-//-------------------sight seeing-----------------------------//
-
-
-//It displays according to the radio button selected
-function handleRadioClick() {
-  const hideSelect = document.querySelector(".hidden-select");
-
-  const hideRadio = document.querySelector(".hidden-radio");
-  const hiddenQuestion = document.querySelector(".hiddenQuestion");
-  const hideTwoWheelers = document.querySelector(".hidden-two-wheeler");
-
-  if (document.getElementById("self-drive-cars").checked) {
-    calculateSelfDriveCars(10);
-
-    hideSelect.style.display = "none";
-    hiddenQuestion.style.display = "none";
-    hideTwoWheelers.style.display = "none";
-  }
-  if (document.getElementById("Vechicle--driver").checked) {
-    hiddenQuestion.style.display = "block";
-    document.getElementById("HQ").selectedIndex = -1;
-
-    hideRadio.style.display = "none";
-    hideSelect.style.display = "block";
-    hideTwoWheelers.style.display = "none";
-  }
-  if (document.getElementById("Two-Wheeler").checked) {
-    calculateTwoWheelers();
-    hideRadio.style.display = "none";
-    hideSelect.style.display = "none";
-    hiddenQuestion.style.display = "none";
-  }
-}
-
-
-//event listneer method when radio button is clicked
-const radioButtons = document.querySelectorAll('input[name="sight-seeing"]');
-radioButtons.forEach((radio) => {
-  radio.addEventListener("click", handleRadioClick);
-});
-
-//global declaration
-const goaSpan1 = document.querySelector(".goa-span1");
-const goaSpan2 = document.querySelector(".goa-span2");
-const goaSpan3 = document.querySelector(".goa-span3");
-const goaSpan4 = document.querySelector(".goa-span4");
-
-//to display according to number of days selected
-
-document.getElementById("HQ").addEventListener("change", function () {
-  // if(document.getElementById('HQ').value==0){
-  //   goaSpan1.style.display='block';
-  // }
-  const switches = document.getElementById("HQ").value;
-  
-
-  switch (switches) {
-    case "0":
-      goaSpan1.style.display = "block";
-      break;
-    case "1":
-      goaSpan1.style.display = "block";
-      goaSpan2.style.display = "block";
-      break;
-    case "2":
-      goaSpan1.style.display = "block";
-      goaSpan2.style.display = "block";
-      goaSpan3.style.display = "block";
-      goaSpan4.style.display = "none";
-      break;
-    case "3":
-      goaSpan1.style.display = "block";
-      goaSpan2.style.display = "block";
-      goaSpan3.style.display = "block";
-      goaSpan4.style.display = "block";
-    default:
-      goaSpan1.style.display = "block";
-      goaSpan2.style.display = "block";
-      goaSpan3.style.display = "block";
-      goaSpan4.style.display = "block";
-  }
-});
-
-// global declaration
-let selectedLevel1 = document.getElementById("goa-location1").value;
-let selectedLevel2 = document.getElementById("goa-location2");
-let selectedLevel3 = document.getElementById("goa-location3");
-let selectedLevel4 = document.getElementById("goa-location4");
-
-const select1ToNone = (document.getElementById("goa-location1").selectedIndex =
-  -1);
-
- // change evet for day 1 
-document
-  .getElementById("goa-location1")
-  .addEventListener("change", function () {
-    document.getElementById(
-      "goa-location2"
-    ).innerHTML = `<option value="0">North-Goa I</option>
-  <option value="1">North-Goa II</option>
-  <option value="2">South Goa</option>
-  <option value="3">Extreme south Goa</option>`;
-
-    selectedLevel1 = document.getElementById("goa-location1").value;
-   
-
-    console.log("selectedLevel1 " + selectedLevel1);
-
-    selectedLevel2 = document.getElementById("goa-location2");
-
-    selectedLevel2.removeChild(selectedLevel2.children[selectedLevel1]);
-
-    const select2ToNone = (document.getElementById(
-      "goa-location2"
-    ).selectedIndex = -1);
-  });
-
-// change evet for day 2
-document
-  .getElementById("goa-location2")
-  .addEventListener("change", function () {
-    document.getElementById(
-      "goa-location3"
-    ).innerHTML = `<option value="0">North-Goa I</option>
-  <option value="1">North-Goa II</option>
-  <option value="2">South Goa</option>
-  <option value="3">Extreme south Goa</option>`;
-
-    selectedLevel1 = Number(document.getElementById("goa-location1").value);
-    selectedLevel2 = Number(document.getElementById("goa-location2").value);
-
-
-    document
-      .getElementById("goa-location3")
-      .removeChild(
-        document.getElementById("goa-location3").children[selectedLevel2]
-      );
-    document
-      .getElementById("goa-location3")
-      .removeChild(
-        document.getElementById("goa-location3").children[selectedLevel1]
-      );
-
-    const select3ToNone = (document.getElementById(
-      "goa-location3"
-    ).selectedIndex = -1);
-  });
-
- // change evet for day 3 and day 4 
-
-document
-  .getElementById("goa-location3")
-  .addEventListener("change", function () {
-    selectedLevel1 = Number(document.getElementById("goa-location1").value);
-
-    selectedLevel2 = Number(document.getElementById("goa-location2").value);
-    selectedLevel3 = Number(document.getElementById("goa-location3").value);
-  
-
-    // const goaSpan4 = document.querySelector(".goa-span4");
-    // goaSpan4.style.display = "block";
-
-    const result = 6 - (selectedLevel1 + selectedLevel2 + selectedLevel3);
-  
-
-    const goaLocation = {
-      0: "North-Goa I",
-      1: "North-Goa II",
-      2: "South Goa",
-      3: "Extreme south Goa",
-    };
-
-    document.getElementById(
-      "goa-location4"
-    ).innerHTML = `your Day 4 is set to ${goaLocation[result]}`;
-   
-  });
-
-  //resetiing only 3rd options in the radio
-function resets() {
-  resets.selectedIndex = -1;
-  goaSpan1.style.display = "none";
-  goaSpan2.style.display = "none";
-  goaSpan3.style.display = "none";
-
-  document.getElementById("HQ").selectedIndex = -1;
-  document.getElementById("goa-location1").selectedIndex = -1;
-  document.getElementById("goa-location2").selectedIndex = -1;
-  document.getElementById("goa-location3").selectedIndex = -1;
-
-  document.getElementById("goa-location1").value = "";
-  document.getElementById("goa-location2").value = "";
-  document.getElementById("goa-location3").value = "";
-
-  document.getElementById("goa-location2").innerHTML = "";
-  document.getElementById("goa-location3").innerHTML = "";
-  document.getElementById("goa-location4").innerHTML = "";
-}
-// console.log(document.querySelector("goa-location4"));
-
-
-//calcualte cost for two wheelers
-function calculateTwoWheelers() {
-  document.querySelector(".hidden-two-wheeler").style.display = "block";
-  totalPersons = document.getElementById("no-of-persons").value;
-  document.getElementById("htw").innerHTML = `You Will Get ${Math.round(
-    totalPersons / 2
-  )} bikes`;
-  const costForTwoWheeler=600*(Math.round(
-    totalPersons / 2
-  ))
-  console.log(costForTwoWheeler)
-}
-
-//calclualte cosr selfdrive cars
-function calculateSelfDriveCars() {
-  totalPersons = document.getElementById("no-of-persons").value;
-  console.log(totalPersons);
-  // hideRadio.style.display = "block";
-  const totalPasssengers = totalPersons;
-  let fiveSeater = 0;
-  let eightSeater = 0;
-  let remiander = totalPasssengers % 8;
-  let quotient = Math.floor(totalPasssengers / 8);
-  if (remiander == 0) {
-    eightSeater = quotient;
-    fiveSeater = 0;
-  } else {
-    if (totalPasssengers < 8) {
-      if (totalPasssengers <= 5) {
-        fiveSeater = 1;
-        eightSeater = 0;
-      }
-      if (totalPasssengers > 5 && totalPasssengers < 8) {
-        eightSeater = 1;
-        fiveSeater = 0;
-      }
-    } else {
-      if (remiander <= 2) {
-        eightSeater = quotient - 1;
-        fiveSeater = 2;
-      }
-      if (remiander >= 6) {
-        eightSeater = quotient + 1;
-        fiveSeater = 0;
-      }
-      if (remiander >= 3 && remiander <= 5) {
-        fiveSeater = 1;
-        eightSeater = quotient;
-      }
-    }
-  }
-
-  console.log(document.getElementById("hr"));
-
-  document.getElementById("hr").style.display = "block";
-
-  document.getElementById(
-    "hr"
-  ).innerHTML = `You will get ${eightSeater} Eight seater and ${fiveSeater} Five seater`;
-  const costForSelfDrive=(eightSeater*2000)+(fiveSeater*1500)
-  console.log(costForSelfDrive)
-}
-
-
-//calculate for divered vechicles
-function calculateVechicleWithDrivers(arrRate,switches) {
-  
-  const newArrRate=arrRate.fill(-1, switches, 4 );
-  
-  
-  totalPersons = document.getElementById("no-of-persons").value;
-  let seater = 0;
-  
-  if (totalPersons <= 4) {
-    seater = 4
-  }
-  if (totalPersons > 4 && totalPersons <= 7) {
-    seater = 7
-   
-  }
-  if (totalPersons > 7 && totalPersons <= 13) {
-    seater = 13
- 
-  }
-  if (totalPersons > 13 && totalPersons <= 17) {
-    seater = 17
-   
-  }
-  if (totalPersons > 17 && totalPersons <= 20) {
-    seater = 20
- 
-  }
-  if (totalPersons > 20 && totalPersons <= 26) {
-    seater = 26
-
-  }
-  if (totalPersons > 26 && totalPersons <= 30) {
-    seater = 30
-  
-  }
-  if (totalPersons > 30 && totalPersons <= 40) {
-    seater = 40
- 
-  }
-  console.log(`You will get ${seater} seater`)
-  const rate={
-    4:[2500,	2500,	3000,	5000],
-    7:[3200,	3200,	3700,	7300],
-    13:[3700,	3700,	4500,	7300],
-    17:[3800,	3800,	4700,	8300],
-    20:[3800,  3800,	4500,	8300],
-    26:[4700,	4700,	5000,	9700],
-    30:[6000,	6000,	7000,	11000],
-    40:[7000,	7000,	8000,	12000]
-  }
-  console.log(rate[seater])
-  const rateSeater = rate[seater];
-  console.log(newArrRate)
-  const newArrRatefiltered=newArrRate.filter(seat=>seat>-1)
-  console.log(newArrRatefiltered)
-  let sum=0
-  console.log(newArrRatefiltered.length)
-  for(let i=0;i<=newArrRatefiltered.length-1;i++){
-    sum+=rateSeater[newArrRatefiltered[i]];
-
-  }
-  console.log("sum "+sum)
-
-
-  
-}
-//calling when add to pcakage is clicked
-
-function calc(){
-  const switches = Number(document.getElementById("HQ").value);
-  console.log("switches "+switches)
-  
-  selectedLevel1 = Number(document.getElementById("goa-location1").value);
-
-    selectedLevel2 = Number(document.getElementById("goa-location2").value);
-    selectedLevel3 = Number(document.getElementById("goa-location3").value);
-
-    const result = 6 - (selectedLevel1 + selectedLevel2 + selectedLevel3);
-    const arrRate=[selectedLevel1,selectedLevel2,selectedLevel3,result]
-
-    console.log(arrRate);
-    calculateVechicleWithDrivers(arrRate,switches+1)
-
-} */
-
-let textArray = [];
-let totalPersons = 0;
+let totalNights=0;
 let totalCosts;
-let hotelName;
-let roomsTwoShareSelected;
-let roomsThreeShareSelected;
-let roomsFourShareSelected;
+let hotelName=[];
+let roomsTwoShareSelected=0;
+let roomsThreeShareSelected=0;
+let roomsFourShareSelected=0;
 let totalCostForHotelRooms=0;
 document.getElementById("no-of-persons").selectedIndex = null;
 document.getElementById("goa-location1").selectedIndex = null;
@@ -460,8 +19,40 @@ document.getElementById("goa-location4").selectedIndex = null;
 document.getElementById("food-id").selectedIndex = -1;
 let arrayToCollectLoc = [];
 
+document.querySelector('.Submit').addEventListener('click',formValidation)
+function formValidation(event){
+  console.log('validating before every other Event listner')
+  const noOfPersons=document.getElementById('no-of-persons')
+  const dateIn=document.getElementById('check-in');
+  const dateOut=document.getElementById('check-out')
+  const hotelCategory=document.getElementById('hotel-type-id');
+  const foodType=document.getElementById('food-id');
+  const pickUpLocation=document.querySelector('.add-pickup')
+  const dropLocation=document.querySelector('.add-drop')
+  console.log(document.querySelector('.add-pickup-drop').textContent)
+  const checkEachField=[noOfPersons,dateIn,dateOut,hotelCategory,foodType];
+  for(let i=0;i<checkEachField.length;i++){
+    if(!checkEachField[i].value){
+      console.log(`checking the ${checkEachField[i].nodeName} field`);
+      checkEachField[i].classList.add('error')
+      setTimeout(() => {
+        checkEachField[i].classList.remove('error');
+      }, 1000);
+      // checkEachField[i].classList.remove('error'); // Remove the 'error' class if the field is filled
+     
+      return false;
+      
+    }
+  }
+  return true;
+
+}
+
+
 // clickEvent function--when click submit button
 function clickedEvent(event) {
+  // console.log("formValidationStatus "+formValidationStatus)
+  console.log('-----------------------1st Evnt listner it has following cost---------------------------------');
   //taking the input how many persons
   event.preventDefault();
   totalPersons = document.getElementById("no-of-persons").value;
@@ -482,34 +73,38 @@ function clickedEvent(event) {
   let checkIn = new Date(document.getElementById("check-in").value);
   let checkOut = new Date(document.getElementById("check-out").value);
   let timeDiff = checkOut.getTime() - checkIn.getTime();
-  let totalNights = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
-
+  totalNights = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
   console.log("Nights: " + totalNights);
+  
   if (checkIn > checkOut) {
     alert("Check in date cannot be greater than check out date");
   } else {
     //pushing the room share value to the array
-    textArray = [];
+    // textArray = [];
 
-    textArray.push(
-      Number(
-        roomsTwoShareSelected.options[roomsTwoShareSelected.selectedIndex].text
-      )
-    );
-    textArray.push(
-      Number(
-        roomsThreeShareSelected.options[roomsThreeShareSelected.selectedIndex]
-          .text
-      )
-    );
-    textArray.push(
-      Number(
-        roomsFourShareSelected.options[roomsFourShareSelected.selectedIndex]
-          .text
-      )
-    );
+    // textArray.push(
+    //   Number(
+    //     roomsTwoShareSelected.options[roomsTwoShareSelected.selectedIndex].text
+    //   )
+    // );
+    // textArray.push(
+    //   Number(
+    //     roomsThreeShareSelected.options[roomsThreeShareSelected.selectedIndex]
+    //       .text
+    //   )
+    // );
+    // textArray.push(
+    //   Number(
+    //     roomsFourShareSelected.options[roomsFourShareSelected.selectedIndex]
+    //       .text
+    //   )
+    // );
 
-    const costRoomFood = calculateTheCost(textArray, foodMenu, totalNights);
+   
+
+    // const costRoomFood = calculateTheCost(textArray, foodMenu, totalNights);
+
+     //--------------the above code is not needed any more as we have to calculate from the google sheets,,,,that new data is in the function calulateCostForHotels
 
     //-------------adding sightseeing cost---------------//
 
@@ -523,7 +118,13 @@ function clickedEvent(event) {
       pickupPoint.value,
       dropPoint.value
     );
-    totalCosts = costRoomFood + sightSeeingCost + costForPickandDrop;
+    totalCosts = sightSeeingCost + costForPickandDrop;
+    
+    
+    
+    console.log("sightSeeingCost "+sightSeeingCost);
+    console.log("costForPickandDrop "+costForPickandDrop);
+    console.log('_______End of first Event listner____________________________')
   }
 
   // document.getElementById("no-of-persons").value = null;
@@ -586,7 +187,7 @@ function handleRadioClick() {
   }
   if (document.getElementById("Vechicle--driver").checked) {
     hiddenQuestion.style.display = "block";
-    document.getElementById("HQ").selectedIndex = -1;
+    // document.getElementById("HQ").selectedIndex = -1;
 
     hideRadio.style.display = "none";
     hideSelect.style.display = "block";
@@ -748,7 +349,7 @@ function resets() {
   goaSpan2.style.display = "none";
   goaSpan3.style.display = "none";
 
-  document.getElementById("HQ").selectedIndex = -1;
+  // document.getElementById("HQ").selectedIndex = -1;
   document.getElementById("goa-location1").selectedIndex = -1;
   document.getElementById("goa-location2").selectedIndex = -1;
   document.getElementById("goa-location3").selectedIndex = -1;
@@ -953,7 +554,7 @@ function totalCostForSightSeeing() {
     sumForSightSeeing = calculateTwoWheelers();
   }
 
-  console.log(sumForSightSeeing);
+  console.log("sumForSightSeeing :"+sumForSightSeeing);
   return sumForSightSeeing;
 }
 //accordian menu for sight seeing
@@ -1013,13 +614,13 @@ pickupDrop.addEventListener("click", function (e) {
     if (content.style.maxHeight) {
       content.style.maxHeight = null;
     } else {
-      console.log(content.scrollHeight);
+      // console.log(content.scrollHeight);
       content.style.maxHeight = content.scrollHeight + "px";
     }
   }
   pickupMessage.style.visibility = dropMessage.style.visibility = "hidden";
 
-  console.log(pickupPoint.value);
+  console.log(pickupPoint.value); 
 
   if (pickupPoint.selectedIndex != -1) {
     const seater = calcSeaters();
@@ -1159,8 +760,8 @@ const calcPickupDropcost = function (seater, pickup, drop) {
       Mapusa: 4500,
     },
   ];
-  console.log(typeof dataArray);
-  console.log(seater);
+  
+  // console.log(seater);
   const findArray = dataArray.find(
     (rate) => rate.vehicle === `${seater} Seater`
   );
@@ -1262,18 +863,32 @@ fetch(
   });
 // iam trying to listen to submit button click event to transfer the data of previous sums to here
 function clickedEvent2() {
+  console.log("                                                                              ")
+  console.log('_____________________I am 2nd Event Listner___________')
   console.log(transformedData);
   const selectedAddon = document.getElementById("add-on-options").value;
+  console.log('Selected addon :'+ selectedAddon)
   let costForAddon = transformedData[selectedAddon];
 
-  console.log(costForAddon + " costForAddon");
+  
   if (costForAddon === undefined) {
     costForAddon = 0;
   }
+  console.log("costForAddon :"+costForAddon+" "+typeof costForAddon)
+  let numberValue=0;
+  if(costForAddon!==0){
 
-  console.log(totalCosts);
-  totalCosts=totalCosts + Number(costForAddon)
-  // console.log('room hotel rate '+ totalCostForHotelRooms)
+     numberValue = parseFloat(costForAddon.replace(/,/g, ''));
+  }
+  console.log(' costForAddon :'+numberValue);
+  console.log(`for ${totalPersons} persons ${numberValue*totalPersons}`)
+
+  console.log(totalCosts+" sight seeing + pickup and drop");
+  totalCosts+=totalPersons*(totalCosts +numberValue);
+  
+  console.log('room hotel rate '+ totalCostForHotelRooms)
+
+  console.log("----------------------------End of Event Listner 2--------------------------------------------")
   
 }
 
@@ -1557,6 +1172,9 @@ document.querySelector(".hotel").addEventListener("click", function (e) {
 });
 function calculateCostforHotels(filter, optionMenu, hotelName) {
   document.querySelector(".Submit").addEventListener("click", function (e) {
+
+    console.log("                                    ")
+    console.log('----------------------3rd event listnre for submit----------------------')
     totalCostForHotelRooms=0;
     
     // console.log(hotelName)
@@ -1585,19 +1203,26 @@ function calculateCostforHotels(filter, optionMenu, hotelName) {
     noofRoomsSliced.forEach((element,index)=>{
       if(element!==undefined){
         
-        console.log( Number(element))
-        console.log(Number(seperateArray[index]))
+        // console.log( Number(element))
+        // console.log(Number(seperateArray[index]))
         totalCostForHotelRooms+=Number(element)*Number(seperateArray[index])
 
       }
     })
-    console.log(totalCostForHotelRooms)
-    totalCosts=totalCosts+totalCostForHotelRooms;
-    document.getElementById(
-      "result"
-    ).textContent = ` The Cost of your Customised Package is Rs ${
-      totalCosts
-    } `;
+    console.log(totalCostForHotelRooms +" totalCostForHotelRooms for 1 night")
+    console.log(`for${totalNights} nights ${totalCostForHotelRooms*totalNights}`)
+    totalCosts=totalNights*(totalCosts+totalCostForHotelRooms);
+    // const 
+   
+
+      // console.log("formValidationStatus :"+formValidationStatus);
+      document.getElementById(
+        "result"
+        ).textContent = ` The Cost of your Customised Package is Rs ${
+          totalCosts
+        } `;
+      
+    console.log("-------------------End of 3rd event listner------------------")
   });
 }
 //this function filters the hotel alone
@@ -1633,3 +1258,5 @@ function filteredHotels(arr, ind) {
   console.log("+++++++++++++++++++++++++++++++++++");
   return fileter;
 }
+
+//function to validate form
