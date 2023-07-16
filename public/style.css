@@ -34,8 +34,8 @@ body{
   align-items: center;
   justify-content: center;
 }
-.hotel,.rooms-special-category{
-  margin-top: 1rem;
+.hotel,#labels-normal-rooms,.rooms-special-category,#content,.food,.normalRoom,.south-indian-food{
+  margin-top: 1.5rem;
 }
 .rooms-special-category{
   display: none;
@@ -99,6 +99,7 @@ label {
   background-color: #535151;
   text-align: center;
 }
+
 .room-options,
 .check-in-out {
   display: flex;
@@ -184,18 +185,19 @@ span {
 /* .active:after { */
   /* content: "\2796"; Unicode character for "minus" sign (-) */
 /* } */
-.content,.pick-drop-content,.addon-content{
+.content,.pick-drop-content,.addon-content,.south-indian-food{
   max-height: 0;
   overflow: hidden;
   transition: max-height 0.5s ease-out;
   background-color: #535151;
 }
-.addon-content{
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.3s ease-out;
-  background-color: #535151;
+.sif-content{
+  margin-top: 1rem;
+  display: grid;
+  grid-template-columns: 1fr 2fr;
 }
+
+
 .add-sight,.add-pickup-drop,.add-pickup,.add-drop,.add-add-on{
   float: right;
 }

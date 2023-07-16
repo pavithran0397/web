@@ -49,11 +49,13 @@
             <option value="5">Specialised Rooms</option>
           </select>
         </div>
+
+        <div class="normalRoom"> <label class="main-label labels normal-room" for="labels no-of-persons" id="labels-normal-room"
+          >Choose Your Rooms</label
+        ></div>
       
 
-        <label class="main-label labels normal-room" for="labels no-of-persons" id="labels-normal-room"
-          >Choose Your Rooms</label
-        >
+       
         
         <div class="room-options">
           <span>
@@ -125,6 +127,22 @@
 
           <select name="food-select hotel" id="hotel-id"></select>
         </div>
+        <div class="south-indian-food">
+          <label class="main-label" for="south-indian-food">South-indian-food</label>
+          <div class="sif-content">
+            <label for="breakfast">Break Fast</label>
+          <input type="number" id="bf" class="it"
+          placeholder="how Many breakfast you need?">
+          <label for="breakfast">lunch</label>
+          <input type="number" id="lh" class="it"
+          placeholder="how Many lunch you need?">
+          <label for="breakfast">Dinner</label>
+          <input type="number" id="dr" class="it"
+          placeholder="how Many dinner Fast you need?">
+        
+
+          </div>
+          </div>
         <div class="sightseeing" id="content">
           <div class="main-label sight" id="sight">
             Sight Seeing options
@@ -292,6 +310,7 @@
           <button type="submit">Submit</button>
         </div>
         <div id="result"></div>
+        <button class="fill" type="button">fill</button>
       </form>
     </div>
     `

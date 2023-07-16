@@ -1,16 +1,20 @@
 "use strict";
 
-
-
 let textArray = [];
 let totalPersons = 0;
-let totalNights=0;
-let totalCosts;
-let hotelName=[];
-let roomsTwoShareSelected=0;
-let roomsThreeShareSelected=0;
-let roomsFourShareSelected=0;
-let totalCostForHotelRooms=0;
+let totalNights = 0;
+let totalCosts = 0;
+let hotelName = [];
+let roomsTwoShareSelected;
+let roomsThreeShareSelected;
+let roomsFourShareSelected;
+let totalCostForHotelRooms = 0;
+let sightSeeingCost;
+let costForPickandDrop;
+let costForAddon;
+let numberValue = 0;
+let specialisedRooms;
+let costForSif=0;
 document.getElementById("no-of-persons").selectedIndex = null;
 document.getElementById("goa-location1").selectedIndex = null;
 document.getElementById("goa-location2").selectedIndex = null;
@@ -19,40 +23,45 @@ document.getElementById("goa-location4").selectedIndex = null;
 document.getElementById("food-id").selectedIndex = -1;
 let arrayToCollectLoc = [];
 
-document.querySelector('.Submit').addEventListener('click',formValidation)
-function formValidation(event){
-  console.log('validating before every other Event listner')
-  const noOfPersons=document.getElementById('no-of-persons')
-  const dateIn=document.getElementById('check-in');
-  const dateOut=document.getElementById('check-out')
-  const hotelCategory=document.getElementById('hotel-type-id');
-  const foodType=document.getElementById('food-id');
-  const pickUpLocation=document.querySelector('.add-pickup')
-  const dropLocation=document.querySelector('.add-drop')
-  console.log(document.querySelector('.add-pickup-drop').textContent)
-  const checkEachField=[noOfPersons,dateIn,dateOut,hotelCategory,foodType];
-  for(let i=0;i<checkEachField.length;i++){
-    if(!checkEachField[i].value){
+document.querySelector(".Submit").addEventListener("click", formValidation);
+function formValidation(event) {
+  console.log("validating before every other Event listner");
+  const noOfPersons = document.getElementById("no-of-persons");
+  const dateIn = document.getElementById("check-in");
+  const dateOut = document.getElementById("check-out");
+  const hotelCategory = document.getElementById("hotel-type-id");
+  const foodType = document.getElementById("food-id");
+  const pickUpLocation = document.querySelector(".add-pickup");
+  const dropLocation = document.querySelector(".add-drop");
+  console.log(document.querySelector(".add-pickup-drop").textContent);
+  const checkEachField = [
+    noOfPersons,
+    dateIn,
+    dateOut,
+    hotelCategory,
+    foodType,
+  ];
+  for (let i = 0; i < checkEachField.length; i++) {
+    if (!checkEachField[i].value) {
       console.log(`checking the ${checkEachField[i].nodeName} field`);
-      checkEachField[i].classList.add('error')
+      checkEachField[i].classList.add("error");
       setTimeout(() => {
-        checkEachField[i].classList.remove('error');
+        checkEachField[i].classList.remove("error");
       }, 1000);
       // checkEachField[i].classList.remove('error'); // Remove the 'error' class if the field is filled
-     
+
       return false;
-      
     }
   }
   return true;
-
 }
-
 
 // clickEvent function--when click submit button
 function clickedEvent(event) {
   // console.log("formValidationStatus "+formValidationStatus)
-  console.log('-----------------------1st Evnt listner it has following cost---------------------------------');
+  console.log(
+    "-----------------------1st Evnt listner it has following cost---------------------------------"
+  );
   //taking the input how many persons
   event.preventDefault();
   totalPersons = document.getElementById("no-of-persons").value;
@@ -75,7 +84,7 @@ function clickedEvent(event) {
   let timeDiff = checkOut.getTime() - checkIn.getTime();
   totalNights = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
   console.log("Nights: " + totalNights);
-  
+
   if (checkIn > checkOut) {
     alert("Check in date cannot be greater than check out date");
   } else {
@@ -100,31 +109,29 @@ function clickedEvent(event) {
     //   )
     // );
 
-   
-
     // const costRoomFood = calculateTheCost(textArray, foodMenu, totalNights);
 
-     //--------------the above code is not needed any more as we have to calculate from the google sheets,,,,that new data is in the function calulateCostForHotels
+    //--------------the above code is not needed any more as we have to calculate from the google sheets,,,,that new data is in the function calulateCostForHotels
 
     //-------------adding sightseeing cost---------------//
 
-    const sightSeeingCost = totalCostForSightSeeing();
+    sightSeeingCost = totalCostForSightSeeing();
 
     //-----adding pickupdrop----------------//
     // const total=totalCostForPickupAndDrop();
     const seater = calcSeaters();
-    const costForPickandDrop = calcPickupDropcost(
+    costForPickandDrop = calcPickupDropcost(
       seater,
       pickupPoint.value,
       dropPoint.value
     );
     totalCosts = sightSeeingCost + costForPickandDrop;
-    
-    
-    
-    console.log("sightSeeingCost "+sightSeeingCost);
-    console.log("costForPickandDrop "+costForPickandDrop);
-    console.log('_______End of first Event listner____________________________')
+
+    console.log("sightSeeingCost " + sightSeeingCost);
+    console.log("costForPickandDrop " + costForPickandDrop);
+    console.log(
+      "_______End of first Event listner____________________________"
+    );
   }
 
   // document.getElementById("no-of-persons").value = null;
@@ -554,7 +561,7 @@ function totalCostForSightSeeing() {
     sumForSightSeeing = calculateTwoWheelers();
   }
 
-  console.log("sumForSightSeeing :"+sumForSightSeeing);
+  console.log("sumForSightSeeing :" + sumForSightSeeing);
   return sumForSightSeeing;
 }
 //accordian menu for sight seeing
@@ -620,7 +627,7 @@ pickupDrop.addEventListener("click", function (e) {
   }
   pickupMessage.style.visibility = dropMessage.style.visibility = "hidden";
 
-  console.log(pickupPoint.value); 
+  console.log(pickupPoint.value);
 
   if (pickupPoint.selectedIndex != -1) {
     const seater = calcSeaters();
@@ -760,7 +767,7 @@ const calcPickupDropcost = function (seater, pickup, drop) {
       Mapusa: 4500,
     },
   ];
-  
+
   // console.log(seater);
   const findArray = dataArray.find(
     (rate) => rate.vehicle === `${seater} Seater`
@@ -782,6 +789,7 @@ addonService.addEventListener("click", function (e) {
   if (e.target.className === "add-add-on") {
     console.log(e.target.textContent);
     let content = this.lastElementChild;
+    console.log(this);
     //  if(e.target.textContent==='Remove service'){
     //    e.target.textContent='Add service';
     //    console.log('ues')
@@ -807,7 +815,6 @@ addonService.addEventListener("click", function (e) {
   }
 });
 
-let costForAddon;
 const transformedData = {};
 let SPREADSHEET_ID = "1KP1-2HrfPObwMr4_IIEuuS0Vpk_KObKfog7qArUbhxk";
 let SHEET_NAME = "Sheet1";
@@ -863,33 +870,34 @@ fetch(
   });
 // iam trying to listen to submit button click event to transfer the data of previous sums to here
 function clickedEvent2() {
-  console.log("                                                                              ")
-  console.log('_____________________I am 2nd Event Listner___________')
+  console.log(
+    "                                                                              "
+  );
+  console.log("_____________________I am 2nd Event Listner___________");
   console.log(transformedData);
   const selectedAddon = document.getElementById("add-on-options").value;
-  console.log('Selected addon :'+ selectedAddon)
-  let costForAddon = transformedData[selectedAddon];
+  console.log("Selected addon :" + selectedAddon);
+  costForAddon = transformedData[selectedAddon];
 
-  
   if (costForAddon === undefined) {
     costForAddon = 0;
   }
-  console.log("costForAddon :"+costForAddon+" "+typeof costForAddon)
-  let numberValue=0;
-  if(costForAddon!==0){
+  console.log("costForAddon :" + costForAddon + " " + typeof costForAddon);
 
-     numberValue = parseFloat(costForAddon.replace(/,/g, ''));
+  if (costForAddon !== 0) {
+    numberValue = parseFloat(costForAddon.replace(/,/g, ""));
   }
-  console.log(' costForAddon :'+numberValue);
-  console.log(`for ${totalPersons} persons ${numberValue*totalPersons}`)
+  console.log(" costForAddon :" + numberValue);
+  console.log(`for ${totalPersons} persons ${numberValue * totalPersons}`);
 
-  console.log(totalCosts+" sight seeing + pickup and drop");
-  totalCosts+=totalPersons*(totalCosts +numberValue);
-  
-  console.log('room hotel rate '+ totalCostForHotelRooms)
+  console.log(totalCosts + " sight seeing + pickup and drop");
+  totalCosts = totalPersons * (totalCosts + numberValue);
 
-  console.log("----------------------------End of Event Listner 2--------------------------------------------")
-  
+  console.log("room hotel rate " + totalCostForHotelRooms);
+
+  console.log(
+    "----------------------------End of Event Listner 2--------------------------------------------"
+  );
 }
 
 function hotelType(sheetPos) {
@@ -1172,11 +1180,13 @@ document.querySelector(".hotel").addEventListener("click", function (e) {
 });
 function calculateCostforHotels(filter, optionMenu, hotelName) {
   document.querySelector(".Submit").addEventListener("click", function (e) {
+    let roomAndFoodCost = 0;
 
-    console.log("                                    ")
-    console.log('----------------------3rd event listnre for submit----------------------')
-    totalCostForHotelRooms=0;
-    
+    console.log("                                    ");
+    console.log(
+      "----------------------3rd event listnre for submit----------------------"
+    );
+
     // console.log(hotelName)
     const findHotel = hotelName.find((element) => {
       // console.log(element[0]===optionMenu.value,element[0]);
@@ -1195,39 +1205,88 @@ function calculateCostforHotels(filter, optionMenu, hotelName) {
     console.log(seperateArray); //seprating the array for calcualtion so that you can easily multipy with no of rooms;
 
     console.log("_______________________________");
-    const noOfRooms=[roomsTwoShareSelected.value,roomsThreeShareSelected.value,roomsFourShareSelected.value]
-    const noofRoomsSliced=noOfRooms.slice(0,seperateArray.length)
-    // const costForSelectedHotel=noofRoomsSliced.forEach((element,index)=>{Number(element)*Number(seperateArray[index])})
-    console.log(noofRoomsSliced,noofRoomsSliced.length)
+    const noOfRooms = [
+      roomsTwoShareSelected.value,
+      roomsThreeShareSelected.value,
+      roomsFourShareSelected.value,
+    ];
+    const noofRoomsSliced = noOfRooms.slice(0, seperateArray.length);
+    console.log(roomsTwoShareSelected.value, roomsThreeShareSelected.value);
+    console.log(noofRoomsSliced, noofRoomsSliced.length);
 
-    noofRoomsSliced.forEach((element,index)=>{
-      if(element!==undefined){
-        
-        // console.log( Number(element))
-        // console.log(Number(seperateArray[index]))
-        totalCostForHotelRooms+=Number(element)*Number(seperateArray[index])
+    noofRoomsSliced.forEach((element, index) => {
+      if (element !== undefined) {
+        const roomsSelected = Number(element);
+        const roomRate = Number(seperateArray[index]);
+
+        console.log(roomsSelected);
+        console.log(roomRate);
+        roomAndFoodCost += roomsSelected * roomRate;
+        console.log(roomAndFoodCost + " totalCostForHotelRooms for 1 night");
+      }
+    });
+    console.log(roomAndFoodCost + " totalCostForHotelRooms for 1 night");
+    console.log(`for${totalNights} nights ${roomAndFoodCost * totalNights}`);
+
+    console.log("sightSeeingCost " + sightSeeingCost);
+    console.log("costForPickandDrop " + costForPickandDrop);
+    console.log(" costForAddon :" + totalPersons * numberValue);
+    const southIndianFood=calcSif();
+    console.log('south indian food '+southIndianFood)
+
+    totalCosts = totalNights * (totalCosts + roomAndFoodCost);
+    // const
+
+    // console.log("formValidationStatus :"+formValidationStatus);
+    console.log(document.getElementById("hotel-type-id").selectedIndex);
+    if (document.getElementById("hotel-type-id").selectedIndex !== 5) {
+      
+      let allCost=roomAndFoodCost +
+      sightSeeingCost +
+      costForPickandDrop +
+      totalPersons * numberValue
+      if(document.getElementById('food-id').selectedIndex===0){
+        allCost=roomAndFoodCost +
+      sightSeeingCost +
+      costForPickandDrop +
+      southIndianFood+
+      totalPersons * numberValue
 
       }
-    })
-    console.log(totalCostForHotelRooms +" totalCostForHotelRooms for 1 night")
-    console.log(`for${totalNights} nights ${totalCostForHotelRooms*totalNights}`)
-    totalCosts=totalNights*(totalCosts+totalCostForHotelRooms);
-    // const 
-   
-
-      // console.log("formValidationStatus :"+formValidationStatus);
       document.getElementById(
         "result"
-        ).textContent = ` The Cost of your Customised Package is Rs ${
-          totalCosts
-        } `;
-      
-    console.log("-------------------End of 3rd event listner------------------")
+      ).textContent = ` The Cost of your Customised Package is Rs ${
+        allCost
+      } `;
+    } else {
+      let formattedContent = "";
+      let finalCost =
+        roomAndFoodCost +
+        sightSeeingCost +
+        costForPickandDrop +
+        totalPersons * numberValue;
+      for (const line of specialisedRooms) {
+        const rateAlone = line.slice(-4);
+        const exceptRate = line.slice(0, -4);
+        console.log(Number(rateAlone), exceptRate);
+        formattedContent += `Package ${exceptRate} ${
+          Number(rateAlone) + finalCost
+        } \n`;
+        console.log(formattedContent);
+        const resultSpecial = document.getElementById("result");
+
+        resultSpecial.innerHTML = `<pre style="text-align: left">${formattedContent} </pre>`;
+      }
+    }
+    console.log(
+      "-------------------End of 3rd event listner------------------"
+    );
   });
 }
 //this function filters the hotel alone
 function filteredHotels(arr, ind) {
   console.log("i am inside filtered hotel");
+  console.log(arr);
 
   let noFoodEnd = 6;
   let breakFastEnd = 11;
@@ -1254,9 +1313,58 @@ function filteredHotels(arr, ind) {
   //in filteter array we store only non null values and removing all the null values
   const fileter = onlyFood[ind].filter((element, index) => element !== "NULL");
   console.log("+++++++++++++++++++++++++++++++++++");
-  console.log(fileter);
+  console.log(fileter, fileter.length, typeof fileter);
+  if (fileter.length > 0) {
+    specialisedRooms = fileter[0].split("|");
+    console.log(specialisedRooms);
+  }
   console.log("+++++++++++++++++++++++++++++++++++");
   return fileter;
 }
 
 //function to validate form
+document.querySelector(".fill").addEventListener("click", function () {
+  document.getElementById("no-of-persons").value = 3;
+  document.getElementById("check-in").value = "2023-07-16";
+  document.getElementById("check-out").value = "2023-07-19";
+  // document.getElementById('hotel-type-id').selectedIndex=1;
+  // document.getElementById('twoshare').selectedIndex=1;
+  // document.getElementById('food-id').selectedIndex=1;
+});
+//south indian food
+document.getElementById("food-id").addEventListener("change", function () {
+  console.log("reading");
+  let content = document.querySelector(".south-indian-food");
+  if (this.selectedIndex === 0) {
+    console.log(content);
+    content.style.maxHeight = content.style.maxHeight
+      ? null
+      : content.scrollHeight + "px";
+  } else {
+    console.log(content);
+    content.style.maxHeight = null;
+  }
+});
+//function to get south indian food input
+function calcSif() {
+  const sifElements = document.querySelectorAll(".it");
+  const valuesArray = [];
+  costForSif=0;
+
+  sifElements.forEach((element) => {
+    if(element===undefined){
+      element=0;
+    }
+    valuesArray.push(Number(element.value));
+  });
+
+  console.log(valuesArray);
+  const rateForSif=[120,150,150];
+  for(let i=0;i<rateForSif.length;i++){
+    costForSif+=rateForSif[i]*valuesArray[i]*totalPersons
+  }
+  console.log(totalPersons)
+  return costForSif;
+  
+}
+// setInterval(calcSif, 2000);
