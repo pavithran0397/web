@@ -9,7 +9,11 @@
   </head>
   <body>
     <div class="container">
-      <form id="goa-form" onsubmit="return validateForm()">
+      <form
+        id="dataForm"
+        action="http://localhost:3000/generate-pdf"
+        method="post"
+      >
         <h3>Customize Your Trip</h3>
         <label class="main-label labels" for="no-of-persons"
           >Total Number of persons</label
@@ -18,20 +22,63 @@
           type="number"
           id="no-of-persons"
           placeholder="Number of persons"
-          required
         />
+        <div class="date-in-out">
+          <div class="date-in">
+            <label for="date-in-id" class="date-in">Hotel Check In</label>
+            <nav id="nav-in">
+              <button id="pre-month" class="btn nav-arrow-in">&lt;</button>
+              <button id="date-text" class="btn month-in"></button>
+              <button id="next-month" class="btn nav-arrow-in">&gt;</button>
+            </nav>
+
+            <table class="table-date">
+           
+            </table>
+            
+          </div>
+          <div class="date-out">
+            <label for="date-in-out" class="date-out">Hotel Check Out</label>
+            <nav id="nav-out">
+              <button id="pre-month-out" class="btn nav-arrow-out">&lt;</button>
+              <button id="date-text-out" class="btn month-out"></button>
+              <button id="next-month-out" class="btn nav-arrow-out">
+                &gt;
+              </button>
+            </nav>
+
+            <table class="table-date-out"></table>
+          </div>
+        </div>
+        <div class="tebut">
+          <div class="tebut-container">
+
+            <button class="test" type="button">&lt;</button>
+            <span id="blur-text" class="blur-month" ></span>
+            <button class="test-right" type="button">&gt;</button>
+          </div>
+        </div>
+        <div class="tebut tebut-out">
+          <div class="tebut-container tebut-container-out">
+
+            <button class="test test-out" type="button">&lt;</button>
+            <span id="blur-text" class="blur-month blur-month-out" ></span>
+            <button class="test-right test-right-out" type="button">&gt;</button>
+          </div>
+        </div>
+        <div class="overlay"></div>
 
         <div class="check-in-out">
           <div class="label-check">
             <label class="main-label" for="check-in">Hotel Check In</label>
           </div>
 
-          <input type="date" id="check-in" name="check-in " required/>
+          <input type="date" id="check-in" name="check-in " />
           <div class="label-check">
             <label class="main-label" for=" check-out">Hotel Check out</label>
           </div>
 
-          <input type="date" id="check-out" name="check-out " required />
+          <input type="date" id="check-out" name="check-out " />
         </div>
 
         <div class="hotel">
@@ -39,7 +86,7 @@
             >Choose the hotel type</label
           >
 
-          <select name="hotel-select" id="hotel-type-id" required>
+          <select name="hotel-select" id="hotel-type-id">
             <!-- <option value="">None</option> -->
             <option value="0">Bachelour</option>
             <option value="1">Couple</option>
@@ -50,13 +97,15 @@
           </select>
         </div>
 
-        <div class="normalRoom"> <label class="main-label labels normal-room" for="labels no-of-persons" id="labels-normal-room"
-          >Choose Your Rooms</label
-        ></div>
-      
+        <div class="normalRoom">
+          <label
+            class="main-label labels normal-room"
+            for="labels no-of-persons"
+            id="labels-normal-room"
+            >Choose Your Rooms</label
+          >
+        </div>
 
-       
-        
         <div class="room-options">
           <span>
             <label class="text" for="twoshare">2 Sharing</label>
@@ -71,6 +120,37 @@
               <option value="6">6</option>
               <option value="7">7</option>
               <option value="8">8</option>
+              <option value="9">9</option>
+              <option value="10">10</option>
+              <option value="11">11</option>
+              <option value="12">12</option>
+              <option value="13">13</option>
+              <option value="14">14</option>
+              <option value="15">15</option>
+              <option value="16">16</option>
+              <option value="17">17</option>
+              <option value="18">18</option>
+              <option value="18">19</option>
+              <option value="20">20</option>
+              <option value="21">21</option>
+              <option value="22">22</option>
+              <option value="23">23</option>
+              <option value="24">24</option>
+              <option value="25">25</option>
+              <option value="26">26</option>
+              <option value="27">27</option>
+              <option value="28">28</option>
+              <option value="30">30</option>
+              <option value="31">31</option>
+              <option value="32">32</option>
+              <option value="33">33</option>
+              <option value="34">34</option>
+              <option value="35">35</option>
+              <option value="36">36</option>
+              <option value="37">37</option>
+              <option value="38">38</option>
+              <option value="39">39</option>
+              <option value="40">40</option>
             </select>
           </span>
 
@@ -87,24 +167,86 @@
               <option value="6">6</option>
               <option value="7">7</option>
               <option value="8">8</option>
+              <option value="9">9</option>
+              <option value="10">10</option>
+              <option value="11">11</option>
+              <option value="12">12</option>
+              <option value="13">13</option>
+              <option value="14">14</option>
+              <option value="15">15</option>
+              <option value="16">16</option>
+              <option value="17">17</option>
+              <option value="18">18</option>
+              <option value="18">19</option>
+              <option value="20">20</option>
+              <option value="21">21</option>
+              <option value="22">22</option>
+              <option value="23">23</option>
+              <option value="24">24</option>
+              <option value="25">25</option>
+              <option value="26">26</option>
+              <option value="27">27</option>
+              <option value="28">28</option>
+              <option value="30">30</option>
+              <option value="31">31</option>
+              <option value="32">32</option>
+              <option value="33">33</option>
+              <option value="34">34</option>
+              <option value="35">35</option>
+              <option value="36">36</option>
+              <option value="37">37</option>
+              <option value="38">38</option>
+              <option value="39">39</option>
+              <option value="40">40</option>
             </select>
           </span>
 
-            <span class="fourshare-insert">
-              <label class="text" for="fourshare">4 Sharing</label>
+          <span class="fourshare-insert">
+            <label class="text" for="fourshare">4 Sharing</label>
 
-              <select name="fourshare" id="fourshare">
-                <option value="0">0</option>
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-                <option value="6">6</option>
-                <option value="7">7</option>
-                <option value="8">8</option>
-              </select>
-            </span>
+            <select name="fourshare" id="fourshare">
+              <option value="0">0</option>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+              <option value="6">6</option>
+              <option value="7">7</option>
+              <option value="8">8</option>
+              <option value="9">9</option>
+              <option value="10">10</option>
+              <option value="11">11</option>
+              <option value="12">12</option>
+              <option value="13">13</option>
+              <option value="14">14</option>
+              <option value="15">15</option>
+              <option value="16">16</option>
+              <option value="17">17</option>
+              <option value="18">18</option>
+              <option value="18">19</option>
+              <option value="20">20</option>
+              <option value="21">21</option>
+              <option value="22">22</option>
+              <option value="23">23</option>
+              <option value="24">24</option>
+              <option value="25">25</option>
+              <option value="26">26</option>
+              <option value="27">27</option>
+              <option value="28">28</option>
+              <option value="30">30</option>
+              <option value="31">31</option>
+              <option value="32">32</option>
+              <option value="33">33</option>
+              <option value="34">34</option>
+              <option value="35">35</option>
+              <option value="36">36</option>
+              <option value="37">37</option>
+              <option value="38">38</option>
+              <option value="39">39</option>
+              <option value="40">40</option>
+            </select>
+          </span>
         </div>
 
         <div class="food">
@@ -128,21 +270,33 @@
           <select name="food-select hotel" id="hotel-id"></select>
         </div>
         <div class="south-indian-food">
-          <label class="main-label" for="south-indian-food">South-indian-food</label>
+          <label class="main-label" for="south-indian-food"
+            >South-indian-food</label
+          >
           <div class="sif-content">
             <label for="breakfast">Break Fast</label>
-          <input type="number" id="bf" class="it"
-          placeholder="how Many breakfast you need?">
-          <label for="breakfast">lunch</label>
-          <input type="number" id="lh" class="it"
-          placeholder="how Many lunch you need?">
-          <label for="breakfast">Dinner</label>
-          <input type="number" id="dr" class="it"
-          placeholder="how Many dinner Fast you need?">
-        
-
+            <input
+              type="number"
+              id="bf"
+              class="it"
+              placeholder="how Many breakfast you need?"
+            />
+            <label for="breakfast">lunch</label>
+            <input
+              type="number"
+              id="lh"
+              class="it"
+              placeholder="how Many lunch you need?"
+            />
+            <label for="breakfast">Dinner</label>
+            <input
+              type="number"
+              id="dr"
+              class="it"
+              placeholder="how Many dinner Fast you need?"
+            />
           </div>
-          </div>
+        </div>
         <div class="sightseeing" id="content">
           <div class="main-label sight" id="sight">
             Sight Seeing options
@@ -217,7 +371,6 @@
                   >How Many days You want sight Seeing?</label
                 >
                 <select name="hideQuestions" id="HQ">
-                  <option value="">None</option>
                   <option value="0">1</option>
                   <option value="1">2</option>
                   <option value="2">3</option>
@@ -265,7 +418,7 @@
           <div class="pick-drop-content">
             <div class="main-label pick-up-text">
               Pickup Point
-              <select class="add-pickup" >
+              <select class="add-pickup">
                 <option value="Not Needed">Not Needed</option>
                 <option value="Madgon">Madgon</option>
                 <option value="Vasco">Vasco</option>
@@ -301,7 +454,10 @@
           <div class="addon-content">
             <div class="main-label addon-content-text">
               Please select an add-on
-              <select id="add-on-options" placeholder="Number of persons"></select>
+              <select
+                id="add-on-options"
+                placeholder="Number of persons"
+              multiple></select>
             </div>
           </div>
         </div>
