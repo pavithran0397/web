@@ -2031,11 +2031,11 @@ function displayResult(allCost,includingServiceChargePerHead){
   messageCard.style.display='block'
   document.getElementById(
     "result-test"
-  ).innerHTML = `<p>The Cost of your Customised Package is Rs ${allCost}</p>\n
-  <p>The cost per head is ${allCost / totalPersons}</p>\n
-  <p>The cost per head including service charge ${includingServiceChargePerHead}</p>\n
-  <p>The cost per head including Service and GST ${
+  ).innerHTML = `<table><tr><td>The Cost of your Customised Package is</td> <td>Rs ${allCost}</td></tr>
+  <tr><td>The cost per head is </td> <td>${allCost / totalPersons}</td>\n
+  <tr><td>The cost per head including service charge </td> <td> ${includingServiceChargePerHead}</td></tr>
+  <tr><td>The cost per head including Service and GST </td> <td>${
     includingServiceChargePerHead * 0.05 + includingServiceChargePerHead
-  } </p>`;
+  } </td></tr></table>`;
 
 }
