@@ -1,5 +1,6 @@
 "use strict";
 
+
 let textArray = [];
 let totalPersons = 0;
 let totalNights = 0;
@@ -16,11 +17,11 @@ let numberValue = 0;
 let specialisedRooms;
 let costForSif = 0;
 let isblockdate = false;
-let blockedCount=0;
-let normaldays=0;
+let blockedCount = 0;
+let normaldays = 0;
 let fileter;
-let trackroomAndFoodCost=[];
-let originalTotalNights =0
+let trackroomAndFoodCost = [];
+let originalTotalNights = 0;
 const optionMenu = document.getElementById("hotel-id");
 let hotels;
 const blockedDates = [
@@ -864,7 +865,6 @@ addonService.addEventListener("click", function (e) {
   }
 });
 
-
 // Select the dropdown element that gets populated dynamically
 const dynamicDropdown = document.getElementById("hotel-id");
 
@@ -879,7 +879,6 @@ const handleDropdownChange = (mutationsList, observer) => {
       // For example, you might want to fetch data based on the selected option or perform other operations.
     }
   }
-  
 };
 
 // Create a new MutationObserver instance with the callback function
@@ -890,8 +889,6 @@ const observerConfig = { childList: true };
 
 // Start observing the dropdown for changes
 observer.observe(dynamicDropdown, observerConfig);
-
-
 
 const transformedData = {};
 let SPREADSHEET_ID = "1KP1-2HrfPObwMr4_IIEuuS0Vpk_KObKfog7qArUbhxk";
@@ -950,7 +947,6 @@ function fetchAddonData(SHEET_NAME) {
       while (option.firstChild) {
         option.removeChild(option.firstChild);
       }
-    
 
       keys.forEach(
         /*[Grand Island Scuba,
@@ -967,11 +963,11 @@ function fetchAddonData(SHEET_NAME) {
           const optionElement = document.createElement("option");
           optionElement.value = options;
           optionElement.text = options;
+          optionElement.title = "press Ctrl to Select more than one option";
           option.appendChild(optionElement);
         }
       );
       option.selectedIndex = -1;
-      
 
       document
         .querySelector(".Submit")
@@ -985,32 +981,33 @@ function fetchAddonData(SHEET_NAME) {
 
 // iam trying to listen to submit button click event to transfer the data of previous sums to here
 function clickedEvent2() {
+  let tempArray = [];
   console.log(
     "                                                                              "
   );
   console.log("_____________________I am 2nd Event Listner___________");
   console.log(transformedData);
-  const selectedAddon = document.getElementById("add-on-options").value;
-  console.log("Selected addon :" + selectedAddon);
-  costForAddon = transformedData[selectedAddon];
+  let selectedAddon = document.getElementById("add-on-options").selectedOptions;
+  // Convert the selectedOptions collection to an array of values
+  selectedAddon = Array.from(selectedAddon).map((options) => options.value);
+  console.log(selectedAddon);
+  selectedAddon.forEach((eachAddon) => {
+    costForAddon = transformedData[eachAddon];
+    tempArray.push(parseFloat(costForAddon.replace(/,/g, "")));
+    if (numberValue === undefined) {
+      numberValue = 0;
+    }
 
-  if (costForAddon === undefined) {
-    costForAddon = 0;
-  }
-  console.log("costForAddon :" + costForAddon + " " + typeof costForAddon);
+    // if (costForAddon !== 0) {
+    //   ;
+    // }
+  });
+  numberValue = tempArray.reduce(
+    (accumulator, currentValue) => accumulator + currentValue,
+    0
+  );
+  console.log("costForAddon :" + numberValue + " " + typeof numberValue);
 
-  if (costForAddon !== 0) {
-    numberValue = parseFloat(costForAddon.replace(/,/g, ""));
-  }
-  let trackCostForAddon=[];
-  if(blockedCount===0||normaldays===0){
-    trackCostForAddon=[]
-      }
-  
-  trackCostForAddon.push(numberValue);
-
-  numberValue=trackCostForAddon.slice(0,2).reduce((accumulator,currentValue)=>accumulator+currentValue,0)
-  
   console.log(" costForAddon blockDates Included :" + numberValue);
   console.log(`for ${totalPersons} persons ${numberValue * totalPersons}`);
 
@@ -1023,8 +1020,8 @@ function clickedEvent2() {
     "----------------------------End of Event Listner 2--------------------------------------------"
   );
 }
-function fetchHotelRate(SHEET_NAME,sheetPos){
-  console.log('readfing for the '+SHEET_NAME)
+function fetchHotelRate(SHEET_NAME, sheetPos) {
+  console.log("readfing for the " + SHEET_NAME);
   SPREADSHEET_ID = "1KP1-2HrfPObwMr4_IIEuuS0Vpk_KObKfog7qArUbhxk";
   YOUR_API_KEY = "AIzaSyAiexK0EyyHNWViGEp29zbkCwTnklGYvVc";
   let optionMenu = document.getElementById("hotel-id");
@@ -1108,7 +1105,7 @@ function fetchHotelRate(SHEET_NAME,sheetPos){
             // }
           });
           console.log(fileter);
-          calculateCostforHotels(fileter, optionMenu, hotels,SHEET_NAME);
+          calculateCostforHotels(fileter, optionMenu, hotels, SHEET_NAME);
 
           console.log(listofHotels);
           // Clear existing options
@@ -1128,32 +1125,24 @@ function fetchHotelRate(SHEET_NAME,sheetPos){
       // Handle error
       console.error(error);
     });
-
 }
 
 function hotelType(sheetPos) {
-  
-
   console.log(isblockdate + "isblockdate");
- 
-  if (blockedCount!=0) {
-    console.log('blocked date is true')
+
+  if (blockedCount != 0) {
+    console.log("blocked date is true");
     SHEET_NAME = "Sheet2";
-    fetchHotelRate(SHEET_NAME,sheetPos)
+    fetchHotelRate(SHEET_NAME, sheetPos);
     fetchAddonData(SHEET_NAME);
-  } if (normaldays!=0){
-
-    console.log('normal date is true')
+  }
+  if (normaldays != 0) {
+    console.log("normal date is true");
     SHEET_NAME = "Sheet1";
-    fetchHotelRate(SHEET_NAME,sheetPos)
+    fetchHotelRate(SHEET_NAME, sheetPos);
     fetchAddonData(SHEET_NAME);
-  
-
   }
   console.log("i am using " + SHEET_NAME);
-  
- 
-  
 }
 // this function helps to switch the hotel accorrding to the hotel Type
 
@@ -1196,7 +1185,7 @@ function specialRoomCategories(sheetPos) {
   SPREADSHEET_ID = "1KP1-2HrfPObwMr4_IIEuuS0Vpk_KObKfog7qArUbhxk";
   SHEET_NAME = "Sheet1";
   YOUR_API_KEY = "AIzaSyAiexK0EyyHNWViGEp29zbkCwTnklGYvVc";
-  
+
   function fetchSpecialRoomategories() {
     fetch(
       `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${SHEET_NAME}!${sheetPos}?key=${YOUR_API_KEY}`
@@ -1209,7 +1198,7 @@ function specialRoomCategories(sheetPos) {
         let roomStatus = []; //to get the room requirement of the user if no room selected it is 0 else 1;
         const truePos = []; //this array is used to get the postition of true element in room status array
         let listofHotels = []; //this will be finally displayed
-        
+
         document
           .getElementById("food-id")
           .addEventListener("change", function () {
@@ -1331,19 +1320,18 @@ document.querySelector(".hotel").addEventListener("click", function (e) {
   }
 });
 
-
-function calculateCostforHotels(filter, optionMenu, hotelName,SHEET_NAME) { 
-  console.log('reading for calcautecostforhetle '+ SHEET_NAME)
+function calculateCostforHotels(filter, optionMenu, hotelName, SHEET_NAME) {
+  console.log("reading for calcautecostforhetle " + SHEET_NAME);
 
   document.querySelector(".Submit").addEventListener("click", function (e) {
-    if(blockedCount===0||normaldays===0){
-      trackroomAndFoodCost=[]
-        }
-    console.log('sheet name from calcualte hotes cost'+ SHEET_NAME)
-    let roomAndFoodCost=0;
-    
-    console.log("originalTotalNights "+originalTotalNights)
-    
+    if (blockedCount === 0 || normaldays === 0) {
+      trackroomAndFoodCost = [];
+    }
+    console.log("sheet name from calcualte hotes cost" + SHEET_NAME);
+    let roomAndFoodCost = 0;
+
+    console.log("originalTotalNights " + originalTotalNights);
+
     console.log("                                    ");
     console.log(
       "----------------------3rd event listnre for submit----------------------"
@@ -1385,38 +1373,45 @@ function calculateCostforHotels(filter, optionMenu, hotelName,SHEET_NAME) {
         console.log(roomRate);
         roomAndFoodCost += roomsSelected * roomRate;
         console.log(roomAndFoodCost + " totalCostForHotelRooms for 1 night");
-        
       }
     });
-    
+
     console.log(roomAndFoodCost + " totalCostForHotelRooms for 1 night");
     console.log(`for${totalNights} nights ${roomAndFoodCost * totalNights}`);
-   
-    if(SHEET_NAME==='Sheet1'){
-      
-      if(totalNights!==originalTotalNights){
-        totalNights=originalTotalNights
-      }//to prevent changing of the total night values
-      console.log(totalNights+' total nights reduced to '+ normaldays+ ' normal days as it is sheet 1')
-      totalNights=normaldays
-      
-    }
-    else{
-      if(totalNights!==originalTotalNights){
-        totalNights=originalTotalNights
-      }
-      console.log(totalNights+' total nights reduced to '+ blockedCount+' blocked day as it is sheet 2')
 
-      totalNights=blockedCount
-      
+    if (SHEET_NAME === "Sheet1") {
+      if (totalNights !== originalTotalNights) {
+        totalNights = originalTotalNights;
+      } //to prevent changing of the total night values
+      console.log(
+        totalNights +
+          " total nights reduced to " +
+          normaldays +
+          " normal days as it is sheet 1"
+      );
+      totalNights = normaldays;
+    } else {
+      if (totalNights !== originalTotalNights) {
+        totalNights = originalTotalNights;
+      }
+      console.log(
+        totalNights +
+          " total nights reduced to " +
+          blockedCount +
+          " blocked day as it is sheet 2"
+      );
+
+      totalNights = blockedCount;
     }
-    trackroomAndFoodCost.push(roomAndFoodCost*totalNights);
-    console.log("trackroomAndFoodCost "+trackroomAndFoodCost)
+    trackroomAndFoodCost.push(roomAndFoodCost * totalNights);
+    console.log("trackroomAndFoodCost " + trackroomAndFoodCost);
     //since the event listner prints only the last event we need to track the previous elemnt as well so we store it in array and use it later
     // Using the Array.reduce() method to calculate the sum
-    roomAndFoodCost = trackroomAndFoodCost.slice(0, 2).reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+    roomAndFoodCost = trackroomAndFoodCost
+      .slice(0, 2)
+      .reduce((accumulator, currentValue) => accumulator + currentValue, 0);
 
-console.log("The sum is: " + roomAndFoodCost);
+    console.log("The sum is: " + roomAndFoodCost);
 
     console.log("sightSeeingCost " + sightSeeingCost);
     console.log("costForPickandDrop " + costForPickandDrop);
@@ -1429,12 +1424,16 @@ console.log("The sum is: " + roomAndFoodCost);
 
     // console.log("formValidationStatus :"+formValidationStatus);
     console.log(document.getElementById("hotel-type-id").selectedIndex);
+    const servicePerHead = document.getElementById("service-id").value;
+
     if (document.getElementById("hotel-type-id").selectedIndex !== 5) {
       let allCost =
         roomAndFoodCost +
         sightSeeingCost +
         costForPickandDrop +
         totalPersons * numberValue;
+      const includingServiceChargePerHead =
+        (allCost / totalPersons) + Number(servicePerHead);
       if (document.getElementById("food-id").selectedIndex === 0) {
         allCost =
           roomAndFoodCost * totalNights +
@@ -1443,9 +1442,8 @@ console.log("The sum is: " + roomAndFoodCost);
           southIndianFood +
           totalPersons * numberValue;
       }
-      document.getElementById(
-        "result"
-      ).textContent = ` The Cost of your Customised Package is Rs ${allCost} `;
+      // displayResult(allCost,includingServiceChargePerHead);
+      
     } else {
       let formattedContent = "";
       let finalCost =
@@ -1466,15 +1464,13 @@ console.log("The sum is: " + roomAndFoodCost);
         resultSpecial.innerHTML = `<pre style="text-align: left">${formattedContent} </pre>`;
       }
     }
- 
+
     console.log(
       "-------------------End of 3rd event listner------------------"
     );
   });
 }
-function displayUserMessage(){
-    
-}
+function displayUserMessage() {}
 //this function filters the hotel alone
 function filteredHotels(arr, ind) {
   console.log("i am inside filtered hotel");
@@ -1888,10 +1884,9 @@ function hideCalender(e) {
   }
 }
 
-
-let calenderDates = [];//this is for calculating total Nights
-let compareDates=[]//this for genrating allt he between dates in correct format
-let blockeddateCounter=0;
+let calenderDates = []; //this is for calculating total Nights
+let compareDates = []; //this for genrating allt he between dates in correct format
+let blockeddateCounter = 0;
 document.querySelector(".date-in-out").addEventListener("click", sepdates);
 function sepdates(e) {
   //seperate the block dates and normal dates
@@ -1899,30 +1894,26 @@ function sepdates(e) {
   let dateOut = document.querySelector(".table-date-out");
 
   const clickedElement = e.target;
-  
+
   const clickedDate = clickedElement.getAttribute("data-date");
-  
 
-
-
-  
   if (e.target.closest(".table-date")) {
     dateIn = clickedDate;
-    console.log("dateIn "+dateIn)
+    console.log("dateIn " + dateIn);
     const inDate = new Date(dateIn);
-    console.log("inDate "+inDate)
-    
+    console.log("inDate " + inDate);
+
     calenderDates.push(inDate);
     compareDates.push(dateIn);
   } else if (e.target.closest(".table-date-out")) {
     dateOut = clickedDate;
-    console.log(dateOut)
+    console.log(dateOut);
     const OutDate = new Date(dateOut);
 
     calenderDates.push(OutDate);
     compareDates.push(dateOut);
   }
-  console.log("calenderDates "+calenderDates)
+  console.log("calenderDates " + calenderDates);
   if (calenderDates.length > 1) {
     const calenderIn = calenderDates[0];
     const calenderOut = calenderDates[1];
@@ -1930,19 +1921,19 @@ function sepdates(e) {
     let timeDiff = calenderOut.getTime() - calenderIn.getTime();
     totalNights = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
     console.log("Nights: " + totalNights);
-    originalTotalNights =totalNights
-    
+    originalTotalNights = totalNights;
+
     function formatDate(checkInDate, checkOutDate) {
       const datesArray = [];
       const currentDate = new Date(checkInDate);
       const endDate = new Date(checkOutDate);
-      
+
       while (currentDate < endDate) {
         const year = currentDate.getFullYear();
         const month = String(currentDate.getMonth() + 1).padStart(2, "0");
-        const day = String(currentDate.getDate()+1).padStart(2, "0");
+        const day = String(currentDate.getDate() + 1).padStart(2, "0");
         const formattedDate = `${year}-${month}-${day}`;
-        console.log(formattedDate)
+        console.log(formattedDate);
 
         datesArray.push(formattedDate);
 
@@ -1951,19 +1942,20 @@ function sepdates(e) {
       }
       return datesArray;
     }
-   
+
     const betweenDates = formatDate(compareDates[0], compareDates[1]);
     console.log(betweenDates);
     function countBlockedDates(datesBetweenCheckInOut, blockedDates) {
-      const blockedCount = betweenDates.filter(date => blockedDates.includes(date)).length;
+      const blockedCount = betweenDates.filter((date) =>
+        blockedDates.includes(date)
+      ).length;
       return blockedCount;
     }
     blockedCount = countBlockedDates(betweenDates, blockedDates);
 
     console.log("total block dates " + blockedCount);
-    normaldays=totalNights-blockedCount
-    console.log('normal dates '+ normaldays)
-
+    normaldays = totalNights - blockedCount;
+    console.log("normal dates " + normaldays);
   }
 
   for (const date of blockedDates) {
@@ -1986,3 +1978,64 @@ function sepdates(e) {
 // Output: 3
 // observering the customized hotel for getting it filled
 
+// Define the generatePDF function in the global scope
+function generatePDFs() {
+  // Create the document definition
+  let docDefinition = {
+    content: [
+      {text: 'Unordered list', style: 'header'},
+      {
+        ul: [
+          
+          'Two Way SL Train Tickets',
+          `${totalNights} Nights Nights Accommodation in AC Rooms with Swimming Pool Resorts in North Goa, near Calangute Beach`,
+          'All Days South Indian Breakfast, Lunch & Dinner Food - 4 Times',
+          '3 Days North Goa & South Goa Sightseeing by Two Wheeler',
+          `Pickup from ${document.querySelector(".add-pickup").value}`,
+          'Drop to Vasco da Gama Railway Station',
+          'Local Tamil Speaking Coordinator assistance 24/7 over the course of your stay.',
+          'Basic Medical Support with Free Taxi service for near by Hospital is also Included in this Package'
+        ]
+      },
+      
+    ],
+    styles: {
+      header: {
+        bold: true,
+        fontSize: 15
+      }
+    },
+    defaultStyle: {
+      fontSize: 12
+    }
+  };
+
+  // Generate the PDF and initiate download
+  pdfMake.createPdf(docDefinition).download('Goa_Booking.pdf');
+}
+
+// Attach event listener to the button after the page loads
+document.addEventListener('DOMContentLoaded', function() {
+  // Get the button element by its ID
+  let generatePDFBtn = document.getElementById('generate-pdf-btn');
+
+  // Attach the click event listener to the button
+  generatePDFBtn.addEventListener('click', generatePDFs);
+});
+
+document.querySelector('.Submit').addEventListener('click',displayResult)
+function displayResult(allCost,includingServiceChargePerHead){
+  const overlay = document.querySelector(".overlay");
+  const messageCard=document.querySelector('.message-card')
+  overlay.style.display='block'
+  messageCard.style.display='block'
+  document.getElementById(
+    "result-test"
+  ).innerHTML = `<p>The Cost of your Customised Package is Rs ${allCost}</p>\n
+  <p>The cost per head is ${allCost / totalPersons}</p>\n
+  <p>The cost per head including service charge ${includingServiceChargePerHead}</p>\n
+  <p>The cost per head including Service and GST ${
+    includingServiceChargePerHead * 0.05 + includingServiceChargePerHead
+  } </p>`;
+
+}

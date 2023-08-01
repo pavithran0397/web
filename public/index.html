@@ -11,8 +11,7 @@
     <div class="container">
       <form
         id="dataForm"
-        action="http://localhost:3000/generate-pdf"
-        method="post"
+
       >
         <h3>Customize Your Trip</h3>
         <label class="main-label labels" for="no-of-persons"
@@ -25,7 +24,7 @@
         />
         <div class="date-in-out">
           <div class="date-in">
-            <label for="date-in-id" class="date-in">Hotel Check In</label>
+            <label for="date-in-id" class="main-label date-in">Hotel Check In</label>
             <nav id="nav-in">
               <button id="pre-month" class="btn nav-arrow-in">&lt;</button>
               <button id="date-text" class="btn month-in"></button>
@@ -38,7 +37,7 @@
             
           </div>
           <div class="date-out">
-            <label for="date-in-out" class="date-out">Hotel Check Out</label>
+            <label for="date-in-out" class="main-label date-out">Hotel Check Out</label>
             <nav id="nav-out">
               <button id="pre-month-out" class="btn nav-arrow-out">&lt;</button>
               <button id="date-text-out" class="btn month-out"></button>
@@ -66,9 +65,21 @@
             <button class="test-right test-right-out" type="button">&gt;</button>
           </div>
         </div>
-        <div class="overlay"></div>
+       
+        <div class="overlay">
+          <div class="message-card" style="display: none;">
+            <div class="message-content">
+              <div id="result-test" class="result-content">
+                <!-- The result content will be displayed here -->
+              </div>
+            </div>
+            <button class="close-btn" onclick="closeOverlay()">Close</button>
+          </div>
+        </div>
+        
+        
 
-        <div class="check-in-out">
+        <!-- <div class="check-in-out">
           <div class="label-check">
             <label class="main-label" for="check-in">Hotel Check In</label>
           </div>
@@ -79,7 +90,7 @@
           </div>
 
           <input type="date" id="check-out" name="check-out " />
-        </div>
+        </div> -->
 
         <div class="hotel">
           <label class="main-label labels" for="hotel-select"
@@ -461,6 +472,12 @@
             </div>
           </div>
         </div>
+        <div class="service-inclusion">
+          <div class="main-label service-labek">Enter the service Charge per Head</div>
+          <input type="number" name="service-inclusion" id="service-id">
+        </div>
+        <button id="generate-pdf-btn">Generate PDF</button>
+
 
         <div class="Submit">
           <button type="submit">Submit</button>
@@ -469,8 +486,11 @@
         <button class="fill" type="button">fill</button>
       </form>
     </div>
-    `
-
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.68/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.68/vfs_fonts.js"></script>
+    
+    
     <script src="script.js"></script>
   </body>
 </html>

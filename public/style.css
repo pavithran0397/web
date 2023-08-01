@@ -52,7 +52,7 @@ body{
 .tebut{
   display: none;
   position: fixed;
-  top: 24%;
+  top: 12%;
   left: 50%;
   transform: translate(-50%, -50%);
   
@@ -61,6 +61,15 @@ body{
 }
 .tebut-container{
   display: flex;
+}
+.service-inclusion{
+  display: flex;
+justify-content: space-between;
+align-items: center;
+
+}
+#service-id{
+  margin-right: 0;
 }
 .test{
   display: none;
@@ -128,6 +137,37 @@ body{
   background-color: rgba(0, 0, 0, 0.5); /* Adjust the alpha value for the desired transparency */
   backdrop-filter: blur(5px); /* Adjust the blur intensity as needed */
   z-index: 9998; /* Ensure the overlay appears below the calendars */
+}
+.message-card {
+  /* Apply styles for the message card */
+  display: flex; /* Use flexbox for centering */
+  align-items: center; /* Center vertically */
+  justify-content: center; /* Center horizontally */
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  word-wrap: break-word;
+  z-index: 9999;
+  max-width: 90%;
+}
+.result-content {
+  /* Apply styles for the content inside the message card */
+  font-family: Arial, sans-serif;
+  word-break: break-all;
+}
+.message-content {
+  position: relative;
+
+  
+
+}
+p{
+  word-wrap: break-word;
 }
 td{
   border-left: solid;
@@ -214,6 +254,9 @@ label {
   width: 100%;
   font-size: 1rem;
 }
+#result-test{
+  background-color: #fff;
+}
 
 #result {
   margin: 10px;
@@ -221,18 +264,18 @@ label {
   text-align: center;
 }
 
-.room-options,
+/* .room-options,
 .check-in-out {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: space-between;
   
-}
+} */
 
 span {
   display: flex;
-  flex-direction: row;
+  justify-content: space-between;
   
   border: solid 1px rgb(22, 22, 22);
   margin: 10px;
@@ -267,11 +310,12 @@ span {
 .hidden-radio {
   display: none;
 }
-.sight,.pick-up-text,.pick-up-drop-text,.add-on-text,.addon-content-text {
+.sight,.pick-up-text,.pick-up-drop-text,.add-on-text,.addon-content-text,.service-inclusion {
   margin: 10px;
   padding-top: 10px;
 }
 #add-on-options{
+  height: 11rem;
   float: right;
 }
 .hiddenQuestion,
@@ -345,6 +389,7 @@ span {
   }
   span{
     display: flex;
+    flex-direction: row;
     justify-content: space-between;
   }
   label{
@@ -371,4 +416,9 @@ span {
     justify-content: space-between;
     
   }
+  .message-card {
+    padding: 10px; /* Reduce padding on smaller screens */
+    width: 90%; /* Allow the card to take up the full viewport width on smaller screens */
+  }
+
 }
