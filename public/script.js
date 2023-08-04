@@ -1983,8 +1983,15 @@ function generatePDFs() {
   // Create the document definition
   let docDefinition = {
     content: [
+       {
+        image: 'G:\c\Desktop\project\website\web-main\public\logo.png',
+        width: 150, // Adjust the width as needed
+        alignment: 'center',
+        margin: [0, 10] // Adjust the top margin as needed
+      },
       {text: 'Unordered list', style: 'header'},
       {
+        
         ul: [
           
           'Two Way SL Train Tickets',
