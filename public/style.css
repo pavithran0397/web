@@ -49,6 +49,19 @@ body{
   display: block;
   
 }
+#generate-pdf-btn{
+  background: #e70b0b;
+    color: white;
+    font-size: larger;
+    margin-top: 5%;
+}
+.btn-close{
+  /* margin-left: 45%; */
+  margin-top: 5%;
+}
+.tbl-result{
+  border-top: solid;
+}
 .tebut{
   display: none;
   position: fixed;
@@ -58,6 +71,11 @@ body{
   
 
   z-index: 9999;  
+}
+.btns{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 .tebut-container{
   display: flex;

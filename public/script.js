@@ -21,9 +21,22 @@ let blockedCount = 0;
 let normaldays = 0;
 let fileter;
 let trackroomAndFoodCost = [];
+let valuesArray = [];//for south indian food
+let siteSeeingStatus='';//to generate pdf inclusion and exclusion
+let pickUpDropStatus='';
+let addonStatus='';
 let originalTotalNights = 0;
+let includingServiceChargePerHead=0;
+let allCost =0;
 const optionMenu = document.getElementById("hotel-id");
 let hotels;
+//lets make a function to get the text content of selected index
+function textContentOfSelectedIndex(id){
+  const selectedItem=document.getElementById(id)
+  const selectedItemIndex=selectedItem.selectedIndex;
+  return selectedItem.options[selectedItemIndex].textContent;
+
+}
 const blockedDates = [
   "2023-08-10",
   "2023-08-11",
@@ -1427,12 +1440,12 @@ function calculateCostforHotels(filter, optionMenu, hotelName, SHEET_NAME) {
     const servicePerHead = document.getElementById("service-id").value;
 
     if (document.getElementById("hotel-type-id").selectedIndex !== 5) {
-      let allCost =
+       allCost =
         roomAndFoodCost +
         sightSeeingCost +
         costForPickandDrop +
         totalPersons * numberValue;
-      const includingServiceChargePerHead =
+      includingServiceChargePerHead =
         (allCost / totalPersons) + Number(servicePerHead);
       if (document.getElementById("food-id").selectedIndex === 0) {
         allCost =
@@ -1442,7 +1455,7 @@ function calculateCostforHotels(filter, optionMenu, hotelName, SHEET_NAME) {
           southIndianFood +
           totalPersons * numberValue;
       }
-      // displayResult(allCost,includingServiceChargePerHead);
+      displayResult(allCost,includingServiceChargePerHead);
       
     } else {
       let formattedContent = "";
@@ -1536,7 +1549,7 @@ document.getElementById("food-id").addEventListener("change", function () {
 //function to get south indian food input
 function calcSif() {
   const sifElements = document.querySelectorAll(".it");
-  const valuesArray = [];
+  
   costForSif = 0;
 
   sifElements.forEach((element) => {
@@ -1979,41 +1992,257 @@ function sepdates(e) {
 // observering the customized hotel for getting it filled
 
 // Define the generatePDF function in the global scope
-function generatePDFs() {
+function generatePDFs(e) {
+  e.preventDefault();
+  const yourName = window.prompt("Enter your name:");
+  const bookingLocation=window.prompt('Enter booking Location')
+  const assName=window.prompt('enter Travel Assistant Name')
+
+  console.log(allCost,totalPersons,includingServiceChargePerHead);
+
+  let pickupAndDrop=`Pickup from Thivim Railway Station service, Drop to Thivim Railway Station service `
+
+  let nights=`${totalNights} Nights Accommodation in AC Rooms with Swimming Pool Resorts in North Goa, near Calangute Beach`;
+  let foodTimes=`All Days On Restaurant - Map  Times Times`
+
+  let siteSeeing='4 Days North Goa & South Goa Sightseeing by Two Wheeler';
+  let translator=`Local Malayalam Speaking Coordinator assistance 24/7 over the course of your stay. `
+  let medical='Basic Medical Support with Free Taxi service for near by Hospital is also Included in this Package.'; 
+  let ticket=`Two way Train Tickets from your Hometown to Goa, Round Trip Flight ` ;
+  let GST=`Gst 5%`;
+  let bevarage='Alcoholic beverages';
+  let disclaimer='Any activities not specifically mentioned in the inclusions'
+
+
+  const selectedFoodIndex=document.getElementById('food-id').selectedIndex
+  let inclusionList=[];
+  let exclusionList=[];
+  let statusArray=[];
+  let masterList=[pickupAndDrop,nights,foodTimes,siteSeeing,translator,medical,ticket,GST,bevarage,disclaimer]
+  //to determine if services are added in inclusion or exclusion
+  
+  siteSeeingStatus= document.querySelector('.add-sight').textContent
+  pickUpDropStatus=document.querySelector('.add-pickup-drop').textContent
+  addonStatus=document.querySelector('.add-add-on').textContent
+  //lets put all the status into array
+  //if it is add service state then they are put in exclusion
+  statusArray=[pickUpDropStatus,sightSeeingCost,addonStatus]
+
+
+  //this for modifying the list for inclusions for foodTimes
+
+  
+  
+  let selectedFoodType=textContentOfSelectedIndex('food-id')
+  let countOfFood=totalNights*Number(selectedFoodIndex)
+  console.log(valuesArray)
+  //to get the sum of all the south india n food input
+  console.log(selectedFoodIndex==='0');
+  console.log(selectedFoodIndex);
+  if(selectedFoodIndex===0){
+    selectedFoodType='South Indian Food';
+    let sum=0;
+    document.querySelectorAll('.it').forEach((element)=>{
+
+      if(element===undefined){
+        element=0;
+      }
+     
+      sum=Number(element.value)+sum;
+    }
+  )
+  countOfFood=sum;
+  console.log("countOfFood "+countOfFood)
+
+    
+  } 
+  console.log(selectedFoodType)
+  foodTimes=`All Days On Restaurant ${selectedFoodType} - Map ${countOfFood} Times`
+
+
+ 
+  statusArray.forEach((status)=>{
+    if(status='Add service')//then that is EXcluded
+    {
+      inclusionList=[nights,foodTimes,translator,medical]
+    }
+  
+  })
+  exclusionList=masterList.filter(items=>!inclusionList.includes(items))
+console.log(exclusionList);  
+  
   // Create the document definition
+
   let docDefinition = {
+    header: {
+      // Place the image at the top of the page and center it
+      stack: [
+        {
+          image: dataURL,
+          width: 600, // Adjust the width of the image as needed
+          height:120,
+          alignment: 'center',
+        },
+      ],
+      margin: [-20, 0],
+    },
     content: [
-       {
-        image: 'G:\c\Desktop\project\website\web-main\public\logo.png',
-        width: 150, // Adjust the width as needed
-        alignment: 'center',
-        margin: [0, 10] // Adjust the top margin as needed
+       
+      { 
+        text:'"Sun-Kissed Delights: Unveiling the Best of Goa - Customized Quotation"',
+        style:'header',
+        relativePosition: { x: 0, y: 140 },
+            
+        },
+        {
+            text:'Dear Brother/Sister,',
+            relativePosition: { x: 0, y: 250 },
+            
+        },
+        {
+            text:'Thank you for considering Tick your Tour Private Limited for your upcoming trip to Goa. We are delighted to present you with a customized quotation for our exciting Goa Package. Please find the details below.',
+            relativePosition: { x: 0, y: 270 },
+        },
+        {
+          table: {
+              widths: [250,250],
+              heights: [30,30,30,30,30,30,30],
+				body: [
+					['Date', `${today.toISOString().slice(0, 10)}`],
+					['Name ', `${yourName}`],
+					['Location ', `${bookingLocation}`],
+					['Number of travellers ', `${totalPersons}`],
+					['Duration ', `${totalNights} Nights/${totalNights+1} days`],
+					['Travel Assissant Name ', `${assName}`],
+					['Tour Date ', `${document.getElementById("date-text").textContent}`],
+					
+				]
+			},
+			relativePosition: { x: 0, y: 350 },
+      color:'blue',
+			
       },
-      {text: 'Unordered list', style: 'header'},
       {
-        
+        text:'Inclusions :',
+        color:'red',
+        fontSize:15,
+        pageBreak:'before',
+        relativePosition: { x: 0, y: 100 },
+    },
+    {
+        ul: inclusionList,
+        relativePosition: { x: 10, y: 120 },
+    },
+    {
+        text:'Exclusions :',
+        color:'red',
+        fontSize:15,
+        relativePosition: { x: 0, y: 250 },
+    },
+    {
         ul: [
+      'Pickup from Thivim Railway Station, Drop to Thivim Railway Station',
+      '3 Nights Nights Accommodation in AC Rooms with Swimming Pool Resorts in North Goa, near Calangute Beach',
+      'All Days On Restaurant Breakfast & Dinner Food - Map 6 Times Times',
+      '4 Days North Goa & South Goa Sightseeing by Two Wheeler',
+      'Local Malayalam Speaking Coordinator assistance 24/7 over the course of your stay. ',
+      'Basic Medical Support with Free Taxi  service for near by Hospital is also Included in this Package.'
+    ],
+    relativePosition: { x: 10, y: 270 },
+    },
+    {
+      table: {
+          widths: [250,250],
+          heights: [30,30,30,30,30,30,30],
+    body: [
+      ['Type of Package', `${textContentOfSelectedIndex('hotel-type-id')}`],
+      ['Hotel Options', `${textContentOfSelectedIndex('hotel-id')}`],
+      ['Number of Rooms ', 'Another one here'],
+      ['Travelling ', 'No Train/Flight/Bus'],
+      ['Package Price Per Head ', `Rs ${allCost/totalPersons}`],
+      ['GST 5% ', `Rs ${
+        includingServiceChargePerHead * 0.05 + includingServiceChargePerHead
+      }`],
+      ['Total Package Price Including GST ', `Rs ${
+        includingServiceChargePerHead * 0.05 + allCost
+      }`],
+      
+    ]
+  },
+// 			layout: 'noBorders',
+  relativePosition: { x: 0, y: 400 },
+  color:'blue',
+  bold:true,
+  },
+  {
+      text:'"Fun in the Sun: Comic Capers in Coastal Playground of Goa!"',
+      pageBreak:'before',
+      color:'red',
+      fontSize:'14',
+      alignment:'center',
+      relativePosition: { x: 0, y: 100 },
+      
+      
+  },
+  {
+      table: {
+          widths: [200,300],
+          heights: [10,30,30,30,30,30,30],
+    body: [
+      [{
+      
+                    image:agodaFort,
+                    fit: [200,200],
           
-          'Two Way SL Train Tickets',
-          `${totalNights} Nights Nights Accommodation in AC Rooms with Swimming Pool Resorts in North Goa, near Calangute Beach`,
-          'All Days South Indian Breakfast, Lunch & Dinner Food - 4 Times',
-          '3 Days North Goa & South Goa Sightseeing by Two Wheeler',
-          `Pickup from ${document.querySelector(".add-pickup").value}`,
-          'Drop to Vasco da Gama Railway Station',
-          'Local Tamil Speaking Coordinator assistance 24/7 over the course of your stay.',
-          'Basic Medical Support with Free Taxi service for near by Hospital is also Included in this Package'
-        ]
       },
+      {
+                    text:'Aguda Fort: Prepare for a blast from the past at Aguda Fort! This ancient stronghold has seen it all - from fierce battles to jaw-dropping views. It is the perfect spot to channel your inner history buff while enjoying some fort-ified fun!',
+          
+      }],
+      [{
+      
+                    image:anjunaBeach,
+                    fit: [200,200],
+          
+      },
+      {
+                    text:'Anjuna Beach: Get ready to beach out at Anjuna Beach! Known for its lively flea markets, bohemian vibes, and groovy beach parties, this place is a haven for free spirits and dancing souls. Do not forget your dancing shoes and your inner hippie!'
+      }],
+      [{
+      
+                    image:bagaBeach,
+                    fit: [200,200],
+          
+      },
+      {
+                    text:'Baga Beach: Prepare yourself for a beach experience like no other at Baga Beach! From thrilling water sports that will make your heart race to vibrant beach shacks serving up lip-smacking seafood, this place will have you saying, Baga, please!',
+      }],
+      [{
+      
+                    image:calBeach,
+                    fit: [200,200],
+          
+      },
+      {
+                    text:'Calangute Beach: Calangute Beach is the epitome of beach bliss! Sun, sand, and a never-ending carousel of water sports await you. So grab your sunscreen, put on your coolest shades, and get ready to make waves of unforgettable memories!',
+      }],
+      
+      
+    ]
+  },
+  pageBreak:'after',
+  relativePosition: { x: 0, y: 130 },
+  },
+  
       
     ],
     styles: {
       header: {
         bold: true,
-        fontSize: 15
+        fontSize: 23,
+        alignment: 'center', // Optionally center the header text
+        color:'red'
       }
-    },
-    defaultStyle: {
-      fontSize: 12
     }
   };
 
@@ -2023,6 +2252,7 @@ function generatePDFs() {
 
 // Attach event listener to the button after the page loads
 document.addEventListener('DOMContentLoaded', function() {
+  
   // Get the button element by its ID
   let generatePDFBtn = document.getElementById('generate-pdf-btn');
 
@@ -2038,11 +2268,26 @@ function displayResult(allCost,includingServiceChargePerHead){
   messageCard.style.display='block'
   document.getElementById(
     "result-test"
-  ).innerHTML = `<table><tr><td>The Cost of your Customised Package is</td> <td>Rs ${allCost}</td></tr>
-  <tr><td>The cost per head is </td> <td>${allCost / totalPersons}</td>\n
-  <tr><td>The cost per head including service charge </td> <td> ${includingServiceChargePerHead}</td></tr>
-  <tr><td>The cost per head including Service and GST </td> <td>${
-    includingServiceChargePerHead * 0.05 + includingServiceChargePerHead
-  } </td></tr></table>`;
+  ).innerHTML = `<h1 style="
+  background: black;
+  color: white;
+  padding-left: 25%;
+">Packge Cost</h1>
+<table class="tbl-result" style="
+  border: none;
+"><tbody><tr><td>The Cost of your Customised Package is</td> <td class="rate"> Rs ${allCost}</td></tr>
+<tr><td>The cost per head is </td> <td class="rate"> Rs ${allCost/totalPersons}</td>
+
+</tr><tr><td>The cost per head including service charge </td> <td class="rate"> Rs ${includingServiceChargePerHead}</td></tr>
+<tr><td>The cost per head including Service and GST </td> <td class="rate"> Rs ${
+  includingServiceChargePerHead * 0.05 + includingServiceChargePerHead
+} </td></tr></tbody></table>`;
+
+  //close buuton event listner
+  document.querySelector('.btn-close').addEventListener('click',function(){
+    overlay.style.display='none'
+    messageCard.style.display='none'
+    
+  })
 
 }
