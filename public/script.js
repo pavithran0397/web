@@ -1,6 +1,5 @@
 "use strict";
 
-
 let textArray = [];
 let totalPersons = 0;
 let totalNights = 0;
@@ -21,21 +20,22 @@ let blockedCount = 0;
 let normaldays = 0;
 let fileter;
 let trackroomAndFoodCost = [];
-let valuesArray = [];//for south indian food
-let siteSeeingStatus='';//to generate pdf inclusion and exclusion
-let pickUpDropStatus='';
-let addonStatus='';
+let valuesArray = []; //for south indian food
+let siteSeeingStatus = false; //to generate pdf inclusion and exclusion
+let pickUpDropStatus = false;
+let addonStatus = "";
 let originalTotalNights = 0;
-let includingServiceChargePerHead=0;
-let allCost =0;
+let includingServiceChargePerHead = 0;
+let allCost = 0;
+let perHeadCost = 0;
+let radioButtons=[];
 const optionMenu = document.getElementById("hotel-id");
 let hotels;
 //lets make a function to get the text content of selected index
-function textContentOfSelectedIndex(id){
-  const selectedItem=document.getElementById(id)
-  const selectedItemIndex=selectedItem.selectedIndex;
+function textContentOfSelectedIndex(id) {
+  const selectedItem = document.getElementById(id);
+  const selectedItemIndex = selectedItem.selectedIndex;
   return selectedItem.options[selectedItemIndex].textContent;
-
 }
 const blockedDates = [
   "2023-08-10",
@@ -259,7 +259,7 @@ function handleRadioClick() {
 }
 
 //event listneer method when radio button is clicked
-const radioButtons = document.querySelectorAll('input[name="sight-seeing"]');
+radioButtons = document.querySelectorAll('input[name="sight-seeing"]');
 radioButtons.forEach((radio) => {
   radio.addEventListener("click", handleRadioClick);
 });
@@ -1440,13 +1440,13 @@ function calculateCostforHotels(filter, optionMenu, hotelName, SHEET_NAME) {
     const servicePerHead = document.getElementById("service-id").value;
 
     if (document.getElementById("hotel-type-id").selectedIndex !== 5) {
-       allCost =
+      allCost =
         roomAndFoodCost +
         sightSeeingCost +
         costForPickandDrop +
         totalPersons * numberValue;
-      includingServiceChargePerHead =
-        (allCost / totalPersons) + Number(servicePerHead);
+      perHeadCost = allCost / totalPersons;
+      includingServiceChargePerHead = perHeadCost + Number(servicePerHead);
       if (document.getElementById("food-id").selectedIndex === 0) {
         allCost =
           roomAndFoodCost * totalNights +
@@ -1455,8 +1455,7 @@ function calculateCostforHotels(filter, optionMenu, hotelName, SHEET_NAME) {
           southIndianFood +
           totalPersons * numberValue;
       }
-      displayResult(allCost,includingServiceChargePerHead);
-      
+      displayResult(allCost, includingServiceChargePerHead);
     } else {
       let formattedContent = "";
       let finalCost =
@@ -1549,7 +1548,7 @@ document.getElementById("food-id").addEventListener("change", function () {
 //function to get south indian food input
 function calcSif() {
   const sifElements = document.querySelectorAll(".it");
-  
+
   costForSif = 0;
 
   sifElements.forEach((element) => {
@@ -1994,281 +1993,417 @@ function sepdates(e) {
 // Define the generatePDF function in the global scope
 function generatePDFs(e) {
   e.preventDefault();
-  const yourName = window.prompt("Enter your name:");
-  const bookingLocation=window.prompt('Enter booking Location')
-  const assName=window.prompt('enter Travel Assistant Name')
+  const yourName = window.prompt("Enter Customer name:");
+  const bookingLocation = window.prompt("Enter Customer Location");
+  const assName = window.prompt("Enter Travel Assistant Name");
+  const translang = window.prompt("Enter translator Language");
 
-  console.log(allCost,totalPersons,includingServiceChargePerHead);
+  console.log(allCost, totalPersons, includingServiceChargePerHead);
 
-  let pickupAndDrop=`Pickup from Thivim Railway Station service, Drop to Thivim Railway Station service `
+  let pickupAndDrop = `pickup drop service `;
 
-  let nights=`${totalNights} Nights Accommodation in AC Rooms with Swimming Pool Resorts in North Goa, near Calangute Beach`;
-  let foodTimes=`All Days On Restaurant - Map  Times Times`
+  let nights = `${totalNights} Nights Accommodation in AC Rooms with Swimming Pool Resorts in North Goa, near Calangute Beach`;
+  let foodTimes = `All Days On Restaurant - Map  Times Times`;
 
-  let siteSeeing='4 Days North Goa & South Goa Sightseeing by Two Wheeler';
-  let translator=`Local Malayalam Speaking Coordinator assistance 24/7 over the course of your stay. `
-  let medical='Basic Medical Support with Free Taxi service for near by Hospital is also Included in this Package.'; 
-  let ticket=`Two way Train Tickets from your Hometown to Goa, Round Trip Flight ` ;
-  let GST=`Gst 5%`;
-  let bevarage='Alcoholic beverages';
-  let disclaimer='Any activities not specifically mentioned in the inclusions'
+  let siteSeeing = "Sight Seeing Service North Goa and South Goa";
+  let translator = `Local ${translang} Speaking Coordinator assistance 24/7 over the course of your stay. `;
+  let medical =
+    "Basic Medical Support with Free Taxi service for near by Hospital is also Included in this Package.";
+  let ticket = `Two way Train Tickets from your Hometown to Goa, Round Trip Flight `;
+  let GST = `Gst 5%`;
+  let bevarage = "Alcoholic beverages";
+  let disclaimer =
+    "Any activities not specifically mentioned in the inclusions";
 
-
-  const selectedFoodIndex=document.getElementById('food-id').selectedIndex
-  let inclusionList=[];
-  let exclusionList=[];
-  let statusArray=[];
-  let masterList=[pickupAndDrop,nights,foodTimes,siteSeeing,translator,medical,ticket,GST,bevarage,disclaimer]
-  //to determine if services are added in inclusion or exclusion
+  const selectedFoodIndex = document.getElementById("food-id").selectedIndex;
+  let inclusionList = [];
+  let exclusionList = [];
+  let statusArray = [];
   
-  siteSeeingStatus= document.querySelector('.add-sight').textContent
-  pickUpDropStatus=document.querySelector('.add-pickup-drop').textContent
-  addonStatus=document.querySelector('.add-add-on').textContent
+  //for pick up and drop status
+  if(pickupPoint.value!==''||dropPoint.value!==""){
+
+    console.log('changing the pickup and drop value')
+
+    pickupAndDrop = `Pickup service from ${pickupPoint.value} , Drop service to ${dropPoint.value}`;
+    pickUpDropStatus=true;
+  }
+  
+  //food status
+
+  let selectedFoodType = textContentOfSelectedIndex("food-id");
+  let countOfFood = totalNights * Number(selectedFoodIndex);
+  console.log(valuesArray);
+  //to get the sum of all the south india n food input
+  console.log(selectedFoodIndex === "0");
+  console.log(selectedFoodIndex);
+  if (selectedFoodIndex === 0) {
+    selectedFoodType = "South Indian Food";
+    let sum = 0;
+    document.querySelectorAll(".it").forEach((element) => {
+      if (element === undefined) {
+        element = 0;
+      }
+
+      sum = Number(element.value) + sum;
+    });
+    countOfFood = sum;
+    console.log("countOfFood " + countOfFood);
+  }
+  console.log(selectedFoodType);
+  foodTimes = `All Days On Restaurant ${selectedFoodType} - Map ${countOfFood} Times`;
+
+
+
+  //to determine if services are added in inclusion or exclusion
+  let checkedValue='';
+  for(const radio of radioButtons ) {
+    if(radio.checked){
+      checkedValue=radio.value;
+      siteSeeingStatus=true;
+      console.log(checkedValue);
+      break;
+    }
+  };
+  if(siteSeeingStatus){
+
+    siteSeeing = `${totalNights+1} days North Goa & South Goa Sightseeing by ${checkedValue}`;
+  }
+
+  
   //lets put all the status into array
   //if it is add service state then they are put in exclusion
-  statusArray=[pickUpDropStatus,sightSeeingCost,addonStatus]
-
-
-  //this for modifying the list for inclusions for foodTimes
+  console.log(pickupAndDrop,siteSeeing);
+  statusArray = [pickUpDropStatus, siteSeeingStatus, addonStatus];
+  let statusContent=[pickupAndDrop,siteSeeing];
+  inclusionList = [nights, foodTimes, translator, medical];
 
   
-  
-  let selectedFoodType=textContentOfSelectedIndex('food-id')
-  let countOfFood=totalNights*Number(selectedFoodIndex)
-  console.log(valuesArray)
-  //to get the sum of all the south india n food input
-  console.log(selectedFoodIndex==='0');
-  console.log(selectedFoodIndex);
-  if(selectedFoodIndex===0){
-    selectedFoodType='South Indian Food';
-    let sum=0;
-    document.querySelectorAll('.it').forEach((element)=>{
 
-      if(element===undefined){
-        element=0;
-      }
-     
-      sum=Number(element.value)+sum;
+
+  
+  statusArray.forEach((status,index) => {
+    if ((status === true)) {
+      //then that is included
+      inclusionList.splice(2,0,statusContent[index])
+      
     }
-  )
-  countOfFood=sum;
-  console.log("countOfFood "+countOfFood)
+  });
+  let masterList = [
+    pickupAndDrop,
+    nights,
+    foodTimes,
+    siteSeeing,
+    translator,
+    medical,
+    ticket,
+    GST,
+    bevarage,
+    disclaimer,
+  ];
+  exclusionList = masterList.filter((items) => !inclusionList.includes(items));
+  console.log(exclusionList);
 
-    
-  } 
-  console.log(selectedFoodType)
-  foodTimes=`All Days On Restaurant ${selectedFoodType} - Map ${countOfFood} Times`
-
-
- 
-  statusArray.forEach((status)=>{
-    if(status='Add service')//then that is EXcluded
-    {
-      inclusionList=[nights,foodTimes,translator,medical]
-    }
-  
-  })
-  exclusionList=masterList.filter(items=>!inclusionList.includes(items))
-console.log(exclusionList);  
-  
   // Create the document definition
 
   let docDefinition = {
+    // defaultStyle: {
+    //   font: 'Arial', // Set the font family to 'Arial'
+      
+    // },
     header: {
       // Place the image at the top of the page and center it
       stack: [
         {
           image: dataURL,
           width: 600, // Adjust the width of the image as needed
-          height:120,
-          alignment: 'center',
+          height: 120,
+          alignment: "center",
         },
       ],
       margin: [-20, 0],
     },
     content: [
-       
-      { 
-        text:'"Sun-Kissed Delights: Unveiling the Best of Goa - Customized Quotation"',
-        style:'header',
+      {
+        text: '"Sun-Kissed Delights: Unveiling the Best of Goa - Customized Quotation"',
+        style: "header",
         relativePosition: { x: 0, y: 140 },
-            
-        },
-        {
-            text:'Dear Brother/Sister,',
-            relativePosition: { x: 0, y: 250 },
-            
-        },
-        {
-            text:'Thank you for considering Tick your Tour Private Limited for your upcoming trip to Goa. We are delighted to present you with a customized quotation for our exciting Goa Package. Please find the details below.',
-            relativePosition: { x: 0, y: 270 },
-        },
-        {
-          table: {
-              widths: [250,250],
-              heights: [30,30,30,30,30,30,30],
-				body: [
-					['Date', `${today.toISOString().slice(0, 10)}`],
-					['Name ', `${yourName}`],
-					['Location ', `${bookingLocation}`],
-					['Number of travellers ', `${totalPersons}`],
-					['Duration ', `${totalNights} Nights/${totalNights+1} days`],
-					['Travel Assissant Name ', `${assName}`],
-					['Tour Date ', `${document.getElementById("date-text").textContent}`],
-					
-				]
-			},
-			relativePosition: { x: 0, y: 350 },
-      color:'blue',
-			
       },
       {
-        text:'Inclusions :',
-        color:'red',
-        fontSize:15,
-        pageBreak:'before',
+        text: "Dear Brother/Sister,",
+        relativePosition: { x: 0, y: 250 },
+      },
+      {
+        text: "Thank you for considering Tick your Tour Private Limited for your upcoming trip to Goa. We are delighted to present you with a customized quotation for our exciting Goa Package. Please find the details below.",
+        relativePosition: { x: 0, y: 270 },
+      },
+      {
+        table: {
+          widths: [250, 250],
+          heights: [30, 30, 30, 30, 30, 30, 30],
+          body: [
+            ["Date", `${today.toISOString().slice(0, 10)}`],
+            ["Name ", `${yourName}`],
+            ["Location ", `${bookingLocation}`],
+            ["Number of travellers ", `${totalPersons}`],
+            ["Duration ", `${totalNights} Nights/${totalNights + 1} days`],
+            ["Travel Assissant Name ", `${assName}`],
+            [
+              "Tour Date ",
+              `${document.getElementById("date-text").textContent}`,
+            ],
+          ],
+        },
+        relativePosition: { x: 0, y: 350 },
+        color: "blue",
+      },
+      {
+        text: "Inclusions :",
+        color: "red",
+        fontSize: 15,
+        pageBreak: "before",
         relativePosition: { x: 0, y: 100 },
-    },
-    {
+      },
+      {
         ul: inclusionList,
         relativePosition: { x: 10, y: 120 },
-    },
-    {
-        text:'Exclusions :',
-        color:'red',
-        fontSize:15,
+      },
+      {
+        text: "Exclusions :",
+        color: "red",
+        fontSize: 15,
         relativePosition: { x: 0, y: 250 },
+      },
+      {
+        ul: exclusionList,
+        relativePosition: { x: 10, y: 270 },
+      },
+      {
+        table: {
+          widths: [250, 250],
+          heights: [30, 30, 30, 30, 30, 30, 30],
+          body: [
+            [
+              "Type of Package",
+              `${textContentOfSelectedIndex("hotel-type-id")}`,
+            ],
+            ["Hotel Options", `${textContentOfSelectedIndex("hotel-id")}`],
+            ["Number of Rooms ", "Another one here"],
+            ["Travelling ", "No Train/Flight/Bus"],
+            ["Package Price Per Head ", `Rs ${allCost / totalPersons}`],
+            [
+              "GST 5% ",
+              `Rs ${
+                includingServiceChargePerHead * 0.05 +
+                includingServiceChargePerHead
+              }`,
+            ],
+            [
+              "Total Package Price Including GST ",
+              `Rs ${includingServiceChargePerHead * 0.05 + allCost}`,
+            ],
+          ],
+        },
+        // 			layout: 'noBorders',
+        relativePosition: { x: 0, y: 400 },
+        color: "blue",
+        bold: true,
+      },
+      {
+        text: '"Fun in the Sun: Comic Capers in Coastal Playground of Goa!"',
+        pageBreak: "before",
+        color: "red",
+        fontSize: "14",
+        alignment: "center",
+        relativePosition: { x: 0, y: 100 },
+      },
+      {
+        table: {
+          widths: [200, 300],
+          heights: [10, 30, 30, 30, 30, 30, 30],
+          body: [
+            [
+              {
+                image: agodaFort,
+                fit: [200, 200],
+              },
+              {
+                text: "Aguda Fort: Prepare for a blast from the past at Aguda Fort! This ancient stronghold has seen it all - from fierce battles to jaw-dropping views. It is the perfect spot to channel your inner history buff while enjoying some fort-ified fun!",
+              },
+            ],
+            [
+              {
+                image: anjunaBeach,
+                fit: [200, 200],
+              },
+              {
+                text: "Anjuna Beach: Get ready to beach out at Anjuna Beach! Known for its lively flea markets, bohemian vibes, and groovy beach parties, this place is a haven for free spirits and dancing souls. Do not forget your dancing shoes and your inner hippie!",
+              },
+            ],
+            [
+              {
+                image: bagaBeach,
+                fit: [200, 200],
+              },
+              {
+                text: "Baga Beach: Prepare yourself for a beach experience like no other at Baga Beach! From thrilling water sports that will make your heart race to vibrant beach shacks serving up lip-smacking seafood, this place will have you saying, Baga, please!",
+              },
+            ],
+            [
+              {
+                image: calBeach,
+                fit: [200, 200],
+              },
+              {
+                text: "Calangute Beach: Calangute Beach is the epitome of beach bliss! Sun, sand, and a never-ending carousel of water sports await you. So grab your sunscreen, put on your coolest shades, and get ready to make waves of unforgettable memories!",
+              },
+            ],
+          ],
+        },
+        pageBreak: "after",
+        relativePosition: { x: 0, y: 130 },
+      },
+      {
+        text:'Payment Policy',
+        alignment:'center',
+        fontSize:20,
+        color:'red',
+        relativePosition: { x: 0, y: 80 },
     },
     {
-        ul: [
-      'Pickup from Thivim Railway Station, Drop to Thivim Railway Station',
-      '3 Nights Nights Accommodation in AC Rooms with Swimming Pool Resorts in North Goa, near Calangute Beach',
-      'All Days On Restaurant Breakfast & Dinner Food - Map 6 Times Times',
-      '4 Days North Goa & South Goa Sightseeing by Two Wheeler',
-      'Local Malayalam Speaking Coordinator assistance 24/7 over the course of your stay. ',
-      'Basic Medical Support with Free Taxi  service for near by Hospital is also Included in this Package.'
-    ],
-    relativePosition: { x: 10, y: 270 },
+        table: {
+      body: [
+        [{text:'Step 1: Plan your Travel Date',color:'blue'}],
+        ['Choose your preferred travel dates for a memorable journey. Our team will assist you in securing the best discounted prices for flights, trains, or buses, ensuring a cost-effective and convenient travel experience.']
+      ]
+    },
+    layout: 'noBorders',
+    relativePosition: { x: 0, y: 120 },
+    },
+     {
+        table: {
+      body: [
+        [{text:'Step 2: Provide Co-Traveler Details',color:'blue'}],
+        ['Please prepare a list of co-travelers names along with their valid government ID proof. This information is essential for a smooth booking process and ensures compliance with travel regulations.']
+      ]
+    },
+    layout: 'noBorders',
+    relativePosition: { x: 0, y: 200 },
     },
     {
-      table: {
-          widths: [250,250],
-          heights: [30,30,30,30,30,30,30],
-    body: [
-      ['Type of Package', `${textContentOfSelectedIndex('hotel-type-id')}`],
-      ['Hotel Options', `${textContentOfSelectedIndex('hotel-id')}`],
-      ['Number of Rooms ', 'Another one here'],
-      ['Travelling ', 'No Train/Flight/Bus'],
-      ['Package Price Per Head ', `Rs ${allCost/totalPersons}`],
-      ['GST 5% ', `Rs ${
-        includingServiceChargePerHead * 0.05 + includingServiceChargePerHead
-      }`],
-      ['Total Package Price Including GST ', `Rs ${
-        includingServiceChargePerHead * 0.05 + allCost
-      }`],
-      
-    ]
-  },
+        table: {
+      body: [
+        [{text:'Step 3: Secure your Booking with a Token Advance',color:'blue'}],
+        ['To confirm your trip, a token advance of ₹1500 is required. This advance payment guarantees your reservation and allows us to make the necessary arrangements to provide you with a seamless travel experience.']
+      ]
+    },
+    layout: 'noBorders',
+    relativePosition: { x: 0, y: 280 },
+    },
+    {
+        table: {
+      body: [
+        [{text:'Step 4: Payment Options',color:'blue'}],
+        ['The remaining balance can be paid at the time of your travel, providing you with flexibility and convenience. Alternatively, you can also visit one of our nearby Tick your Tour offices to confirm your tour by making a direct payment']
+      ]
+    },
+    layout: 'noBorders',
+    relativePosition: { x: 0, y: 360 },
+    },
+    {
+        table: {
+      body: [
+        [{text:'Account Details ',color:'red',alignment:'center'}],
+        [{text:'Account Number : 234805000946\nAccount Holder is name : TICK YOUR TOUR PRIVATE LIMITED\nUPI : tickyourtour@Icici\nIFSC Code: ICIC0002348',alignment:'center'}],
+      ]
+    },
+    alignment:'center',
 // 			layout: 'noBorders',
-  relativePosition: { x: 0, y: 400 },
-  color:'blue',
-  bold:true,
-  },
-  {
-      text:'"Fun in the Sun: Comic Capers in Coastal Playground of Goa!"',
-      pageBreak:'before',
-      color:'red',
-      fontSize:'14',
+    relativePosition: { x: 95, y: 500 },
+    pageBreak:'after',
+    }, {
+      text:'Terms & Conditions',
       alignment:'center',
-      relativePosition: { x: 0, y: 100 },
-      
+      fontSize:20,
+      color:'red',
+      relativePosition: { x: 0, y: 80 },
+  },
+  {
+      image:termsAndCond,
+      relativePosition: { x: 0, y: 120 },
+      width:530,
+  },
+  {
+      text:'Cancellation Policy',
+      relativePosition: { x: 0, y: 600 },
+      color:'red',
       
   },
   {
-      table: {
-          widths: [200,300],
-          heights: [10,30,30,30,30,30,30],
-    body: [
-      [{
-      
-                    image:agodaFort,
-                    fit: [200,200],
-          
-      },
-      {
-                    text:'Aguda Fort: Prepare for a blast from the past at Aguda Fort! This ancient stronghold has seen it all - from fierce battles to jaw-dropping views. It is the perfect spot to channel your inner history buff while enjoying some fort-ified fun!',
-          
-      }],
-      [{
-      
-                    image:anjunaBeach,
-                    fit: [200,200],
-          
-      },
-      {
-                    text:'Anjuna Beach: Get ready to beach out at Anjuna Beach! Known for its lively flea markets, bohemian vibes, and groovy beach parties, this place is a haven for free spirits and dancing souls. Do not forget your dancing shoes and your inner hippie!'
-      }],
-      [{
-      
-                    image:bagaBeach,
-                    fit: [200,200],
-          
-      },
-      {
-                    text:'Baga Beach: Prepare yourself for a beach experience like no other at Baga Beach! From thrilling water sports that will make your heart race to vibrant beach shacks serving up lip-smacking seafood, this place will have you saying, Baga, please!',
-      }],
-      [{
-      
-                    image:calBeach,
-                    fit: [200,200],
-          
-      },
-      {
-                    text:'Calangute Beach: Calangute Beach is the epitome of beach bliss! Sun, sand, and a never-ending carousel of water sports await you. So grab your sunscreen, put on your coolest shades, and get ready to make waves of unforgettable memories!',
-      }],
-      
-      
-    ]
-  },
+      ul: [
+    '90% Refund if canceled 30 days prior to scheduled arrival.',
+    '70% refund, if canceled more than 15 days prior to scheduled arrival (but less than 30 days)',
+    '50% refund  if canceled more than 15 days prior to scheduled arrival.',
+    'No refund, if canceled less than 7 days prior to scheduled arrival.',
+    'During the Trip if canceled there will be No Refund.',
+    'Incase of refund the refund period would be 15 days (working)',
+  ],
+  relativePosition: { x: 0, y: 620 },
+  margin: [15, 0],
   pageBreak:'after',
-  relativePosition: { x: 0, y: 130 },
-  },
-  
-      
+  },{
+    text:['Thank you for considering', {text:' Tick your Tour',color:'red'},' for your Goa Package! We have carefully crafted a customized quotation to ensure an unforgettable experience. Should you have any questions or need further information, please do not hesitate to contact us. We value your trust and would greatly appreciate it if you could provide a reference for our services. We look forward to serving you and creating lasting memories.'],
+    relativePosition: { x: 0, y: 300 },
+    fontSize:15,
+    
+},
+ {
+    text:'Our Branches ',
+    relativePosition: { x: 0, y: 600 },
+    color:'red',
+    
+},
+{
+    ul: [
+  'Chennai : 23/1, Ground Floor, Alagiri Nagar 5th Street, Vadapalani, Chennai – 600023 ',
+  'Kochi : 2422, Bank Rd, Kaloor, Kochi, Kerala 682017',
+],
+relativePosition: { x: 0, y: 620 },
+margin: [15, 0],
+
+},
+
     ],
     styles: {
       header: {
         bold: true,
         fontSize: 23,
-        alignment: 'center', // Optionally center the header text
-        color:'red'
-      }
-    }
+        alignment: "center", // Optionally center the header text
+        color: "red",
+      },
+    },
   };
 
   // Generate the PDF and initiate download
-  pdfMake.createPdf(docDefinition).download('Goa_Booking.pdf');
+  pdfMake.createPdf(docDefinition).download("Goa_Booking.pdf");
 }
 
 // Attach event listener to the button after the page loads
-document.addEventListener('DOMContentLoaded', function() {
-  
+document.addEventListener("DOMContentLoaded", function () {
   // Get the button element by its ID
-  let generatePDFBtn = document.getElementById('generate-pdf-btn');
+  let generatePDFBtn = document.getElementById("generate-pdf-btn");
 
   // Attach the click event listener to the button
-  generatePDFBtn.addEventListener('click', generatePDFs);
+  generatePDFBtn.addEventListener("click", generatePDFs);
 });
 
-document.querySelector('.Submit').addEventListener('click',displayResult)
-function displayResult(allCost,includingServiceChargePerHead){
+document.querySelector(".Submit").addEventListener("click", displayResult);
+function displayResult(allCost, includingServiceChargePerHead) {
   const overlay = document.querySelector(".overlay");
-  const messageCard=document.querySelector('.message-card')
-  overlay.style.display='block'
-  messageCard.style.display='block'
-  document.getElementById(
-    "result-test"
-  ).innerHTML = `<h1 style="
+  const messageCard = document.querySelector(".message-card");
+  overlay.style.display = "block";
+  messageCard.style.display = "block";
+  document.getElementById("result-test").innerHTML = `<h1 style="
   background: black;
   color: white;
   padding-left: 25%;
@@ -2276,18 +2411,18 @@ function displayResult(allCost,includingServiceChargePerHead){
 <table class="tbl-result" style="
   border: none;
 "><tbody><tr><td>The Cost of your Customised Package is</td> <td class="rate"> Rs ${allCost}</td></tr>
-<tr><td>The cost per head is </td> <td class="rate"> Rs ${allCost/totalPersons}</td>
+<tr><td>The cost per head is </td> <td class="rate"> Rs ${
+    allCost / totalPersons
+  }</td>
 
 </tr><tr><td>The cost per head including service charge </td> <td class="rate"> Rs ${includingServiceChargePerHead}</td></tr>
 <tr><td>The cost per head including Service and GST </td> <td class="rate"> Rs ${
-  includingServiceChargePerHead * 0.05 + includingServiceChargePerHead
-} </td></tr></tbody></table>`;
+    includingServiceChargePerHead * 0.05 + includingServiceChargePerHead
+  } </td></tr></tbody></table>`;
 
   //close buuton event listner
-  document.querySelector('.btn-close').addEventListener('click',function(){
-    overlay.style.display='none'
-    messageCard.style.display='none'
-    
-  })
-
+  document.querySelector(".btn-close").addEventListener("click", function () {
+    overlay.style.display = "none";
+    messageCard.style.display = "none";
+  });
 }

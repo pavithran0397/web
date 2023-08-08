@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Averia Serif Libre">
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -14,14 +15,19 @@
 
       >
         <h3>Customize Your Trip</h3>
-        <label class="main-label labels" for="no-of-persons"
+        <div class="no-of-pax">
+
+          <label class="main-label labels" for="no-of-persons"
           >Total Number of persons</label
-        >
-        <input
+          >
+          <input
           type="number"
           id="no-of-persons"
           placeholder="Number of persons"
-        />
+          style="
+    margin-right: 0;" 
+          />
+        </div>
         <div class="date-in-out">
           <div class="date-in">
             <label for="date-in-id" class="main-label date-in">Hotel Check In</label>
@@ -102,7 +108,7 @@
             >Choose the hotel type</label
           >
 
-          <select name="hotel-select" id="hotel-type-id">
+          <select name="hotel-select" id="hotel-type-id" class="dropdown-align">
             <!-- <option value="">None</option> -->
             <option value="0">Bachelour</option>
             <option value="1">Couple</option>
@@ -270,7 +276,7 @@
             >Choose the Food type</label
           >
 
-          <select name="food-select" id="food-id">
+          <select class='dropdown-align' name="food-select" id="food-id">
             <!-- <option value="">None</option> -->
             <option value="0">No Food</option>
             <option value="1">breakfast only</option>
@@ -283,7 +289,7 @@
             >Customised Hotel we picked for you</label
           >
 
-          <select name="food-select hotel" id="hotel-id"></select>
+          <select class="dropdown-align" name="food-select hotel" id="hotel-id"></select>
         </div>
         <div class="south-indian-food">
           <label class="main-label" for="south-indian-food"
@@ -338,7 +344,7 @@
                   type="radio"
                   id="self-drive-cars"
                   name="sight-seeing"
-                  value="self-drive-cars"
+                  value="Self-drive-cars"
                 />
                  
                 <label class="sight-labels" for="self-drive-cars"
@@ -350,7 +356,7 @@
                   type="radio"
                   id="Vechicle--driver"
                   name="sight-seeing"
-                  value="Vechicle--driver"
+                  value="Driver-Accompanied-Vehicle"
                 />
                  
                 <label class="sight-labels" for="Vechicle--driver"

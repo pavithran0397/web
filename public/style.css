@@ -2,8 +2,20 @@
   margin: 0;
   /* border:solid 1px rgb(7, 7, 7);   */
   box-sizing: border-box;
-  font-family: "poppins", sans-serif;
+  font-family: "Averia Serif Libre";
   /* overflow: auto; */
+}
+.bg-inside-form{
+  background-color: #e70b0b;
+}
+.dropdown-align{
+  width: 10rem;
+  float: right;
+  height: 2rem;
+}
+.no-of-pax{
+  display: flex;
+  justify-content: space-between;
 }
 @keyframes blink {
   0% {
