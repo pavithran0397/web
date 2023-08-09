@@ -1,4 +1,16 @@
 "use strict";
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+import {initializeApp} from 'firebase/app';
+import {getFirestore,collection,getDocs,addDoc} from 'firebase/firestore'
+const firebaseConfig = {
+  apiKey: "AIzaSyBPIn98znYDQH3TPSQBJiQ2AIwjYZLKy3U",
+  authDomain: "goa-firebase.firebaseapp.com",
+  projectId: "goa-firebase",
+  storageBucket: "goa-firebase.appspot.com",
+  messagingSenderId: "497483938786",
+  appId: "1:497483938786:web:9f5c35eb43c32d0736d7bb",
+  measurementId: "G-CB36YB3SJN"
+};
 
 let textArray = [];
 let totalPersons = 0;
@@ -2106,6 +2118,8 @@ function generatePDFs(e) {
 
   // Create the document definition
 
+  
+
   let docDefinition = {
     // defaultStyle: {
     //   font: 'Arial', // Set the font family to 'Arial'
@@ -2426,3 +2440,31 @@ function displayResult(allCost, includingServiceChargePerHead) {
     messageCard.style.display = "none";
   });
 }
+
+
+
+//for fire base
+
+initializeApp(firebaseConfig);
+const db= getFirestore()//init service
+const colref=collection(db,'login');//referring the collection
+getDocs(colref)
+  .then((snapshot)=>{
+    let login=[];
+    snapshot.docs.forEach((doc)=>{
+      login.push({...doc.data(),id:doc.id})
+    })
+    console.log(login);
+  })
+  .catch(err=>{
+    console.log(err.message)
+  });
+
+  const submit=document.querySelector('.Submit').addEventListener('click',(e)=>{
+    e.preventDefault();
+    addDoc(colref,{
+      paxNumber:noOfPersons,
+      totalNights:totalNights,
+      
+    })  
+  })

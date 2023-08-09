@@ -411,6 +411,11 @@ span {
   form{
     margin-top: auto;
   }
+  .dropdown-align {
+    width: 7rem;
+    float: right;
+    height: 2rem;
+}
   .check-in-out{
     
     display: flex;
@@ -442,6 +447,7 @@ span {
  
   .food,.hotel{
     display: flex;
+    justify-content: space-between;
   }
   .radio-sightseeing{
     border: #b1b0b1 solid 1px;
